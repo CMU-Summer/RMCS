@@ -4,7 +4,7 @@
 *  - added wstrtod to handle INF, NAN
 *  - added support for using IOCP with sockets
 */
-#define NO_QFORKIMPL
+
 #ifndef WIN32FIXES_H
 #define WIN32FIXES_H
 

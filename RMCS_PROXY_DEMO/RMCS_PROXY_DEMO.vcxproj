@@ -67,6 +67,7 @@
     <ClCompile Include="src\lookup.cpp" />
     <ClCompile Include="src\mac_address.cpp" />
     <ClCompile Include="src\trajectory.cpp" />
+    <ClCompile Include="win32fixes.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A406C413-D7CC-4251-A1D9-40B6FF857EA4}</ProjectGuid>
@@ -123,7 +124,7 @@
     <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)include\json;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)include\json;$(ProjectDir)deps\hiredis;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)lib\win_x64;$(LibraryPath)</LibraryPath>
     <SourcePath>$(ProjectDir)src;$(ProjectDir);$(SourcePath)</SourcePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
@@ -153,8 +154,9 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>hebi.lib;lib_json.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hebi.lib;lib_json.lib;hiredis.lib;Win32_Interop.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>E:\tools\boost_1_61_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/NODEFAULTLIB:libcmt.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

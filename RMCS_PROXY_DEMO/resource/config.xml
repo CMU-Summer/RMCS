@@ -3,7 +3,7 @@
         <sleepTime value="5000"></sleepTime>
         <feedbackFrequency value="10" />
         <redisList>
-            <redis ip="127.0.0.1" port="6557" />
+            <redis ip="60.205.179.19" port="6379" />
         </redisList>
         <databases>
             <database ip="127.0.0.1" port="3306" user="aqe" pwd="qqqq" dbSchme="rmcs" >

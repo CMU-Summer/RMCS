@@ -13,13 +13,15 @@
 #define POSITION_CMD 1
 #define TURQUE_CMD 2
 #define VELOCITY_CMD 3
-//#include "hiredis/hiredis.h"
+
 #include <iostream>
 #include "JsonObjectBase.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <mutex>
-//#define NO_QFORKIMPL //这一行必须加才能正常使用
+
+#include "deps/hiredis/hiredis.h"
+
 
 //#include "src/Win32_Interop/win32fixes.h"
 #include <vector>
@@ -296,8 +298,8 @@ class CacheConnection {
 private:
 	string ip;
 	int port;
-	//redisContext* rdc;
-	char* rdc;
+	redisContext* rdc;
+
 	mutable std::mutex mut;
 	
 public:
@@ -309,34 +311,29 @@ public:
 
 
 	bool connect() {
+		printf("is going to connect redis [ip:%s,port:%d]",this->ip.data(),this->port);
+		const string ip_ = this->ip;
+		rdc = redisConnect(this->ip.data(), this->port);
+		return rdc == NULL ? false : true;
 	
-// 		const string ip_ = this->ip;
-// 		rdc = redisConnect(this->ip.data(), this->port);
-// 		return rdc == NULL ? false : true;
-		return false;
 
 	}//连接
 	bool reconnect() {
-// 		if (this->isConnected()) {
-// 			return true;
-// 
-// 		}
-// 		else
-// 		{
-// 			const string ip_ = this->ip;
-// 	
-// 			
-// 			rdc = redisConnect(this->ip.data(), this->port);
-// 			return rdc == NULL ? false : true;
-// 		}
-		return false;
+		if (this->isConnected()) {
+			return true;
+
+		}
+		else
+		{
+			const string ip_ = this->ip;
+			rdc = redisConnect(this->ip.data(), this->port);
+			return rdc == NULL ? false : true;
+		}
+	
 
 	}//重新连接
 	bool disconnect() {
-// 		freeContext();
-// 		rdc = NULL;
-// 		return true;
-//----------
+		freeContext();
 		rdc = NULL;
 		return true;
 	}//断开
@@ -356,115 +353,115 @@ public:
 	}//重新设置
 
 	void freeContext() {
-	//redisFree(this->rdc);
-	//-----
+	redisFree(this->rdc);
+
 	}//清除context
 	bool isContainKey(char*  key) {
-// 		void* intP;
-// 		int arg_nums = 2;
-// 		const char* args[] = { "exists",key };
-// 		this->setCommndWithArgs(arg_nums, args, "keyExist", intP);
-// 		return (*(int*)intP == 0) ? false : true;
-		return true;
-
-
+		void* intP;
+		int arg_nums = 2;
+		const char* args[] = { "exists",key };
+		this->setCommndWithArgs(arg_nums, args, "keyExist", intP);
+		delete[] args;
+		return (*(int*)intP == 0) ? false : true;
 	}//是否包含Key
 	bool deleteKey(char*  key) {
-// 		void* intP;
-// 		int arg_nums = 2;
-// 		const char* args[] = { "del",key };
-// 		this->setCommndWithArgs(arg_nums, args, "keyDelete", intP);
-// 		return (*(int*)intP == 0) ? false : true;
-		return true;
+		void* intP;
+		int arg_nums = 2;
+		const char* args[] = { "del",key };
+		this->setCommndWithArgs(arg_nums, args, "keyDelete", intP);
+		delete[] args;
+		return (*(int*)intP == 0) ? false : true;
+
 
 	}//删除键
 	bool setCommndWithArgs(int agr_nums, const char** args, string des, void* &res) {
-		// 		if (this->isConnected() == false) return false;
-		// 		std::unique_lock<std::mutex> lk(mut);
-		// 		redisCommandArgv(this->rdc, agr_nums, args, NULL);
-		// 		redisReply *reply;
-		// 		redisGetReply(rdc, (void**)&reply);
-		// 		switch (reply->type)
-		// 		{
-		// 		case REDIS_REPLY_ARRAY: {
-		// 			//是数组，那么就需要读数组
-		// 			vector<string>* vec = new vector<string>();
-		// 
-		// 			for (int i = 0; i<reply->elements; i++) {
-		// 				vec->push_back((*(reply->element))[i].str);
-		// 			}
-		// 			res = (void*)vec;
-		// 			return true;
-		// 
-		// 		}
-		// 		case REDIS_REPLY_INTEGER: {
-		// 			LONGLONG* a = new LONGLONG();
-		// 			(*a) = reply->integer;
-		// 			res = (void*)a;
-		// 			return true;
-		// 		}
-		// 		case REDIS_REPLY_STRING: {
-		// 			string* a = new string(reply->str);
-		// 			res = (void*)a;
-		// 			return true;
-		// 
-		// 		}
-		// 		case REDIS_REPLY_NIL: {
-		// 			cout << "error:get null from redis" << endl;
-		// 			return false;
-		// 		}
-		// 		case REDIS_REPLY_ERROR: {
-		// 			cout << "error:executed error" << endl;
-		// 			return false;
-		// 		}
-		// 		case REDIS_REPLY_STATUS: {
-		// 			//某个操作的，比如DEL SET 放东西的操作,删除和查键就不算在里面了
-		// 			if (des == GET_LIST) {
-		// 				//获取列表,不会触发
-		// 
-		// 			}
-		// 			else if (des == PUT_LIST) {
-		// 				//放列表的操作
-		// 				return  reply->integer <= 0 ? false : true;
-		// 
-		// 			}
-		// 			else if (des == ADD_VALUE_TO_SET) {
-		// 				//创建或添加set
-		// 				return  reply->integer <= 0 ? false : true;
-		// 
-		// 			}
-		// 			else if (des == DELETE_VALUE_TO_SET) {
-		// 				//删除某个set的成员
-		// 				return  reply->integer <= 0 ? false : true;
-		// 			}
-		// 			else if (des == GET_STR) {
-		// 				//获取字符串(序列化对象),不会到这里
-		// 
-		// 
-		// 			}
-		// 			else if (des == SET_STR) {
-		// 				//设置字符串（序列化对象）
-		// 				return strcmp(reply->str, "OK") == 0;
-		// 			}
-		// 			else {
-		// 				//奇怪的操作
-		// 				return false;
-		// 			}
-		// 
-		// 
-		// 			cout << reply->str << endl;
-		// 			return true;
-		// 		}
-		// 		default:
-		// 			cout << "unexcepted error" << endl;
-		// 			return false;
-		// 			break;
-		// 		}
-		// 
-		// 
-		// 	}//发送命令
-		//---------------
-		return true;
-	}
+		if (this->isConnected() == false) return false;
+		std::unique_lock<std::mutex> lk(mut);
+		redisCommandArgv(this->rdc, agr_nums, args, NULL);
+		redisReply *reply;
+		redisGetReply(rdc, (void**)&reply);
+		switch (reply->type)
+		{
+		case REDIS_REPLY_ARRAY: {
+			//是数组，那么就需要读数组
+			vector<string>* vec = new vector<string>();
+
+			for (int i = 0; i<reply->elements; i++) {
+				vec->push_back((*(reply->element))[i].str);
+			}
+			res = (void*)vec;
+			return true;
+
+		}
+		case REDIS_REPLY_INTEGER: {
+			LONGLONG* a = new LONGLONG();
+			(*a) = reply->integer;
+			res = (void*)a;
+			return true;
+		}
+		case REDIS_REPLY_STRING: {
+			string* a = new string(reply->str);
+			res = (void*)a;
+			return true;
+
+		}
+		case REDIS_REPLY_NIL: {
+			printf("error:get null from redis\n");
+
+			return false;
+		}
+		case REDIS_REPLY_ERROR: {
+			printf("error:executed error\n");
+		
+			return false;
+		}
+		case REDIS_REPLY_STATUS: {
+			//某个操作的，比如DEL SET 放东西的操作,删除和查键就不算在里面了
+			if (des == GET_LIST) {
+				//获取列表,不会触发
+
+			}
+			else if (des == PUT_LIST) {
+				//放列表的操作
+				return  reply->integer <= 0 ? false : true;
+
+			}
+			else if (des == ADD_VALUE_TO_SET) {
+				//创建或添加set
+				return  reply->integer <= 0 ? false : true;
+
+			}
+			else if (des == DELETE_VALUE_TO_SET) {
+				//删除某个set的成员
+				return  reply->integer <= 0 ? false : true;
+			}
+			else if (des == GET_STR) {
+				//获取字符串(序列化对象),不会到这里
+
+
+			}
+			else if (des == SET_STR) {
+				//设置字符串（序列化对象）
+				return strcmp(reply->str, "OK") == 0;
+			}
+			else {
+				//奇怪的操作
+				return false;
+			}
+
+
+			cout << reply->str << endl;
+			return true;
+		}
+		default:
+			cout << "unexcepted error" << endl;
+			return false;
+			break;
+		}
+
+
+	}//发送命令
+	//	return true;
+	
 };
 #endif

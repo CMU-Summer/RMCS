@@ -12,6 +12,8 @@
 #include <src/lookup.hpp>
 #include <thread>
 #include "common.h"
+#define NO_QFORKIMPL //这一行必须加才能正常使用
+#include "src/Win32_Interop/win32fixes.h"
 class InitManager
 	/*
 	这个类是一开始初始化的
