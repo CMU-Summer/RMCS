@@ -121,111 +121,115 @@ bool CacheManager::reconnect(){
 
 vector<GroupStruct> CacheManager::getGroupInCache_pri(string des){
 		//先取 group的list,再取str
-// 		void* groupP=NULL;
-// 		int arg_nums=2;
-// 		const char* args[]={"smembers","group",};
-// 		this->cacheConnect.setCommndWithArgs(arg_nums,args,des,groupP);//返回的是向量
-// 		vector<string>& g_strs = *(vector<string>*)groupP;
-// 		vector<GroupStruct> groupV;
-// 		for(int i=0;i<g_strs.size();i++){
-// 			GroupStruct g;
-// 			//取str
-// 			void* str=NULL;
-// 			char* group_key_ = new char(g_strs.size()+1);
-// 			int arg_nums_1=2;
-// 			const char* args_1[]={"get",strcpy(group_key_,g_strs.at(i).data())};
-// 			this->cacheConnect.setCommndWithArgs(arg_nums_1,args_1,GET_STR,str);//str已经有了一个str了
-// 			g.DeSerialize((char*)str);
-// 			delete str;
-// 			delete group_key_;
-// 			delete args_1;
-// 			groupV.push_back(g);
-// 			delete[] args;
-// 			
-// 			
-// 
-// 	}
-// 		delete groupP;
-// 		return groupV; //返回
-	printf("LOOKUP_MANAGER_THREAD: get group list from cache\n");
+		void* groupP=NULL;
+		int arg_nums=2;
+		const char* args[]={"smembers","group",};
+		bool opt = this->cacheConnect.setCommndWithArgs(arg_nums,args,des,groupP);//返回的是向量
+			
+		if (opt == false) {
+			printf("LOOKUP_MANAGER_THREAD: can not get group list from cache\n");
+		
+		}
+		else {
+			printf("LOOKUP_MANAGER_THREAD: get group list from cache\n");
+		
+		}
+		vector<string>& g_strs = *(vector<string>*)groupP;
+		vector<GroupStruct> groupV;
+		for(int i=0;i<g_strs.size();i++){
+			GroupStruct g;
+			//取str
+			void* str=NULL;
+			char* group_key_ = new char(strlen(g_strs.at(i).data())+1);
+			int arg_nums_1=2;
+			const char* args_1[]={"get",strcpy(group_key_,g_strs.at(i).data())};
+			this->cacheConnect.setCommndWithArgs(arg_nums_1,args_1,GET_STR,str);//str已经有了一个str了
+			g.DeSerialize((char*)str);
+			delete str, group_key_, args_1;
+			groupV.push_back(g);
+			delete[] args;
+	}
+		delete groupP;
+		return groupV; //返回
+
 	
-	vector<GroupStruct> v;
-	return v;
+
 
 }//取数据
 //调用缓存类，放进去
 bool CacheManager::flushCacheAndItNameList(const string& key ,vector<string>& list){
 	//两个set都要add 
-// 	void* groupP;
-// 	int arg_nums=list.size()+2;
-// 	char* key_=new char(strlen( key.data())+1);
-// 
-// 	const char** args=new const char*[arg_nums];
-// 	args[0]="sadd";
-// 	args[1]=strcpy(key_,key.data());
-// 	for(int i=0;i<list.size();i++){
-// 		args[2+i]=list.at(i).data();
-// 		
-// 	}
-// 	bool opt= this->cacheConnect.setCommndWithArgs(arg_nums,args,ADD_VALUE_TO_SET,groupP);
-// 
-// 	char* key__=new char(strlen( key.data())+1);
-// 	const char* args_[]={"sadd","family",strcpy(key__,key.data())};//放到family set里面去
-// 	int arg_nums_=2;
-// 	void* intx;
-// 	bool opt1= this->cacheConnect.setCommndWithArgs(arg_nums_,args_,ADD_VALUE_TO_SET,intx);
-// 	delete intx;
-// 	delete key_;
-// 	delete key__;
-// 	delete[] args_;
-// 	delete groupP;
-// 	for(int i=0;i<arg_nums;i++){
-// 		delete args[i];
-// 	}
-// 	delete args;
-// 
-// 	return opt==opt1==true;
+	void* groupP;
+	int arg_nums=list.size()+2;
+	char* key_=new char(strlen( key.data())+1);
+
+	const char** args=new const char*[arg_nums];
+	args[0]="sadd";
+	args[1]=strcpy(key_,key.data());
+	for(int i=0;i<list.size();i++){
+		args[2+i]=list.at(i).data();
+		
+	}
+	bool opt= this->cacheConnect.setCommndWithArgs(arg_nums,args,ADD_VALUE_TO_SET,groupP);
+
+	char* key__=new char(strlen( key.data())+1);
+	const char* args_[]={"sadd","family",strcpy(key__,key.data())};//放到family set里面去
+	int arg_nums_=3;
+	void* intx;
+	bool opt1= this->cacheConnect.setCommndWithArgs(arg_nums_,args_,ADD_VALUE_TO_SET,intx);
+	delete intx, key_, key_, groupP;
+	delete[] args_;
+	delete[] args;
+	if (opt == false) {
+		printf("CACHE_MANAGER_THREAD:cache error:cannot flush some family in cache \n");
+	}
+	if (opt1 == false) {
+		printf("CACHE_MANAGER_THREAD:cache error:cannot flush  family list in cache \n");
+	}
+	return opt==opt1==true;
 
 	printf("CACHE_MANAGER_THREAD : send newest family and names map to cache\n");
 	return true;
 }
 bool CacheManager::flushCacheGroupState(GroupStruct gst){
 	//判断有key 再set str
-// 	char* key_=new char(strlen( gst.getName().data())+1);
-// 	string s(gst.Serialize());
-// 	char* objStr=new char(strlen(s.data())+1);
-// 	const char* args_[]={"set",strcpy(key_,gst.getName().data()),strcpy(objStr,s.data())};//放到family set里面去
-// 	int arg_num=3;
-// 	void* res;
-// 	bool opt=this->cacheConnect.setCommndWithArgs(arg_num,args_,SET_STR,res);
-// 	delete res;
-// 	delete key_;
-// 	delete objStr;
-// 	delete[] args_;
-// 	return opt;
+	char* key_=new char(strlen( gst.getName().data())+1);
+	string s(gst.Serialize());
+	char* objStr=new char(strlen(s.data())+1);
+	const char* args_[]={"set",strcpy(key_,gst.getName().data()),strcpy(objStr,s.data())};//放到family set里面去
+	int arg_num=3;
+	void* res;
+	bool opt=this->cacheConnect.setCommndWithArgs(arg_num,args_,SET_STR,res);
+	if (opt == false) {
+		printf("CACHE_MANAGER_THREAD:cache error:cannot flush some group state  in cache \n");
+	}
+	delete res, key_, objStr;
+	delete[] args_;
+	gst.freeStruct();
 
-	printf("CACHE_MANAGER_THREAD : sent group status to cache\n");
-	return true;
+	return opt;
+
+
 
 }
 bool CacheManager::flushCacheGroupFeedBackList(GroupfeedbackCustomStruct gfd){
 	//判断有key 再set str
-// 	string gfd_name_key=gfd.groupName+"_gfd";
-// 	char* key_=new char(strlen(gfd_name_key.data())+1);
-// 	string s(gfd.Serialize());
-// 	char* objStr=new char(strlen(s.data())+1);
-// 	const char* args_[]={"rpush",strcpy(key_,gfd_name_key.data()),strcpy(objStr,s.data())};//放到groupfdlist set里面去
-// 	int arg_num=3;
-// 	void* res;
-// 	bool opt=this->cacheConnect.setCommndWithArgs(arg_num,args_,SET_STR,res);
-// 	delete res;
-// 	delete key_;
-// 	delete objStr;
-// 	delete[] args_;
-// 	return opt;
-	printf("CACHE_MANAGER_THREAD : sent group feed back  to cache\n");
+	string gfd_name_key=gfd.groupName+"_gfd";//group的fd默认加个后缀
+	char* key_=new char(strlen(gfd_name_key.data())+1);
+	string s(gfd.Serialize());
+	char* objStr=new char(strlen(s.data())+1);
+	const char* args_[]={"rpush",strcpy(key_,gfd_name_key.data()),strcpy(objStr,s.data())};//放到groupfdlist set里面去
+	int arg_num=3;
+	void* res;
+	bool opt=this->cacheConnect.setCommndWithArgs(arg_num,args_,SET_STR,res);
+	delete res, key_, objStr;
+	delete[] args_;
+	if (opt == false) {
+		printf("CACHE_MANAGER_THREAD:cache error:cannot add some group 's feedback  in cache \n");
+	}
+	gfd.freeStruct();
+	return opt;
 
-	return true;
 
 
 }//刷新远端缓存里面的groupFeedback

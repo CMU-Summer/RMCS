@@ -42,18 +42,25 @@ void LookUpManager::run() {
 	//逻辑运行的地方
 	while(true){
 		//再次确认，抽取cache里面的group，更新状态；更新cahce里面的family和name的关系表
+		vector<GroupStruct> gst_vec = this->getGroupListFromCache();//取出来
+
 		//1.给没有异步处理方法的group添加handler
-		this->addHandlerFromGroups();
+		this->addHandlerFromGroups(gst_vec);
 
-
-		//2.刷新f and n
+		
+		//2.刷新f and n 
 		this->updateFamilyAndNamesMap(this->getNewestMapFromHibi());
 
 
-		//3.刷新group里面的name的连接状态
-		this->updateGroupConncetState(this->cacheManager.getGroupInCache());
+		//3.刷新group里面的name的连接状态，放到上面那个函数里面去做了
+		this->updateGroupConncetState(gst_vec);
 
-		//4。线程暂停
+		//4.销毁掉来自cache的东西
+		for (int i = 0; i < gst_vec.size();i++) {
+			gst_vec.at(i).freeStruct();
+		}
+
+		//5。线程暂停
 		if(this->sleep_time>0){
 			this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
 		}
@@ -168,7 +175,7 @@ vector<GroupStruct> LookUpManager::getGroupListFromConfig(){
 
 
 }//从配置文件里面获取
-void LookUpManager::addHandlerFromGroups(){
+void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 	//给fixedgroup添加
 	if(fixedGroup.size()>0 && this->fixedAdded == false){
 		printf("LOOKUPMANAGER_THREAD:add FeedBack Handle to Group\n");
@@ -180,14 +187,17 @@ void LookUpManager::addHandlerFromGroups(){
 			this->getFamilyAndNamesFromGroupStruct(fixedGroup.at(i),familyVec,nameVec);
 			//给找到的group添加feedbackManager
 			this->addHandlerForOneGroup(familyVec,nameVec,gname);
+			//只加一次
+			fixedAdded = true;
 			delete familyVec,nameVec;
 		}
 	}
-	vector<GroupStruct> gstVec= this->cacheManager.getGroupInCache();//没有的话会返回个空的
+	
 	for(int i=0;i<gstVec.size();i++){
 		printf("LOOKUPMANAGER_THREAD:add FeedBack Handle to Group\n");
 		if(this->cacheGroupMap.count(gstVec.at(i).getName())){
-			//有，就不加了
+			//如果包含什么也不做
+			printf("LOOKUP_MANAGER:this group is already handled!");
 		}else {
 			//没有，这个group还没有一个feedbackManager来处理
 			vector<string>* familyVec=new vector<string>(),*nameVec = new vector<string>();
@@ -198,6 +208,8 @@ void LookUpManager::addHandlerFromGroups(){
 			this->addHandlerForOneGroup(familyVec,nameVec,gname);
 			//释放指针
 			delete familyVec,nameVec;
+			//吧这个字符串对应的cacheMap里面去
+			this->cacheGroupMap[gstVec.at(i).getName()] = NULL;//那个指针不重要，反正也不用的
 		}
 
 	}

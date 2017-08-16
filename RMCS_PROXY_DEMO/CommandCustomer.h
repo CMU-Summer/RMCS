@@ -133,15 +133,15 @@ private:
 };
 
 void CommandCustomer::run(){
-// 	while (true)
-// 	{
-// 		printf("COMMAND_CUSTOMER : command customer working!!!!!\n");
-// 		this->customCommand();
-// 		if(this->sleeptime>0){
-// 			this_thread::sleep_for(std::chrono::milliseconds(this->sleeptime));
-// 		}
-// 		printf("COMMAND_CUSTOMER : command customer is ready for next!!!!!\n");
-// 	}
+	while (true)
+	{
+		printf("COMMAND_CUSTOMER : command customer working!!!!!\n");
+		this->customCommand();
+		if(this->sleeptime>0){
+			this_thread::sleep_for(std::chrono::milliseconds(this->sleeptime));
+		}
+		printf("COMMAND_CUSTOMER : command customer is ready for next!!!!!\n");
+	}
 
 }
 CommandGroupStruct* CommandCustomer::getFakeLedCommand(vector<string> fs_,vector<string> ns_,string groupName,int size) {

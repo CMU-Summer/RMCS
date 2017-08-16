@@ -311,7 +311,7 @@ public:
 
 
 	bool connect() {
-		printf("is going to connect redis [ip:%s,port:%d]",this->ip.data(),this->port);
+		printf("connecting to redis [ip:%s,port:%d]\n",this->ip.data(),this->port);
 		const string ip_ = this->ip;
 		rdc = redisConnect(this->ip.data(), this->port);
 		return rdc == NULL ? false : true;
@@ -376,10 +376,8 @@ public:
 	}//删除键
 	bool setCommndWithArgs(int agr_nums, const char** args, string des, void* &res) {
 		if (this->isConnected() == false) return false;
-		std::unique_lock<std::mutex> lk(mut);
-		redisCommandArgv(this->rdc, agr_nums, args, NULL);
-		redisReply *reply;
-		redisGetReply(rdc, (void**)&reply);
+		std::lock_guard<std::mutex> lk(mut);
+		redisReply *reply =(redisReply*)redisCommandArgv(this->rdc, agr_nums, args, NULL);
 		switch (reply->type)
 		{
 		case REDIS_REPLY_ARRAY: {
@@ -419,7 +417,7 @@ public:
 			//某个操作的，比如DEL SET 放东西的操作,删除和查键就不算在里面了
 			if (des == GET_LIST) {
 				//获取列表,不会触发
-
+				return  true;
 			}
 			else if (des == PUT_LIST) {
 				//放列表的操作

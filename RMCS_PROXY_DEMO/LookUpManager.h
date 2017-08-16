@@ -64,7 +64,7 @@ private:
 
 	vector<GroupStruct> getGroupListFromConfig();//从配置文件里面获取
 	
-	void addHandlerFromGroups();//为fixed和缓存的group加处理函数
+	void addHandlerFromGroups(vector<GroupStruct> gst_vec);//为fixed和缓存的group加处理函数
 	void addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName);//添加一个group的
 	void getFamilyAndNamesFromGroupStruct(GroupStruct& thisGroup,vector<string>* &familysVec,vector<string>* &namesVec);
 	void showGroupFeedBackInfo(const GroupFeedback* group_fbk);//展示group的信息
