@@ -38,7 +38,7 @@ ConfigManager::ConfigManager(string filePath):groupList(),redisList(),dbList(),s
 							}
 							// Add new family to tmp group
 							
-							group->addFamily((*family));
+							group->addFamily((family));
 						}
 					}
 					// Add whole group to groupList

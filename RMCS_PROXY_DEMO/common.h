@@ -15,7 +15,7 @@
 #define VELOCITY_CMD 3
 //#include "hiredis/hiredis.h"
 #include <iostream>
-
+#include "JsonObjectBase.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <mutex>
@@ -26,74 +26,93 @@
 #include <map>
 
 using namespace std;
-class NameStruct   {
-
+class NameStruct :public CJsonObjectBase  {
 public:
 	string name;
 	bool connected;
 	NameStruct(string name_, bool connect_) :name(name_), connected(connect_) {}
 	~NameStruct() {}
-// 	virtual void SetPropertys() {
-// 		//
-// 		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
-// 		this->SetProperty("connected", CJsonObjectBase::asBool, &(this->connected));
-// 	}
+	virtual void SetPropertys() {
+		//
+		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
+		this->SetProperty("connected", CJsonObjectBase::asBool, &(this->connected));
+	}
 };
-class FamilyStruct   {
+class FamilyStruct :public CJsonObjectBase  {
 private:
 	string name;
-	vector<NameStruct> nameList;
+	vector<NameStruct*> nameList;
 
 public:
 	FamilyStruct() {
 
 	}
 	FamilyStruct(string name) { this->name = name; }
-	~FamilyStruct() {}
+	~FamilyStruct() {
+
+	}
+	void freeStruct(){
+	
+		for (int i = 0; i < nameList.size(); i++) {
+			delete nameList.at(i);
+		}
+	
+	
+	}
+
+
 	void setName(string name) { this->name = name; }
 	string getName() { return name; }
 	void addName(string name) {
-		NameStruct name_(name, false);
+		NameStruct* name_ = new NameStruct(name,false);
 		nameList.push_back(name_);
 		// Get all the names of members in a string, with ';' as spliter
 	}
-	void setNameList(vector<NameStruct> namelist) {
+	void setNameList(vector<NameStruct*> namelist) {
 		this->nameList = namelist;
 	}
-	vector<NameStruct>   getNameList() { return nameList; }
-// 	virtual void SetPropertys() {
-// 		//
-// 		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
-// 		this->SetProperty("nameList", CJsonObjectBase::asVectorArray, &(this->nameList));
-// 	}
+	vector<NameStruct*>   getNameList() { return nameList; }
+
+	virtual void SetPropertys() {
+		//
+		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
+		this->SetProperty("nameList", CJsonObjectBase::asVectorArray, &(this->nameList),CJsonObjectBase::asJsonObj);
+	}
 };
 
 
-class GroupStruct   {
+class GroupStruct :public CJsonObjectBase  {
 private:
 	string name;
-	vector<FamilyStruct> familyList;
+	vector<FamilyStruct*> familyList;
 	//初始表初始化
 
 public:
 	GroupStruct() :familyList(), name("") {}
 	GroupStruct(string name_) :familyList(), name(name_) {}
-	~GroupStruct() {}
+	~GroupStruct() {
+	}
+	void freeStruct() {
+		for (int i = 0; i < familyList.size(); i++) {
+			familyList.at(i)->freeStruct();
+			delete familyList.at(i);
+		}	
+	}
 	void setName(string name) { this->name = name; }
 	string getName() { return name; }
-	void addFamily(FamilyStruct family) {
+	void addFamily(FamilyStruct* family) {
 		familyList.push_back(family);
 	}
-	vector<FamilyStruct> getFamilyList() { return familyList; }
-// 	virtual void SetPropertys() {
-// 		//
-// 		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
-// 		this->SetProperty("familyList", CJsonObjectBase::asVectorArray, &(this->familyList));
-// 	}
+	vector<FamilyStruct*> getFamilyList() { return familyList; }
+	virtual void SetPropertys() {
+		//
+		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
+		this->SetProperty("familyList", CJsonObjectBase::asVectorArray, &(this->familyList),CJsonObjectBase::asJsonObj);
+	}
 
 };
 
-class Led_field   {
+class Led_field:public CJsonObjectBase   {
 public:
 	int led_R;
 	int led_G;
@@ -101,34 +120,36 @@ public:
 	Led_field(uint8_t R, uint8_t G, uint8_t B) :led_R(R), led_G(G), led_B(B) {
 
 	}
-// 	virtual void SetPropertys() {
-// 		this->SetProperty("led_R", asInt, &led_R);
-// 		this->SetProperty("led_G", asInt, &led_G);
-// 		this->SetProperty("led_B", asInt, &led_B);
-// 	}
+	virtual void SetPropertys() {
+		this->SetProperty("led_R", asInt, &led_R);
+		this->SetProperty("led_G", asInt, &led_G);
+		this->SetProperty("led_B", asInt, &led_B);
+	}
 	~Led_field() {
 
 	}
 };
-class Actuator_field   {
+class Actuator_field :public CJsonObjectBase {
 
 public:
 	double position;
 	double velocity;
 	double torque;
 	double voltage;
-	Actuator_field(double p, double v, double t, double vol) :position(p), velocity(v), torque(t), voltage(vol) {}
+	double motoCurrent;
+	Actuator_field(double p, double v, double t, double vol,double motoCurrent_) :position(p), velocity(v), torque(t), voltage(vol),motoCurrent(motoCurrent_) {}
 	~Actuator_field() {
 
 
 
 	}
-// 	virtual void SetPropertys() {
-// 		this->SetProperty("position", asDouble, &position);
-// 		this->SetProperty("velocity", asDouble, &velocity);
-// 		this->SetProperty("torque", asDouble, &torque);
-// 		this->SetProperty("voltage", asDouble, &voltage);
-// 	}
+	virtual void SetPropertys() {
+		this->SetProperty("position", asDouble, &position);
+		this->SetProperty("velocity", asDouble, &velocity);
+		this->SetProperty("torque", asDouble, &torque);
+		this->SetProperty("voltage", asDouble, &voltage);
+		this->SetProperty("motoCurrent", asDouble, &motoCurrent);
+	}
 
 };
 
@@ -136,27 +157,27 @@ public:
 
 //group里面module的重置格式
 //反正只要我们需要的就好
-class FeedbackCustomStruct   {
+class FeedbackCustomStruct:public CJsonObjectBase   {
 
 public:
 
 	Led_field led_field;
 	Actuator_field actuator_field;
-	FeedbackCustomStruct(Led_field l_f, Actuator_field a_f) :led_field(l_f.led_R, l_f.led_G, l_f.led_B), actuator_field(a_f.position, a_f.velocity, a_f.torque, a_f.voltage) {
+	FeedbackCustomStruct(Led_field l_f, Actuator_field a_f) :led_field(l_f.led_R, l_f.led_G, l_f.led_B), actuator_field(a_f.position, a_f.velocity, a_f.torque, a_f.voltage,a_f.motoCurrent) {
 
 	}
-// 	virtual void SetPropertys() {
-// 		this->SetProperty("led_field", asJsonObj, &led_field);
-// 		this->SetProperty("actuator_field", asJsonObj, &actuator_field);
-// 
-// 	}
+	virtual void SetPropertys() {
+		this->SetProperty("led_field", asJsonObj, &led_field);
+		this->SetProperty("actuator_field", asJsonObj, &actuator_field);
+
+	}
 	~FeedbackCustomStruct() {
 
 
 	}
 };
 //groupFeedBack的重置格式
-class GroupfeedbackCustomStruct   {
+class GroupfeedbackCustomStruct:public CJsonObjectBase   {
 
 
 
@@ -165,7 +186,7 @@ public:
 	vector<double> velocitysVec;
 	vector<double> torqueVec;
 	string groupName;
-	vector<FeedbackCustomStruct> moduleFeedBackVec;
+	vector<FeedbackCustomStruct*> moduleFeedBackVec;
 
 	GroupfeedbackCustomStruct(vector<double> pVec,
 		vector<double> vVec, vector<double> tVec, string groupName_) :
@@ -177,54 +198,74 @@ public:
 	{
 
 	}
-// 	virtual void SetPropertys() {
-// 		this->SetProperty("positionsVec", CJsonObjectBase::asVectorArray, &positionsVec);
-// 		this->SetProperty("velocitysVec", CJsonObjectBase::asVectorArray, &velocitysVec);
-// 		this->SetProperty("torqueVec", CJsonObjectBase::asVectorArray, &torqueVec);
-// 		this->SetProperty("groupName", CJsonObjectBase::asString, &groupName);
-// 		this->SetProperty("moduleFeedBackVec", CJsonObjectBase::asVectorArray, &moduleFeedBackVec);
-// 
-// 	}
+	virtual void SetPropertys() {
+		this->SetProperty("positionsVec", CJsonObjectBase::asVectorArray, &positionsVec,CJsonObjectBase::asDouble);
+		this->SetProperty("velocitysVec", CJsonObjectBase::asVectorArray, &velocitysVec, CJsonObjectBase::asDouble);
+		this->SetProperty("torqueVec", CJsonObjectBase::asVectorArray, &torqueVec, CJsonObjectBase::asDouble);
+		this->SetProperty("groupName", CJsonObjectBase::asString, &groupName);
+		this->SetProperty("moduleFeedBackVec", CJsonObjectBase::asVectorArray, &moduleFeedBackVec,CJsonObjectBase::asJsonObj);
+
+	}
 	~GroupfeedbackCustomStruct() {
 
 	}
-	bool putIntoModuleFeedBackVec(vector<FeedbackCustomStruct>& fd_custom);//把模块的feedback放进去
+	void freeStruct() {
+		for (int i = 0; i < moduleFeedBackVec.size(); i++) {
+			delete moduleFeedBackVec.at(i);
+		}	
+	}
+
+	bool putIntoModuleFeedBackVec(vector<FeedbackCustomStruct*>& fd_custom);//把模块的feedback放进去
 
 
 
 
 
 };
-class CommandStruct {
+class CommandStruct:public CJsonObjectBase {
 public:
-	Actuator_field actuator;
-	Led_field led_fied;
-	CommandStruct(Actuator_field a, Led_field l) :actuator(a), led_fied(l) {
+	Actuator_field actuator_field;
+	Led_field led_field;
+	CommandStruct(Actuator_field a, Led_field l) :actuator_field(a), led_field(l) {
 
 	}
 	~CommandStruct() {
 
 
 	}
-	// 	virtual void SetPropertys() {
-	// 
-	// 	}
+	virtual void SetPropertys() {
+		this->SetProperty("led_field", asJsonObj, &led_field);
+		this->SetProperty("actuator_field", asJsonObj, &actuator_field);
+
+	}
 };
-class CommandGroupStruct   {
+class CommandGroupStruct :public CJsonObjectBase  {
 public:
 
 	string groupName;
 	vector<string> familys;
 	vector<string> names;
-	vector<CommandStruct> fd;
+	vector<CommandStruct*> fd;
 	int cmd;
 	CommandGroupStruct() {};
-	CommandGroupStruct(vector<CommandStruct> fd_,vector<string> fs_,vector<string> names_) :fd(fd_),familys(fs_),names(names_) {
+	CommandGroupStruct(vector<CommandStruct*> fd_,vector<string> fs_,vector<string> names_) :fd(fd_),familys(fs_),names(names_) {
 
 	}
-// 	virtual void SetPropertys() {
-// 
-// 	}
+	~CommandGroupStruct() {
+	}
+	void freeStruct() {
+		for (int i = 0; i < fd.size();i++) {
+			delete fd.at(i);
+		}
+	}
+
+	virtual void SetPropertys() {
+		this->SetProperty("groupName", asString, &groupName);
+		this->SetProperty("familys", asVectorArray, &familys,asString);
+		this->SetProperty("names", asVectorArray, &names,asString);
+		this->SetProperty("fd", asVectorArray, &fd,asJsonObj);
+		this->SetProperty("cmd", asInt, &cmd);
+	}
 
 };
 

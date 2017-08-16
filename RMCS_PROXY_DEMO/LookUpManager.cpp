@@ -139,14 +139,14 @@ vector<GroupStruct> LookUpManager::getGroupsStateFromHeibi(vector<GroupStruct> g
 	for(int i=0;i<groupVec.size();i++){
 		for(int j=0;j<groupVec.at(i).getFamilyList().size();j++){
 			//每个family
-			string familyName=groupVec.at(i).getFamilyList().at(j).getName();
+			string familyName=groupVec.at(i).getFamilyList().at(j)->getName();
 			//遍历Map
-			vector<NameStruct>& nameListMap=groupVec.at(i).getFamilyList().at(j).getNameList();
-			vector<NameStruct>::iterator it;
+			vector<NameStruct*>& nameListMap=groupVec.at(i).getFamilyList().at(j)->getNameList();
+			vector<NameStruct*>::iterator it;
 			for(it=nameListMap.begin();it!=nameListMap.end();it++){
-				unique_ptr<Group> grp=this->lookup.getConnectedGroupFromName(it->name,familyName);
+				unique_ptr<Group> grp=this->lookup.getConnectedGroupFromName((*it)->name,familyName);
 				if(grp){
-					it->connected=true;//更新状态为true
+					(*it)->connected=true;//更新状态为true
 				}
 
 			}	
@@ -224,11 +224,11 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 }
 void LookUpManager::getFamilyAndNamesFromGroupStruct(GroupStruct& thisGroup,vector<string>* &familysVec,vector<string>* &namesVec){
 	for(int j=0;j<thisGroup.getFamilyList().size();j++){
-		familysVec->insert(familysVec->end(),thisGroup.getFamilyList().at(j).getName());
-		vector<NameStruct>& nameListMap=thisGroup.getFamilyList().at(j).getNameList();
-		vector<NameStruct>::iterator it;
+		familysVec->insert(familysVec->end(),thisGroup.getFamilyList().at(j)->getName());
+		vector<NameStruct*>& nameListMap=thisGroup.getFamilyList().at(j)->getNameList();
+		vector<NameStruct*>::iterator it;
 		for(it=nameListMap.begin();it!=nameListMap.end();it++){
-			namesVec->insert(namesVec->end(),it->name);
+			namesVec->insert(namesVec->end(),(*it)->name);
 		}
 	}
 

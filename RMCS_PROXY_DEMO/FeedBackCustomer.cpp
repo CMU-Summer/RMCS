@@ -2,15 +2,15 @@
 
 
 void FeedBackCustomer::run(){
-	while (true)
-	{
-		
-		customGfd();
-		if(this->sleeptime>0){
-			this_thread::sleep_for(std::chrono::milliseconds(this->sleeptime));
-		}
-		printf("FEEDBACK_CUSTOMER : feedback Customer is ready for next execute\n");
-	}
+// 	while (true)
+// 	{
+// 		
+// 		customGfd();
+// 		if(this->sleeptime>0){
+// 			this_thread::sleep_for(std::chrono::milliseconds(this->sleeptime));
+// 		}
+// 		printf("FEEDBACK_CUSTOMER : feedback Customer is ready for next execute\n");
+// 	}
 
 
 }

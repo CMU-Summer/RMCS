@@ -35,11 +35,11 @@ GroupfeedbackCustomStruct FeedBackManager::toGroupFbCustomStruct(const GroupFeed
 	   velVec.push_back(static_cast<double>( vxd2[j]));
    }
    //获得group的位置速度扭矩
-   vector<FeedbackCustomStruct> moduleVec;
+   vector<FeedbackCustomStruct*> moduleVec;
    for(int j=0;j<group_fdb->size();j++){
 	   //获得每一个的
 	   const Feedback& fdb_temp=(*group_fdb)[j];
-	   FeedbackCustomStruct fd_struct= toFeedBackCustomStruct(fdb_temp);
+	   FeedbackCustomStruct* fd_struct = new FeedbackCustomStruct(toFeedBackCustomStruct(fdb_temp));
 	   moduleVec.push_back(fd_struct);
    }
    GroupfeedbackCustomStruct g(positionVec,velVec,torqueVec,groupName);
@@ -54,7 +54,7 @@ GroupfeedbackCustomStruct FeedBackManager::toGroupFbCustomStruct(const GroupFeed
 
 FeedbackCustomStruct FeedBackManager::toFeedBackCustomStruct(const Feedback& fdb){
 	printf("change fd to custom_fd\n");
-	Actuator_field a(fdb.actuator().position().get(),fdb.actuator().velocity().get(),fdb.actuator().torque().get(),fdb.voltage().get());
+	Actuator_field a(fdb.actuator().position().get(),fdb.actuator().velocity().get(),fdb.actuator().torque().get(),fdb.voltage().get(),fdb.actuator().motorCurrent().get());
 	Led_field l(fdb.led().getColor().getRed(),fdb.led().getColor().getGreen(),fdb.led().getColor().getBlue());
 	FeedbackCustomStruct fdb_custom(l,a);
 	return fdb_custom;
@@ -68,7 +68,7 @@ void FeedBackManager::putToQueue(GroupfeedbackCustomStruct group_fdb_custom){
 
 //-----------------其他类的函数
 
-bool GroupfeedbackCustomStruct::putIntoModuleFeedBackVec(vector<FeedbackCustomStruct>& fd_custom){
+bool GroupfeedbackCustomStruct::putIntoModuleFeedBackVec(vector<FeedbackCustomStruct*>& fd_custom){
 	this->moduleFeedBackVec.clear();
 	this->moduleFeedBackVec.assign(fd_custom.begin(),fd_custom.end());
 	return true;

@@ -4,11 +4,11 @@
 #include <vector>    
 #include <list>  
 #include "include/json/json.h"
+#include "include/json/value.h"
 using std::string;    
 using std::vector;    
 using std::list;  
 
-#pragma warning(disable:4267)  
 
 #define DoArrayDeSerialize_Wrapper(listType, type) DoArrayDeSerialize<##listType<##type>, ##type>  
 
@@ -156,6 +156,10 @@ protected:
 				break;    
 			case asString:    
 				(*(string*)pAddr) = root.get(m_vectorName[i], "").asString();    
+			case asFloat:
+				(*(float*)pAddr) = root.get(m_vectorName[i], "").asFloat();
+			case asDouble:
+				(*(double*)pAddr) = root.get(m_vectorName[i], "").asDouble();
 			default:    
 				//我暂时只支持这几种类型，需要的可以自行添加     
 				break;    

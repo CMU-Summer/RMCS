@@ -46,7 +46,7 @@ public:
 		;
 		  printf("+++\n");
 		  for(int i=0;i<gfd.moduleFeedBackVec.size();i++){
-				printf("module[%d]'s:ги%d,%d,%d)\n",i ,gfd.moduleFeedBackVec.at(i).led_field.led_R, gfd.moduleFeedBackVec.at(i).led_field.led_G, gfd.moduleFeedBackVec.at(i).led_field.led_B);
+				printf("module[%d]'s:ги%d,%d,%d)\n",i ,gfd.moduleFeedBackVec.at(i)->led_field.led_R, gfd.moduleFeedBackVec.at(i)->led_field.led_G, gfd.moduleFeedBackVec.at(i)->led_field.led_B);
 		  }
 		  printf("+++\n");
 		
