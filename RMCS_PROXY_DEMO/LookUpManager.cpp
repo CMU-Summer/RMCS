@@ -3,6 +3,8 @@
 #include "ConfigManager.h"
 #include "FeedBackManager.h"
 #define D_S_T 50
+#define FIXED_TYPE 0
+#define CACHE_TYPE 1
 using namespace std;
 using namespace hebi;
 LookUpManager::LookUpManager(CacheManager& cacheManager_,
@@ -22,6 +24,7 @@ LookUpManager::LookUpManager(CacheManager& cacheManager_,
 	,feedbackManagerVec()
 	,fixedAdded(false)
 	,default_frequency(default_frequency_)
+	,fixedGroupMap()
 {
 	//初始化
 	//获取值
@@ -186,8 +189,11 @@ void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 			string gname=fixedGroup.at(i).getName();
 			this->getFamilyAndNamesFromGroupStruct(fixedGroup.at(i),familyVec,nameVec);
 			//给找到的group添加feedbackManager
-			this->addHandlerForOneGroup(familyVec,nameVec,gname);
+			this->addHandlerForOneGroup(familyVec,nameVec,gname,FIXED_TYPE);
+			//放到Map里面
+			
 			//只加一次
+			
 			fixedAdded = true;
 			delete familyVec,nameVec;
 		}
@@ -197,7 +203,7 @@ void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 		printf("LOOKUPMANAGER_THREAD:add FeedBack Handle to Group\n");
 		if(this->cacheGroupMap.count(gstVec.at(i).getName())){
 			//如果包含什么也不做
-			printf("LOOKUP_MANAGER:this group is already handled!");
+			printf("LOOKUP_MANAGER:this group is already handled!\n");
 		}else {
 			//没有，这个group还没有一个feedbackManager来处理
 			vector<string>* familyVec=new vector<string>(),*nameVec = new vector<string>();
@@ -205,11 +211,11 @@ void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 			this->getFamilyAndNamesFromGroupStruct(gstVec.at(i),familyVec,nameVec);
 			//添加feedbackManager
 			string gname= gstVec.at(i).getName();
-			this->addHandlerForOneGroup(familyVec,nameVec,gname);
+			this->addHandlerForOneGroup(familyVec,nameVec,gname,CACHE_TYPE);
 			//释放指针
 			delete familyVec,nameVec;
 			//吧这个字符串对应的cacheMap里面去
-			this->cacheGroupMap[gstVec.at(i).getName()] = NULL;//那个指针不重要，反正也不用的
+			
 		}
 
 	}
@@ -217,7 +223,7 @@ void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 
 }//为fixed和缓存的group加处理函数
 
-void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName){
+void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName,int type){
 	FeedBackManager* fdbManager=new FeedBackManager(this->groupFeedbackQueue); 
 	unique_ptr<Group> grp= this->lookup.getGroupFromNames(*nameVec,*familyVec,DEAULT_SLEEP_TIME);
 	if (!grp){
@@ -225,14 +231,21 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 		return;//null不用加
 	}
 	LookUpManager* this_ = this;
-	grp->addFeedbackHandler([&fdbManager,&groupName,&this_](const GroupFeedback* group_fbk){
+	grp->addFeedbackHandler([&fdbManager,&groupName,&this_](const GroupFeedback* group_fbk)->void{
 		//用fdbManager里面的函数
 		this_->showGroupFeedBackInfo(group_fbk);
 		GroupfeedbackCustomStruct gfb_custom= fdbManager->toGroupFbCustomStruct(group_fbk,groupName);
 		fdbManager->putToQueue(gfb_custom);
 	});
 	grp->setFeedbackFrequencyHz(this->default_frequency);
-	this->feedbackManagerVec.push_back(*fdbManager); //放进vec里面管理
+	if (type == FIXED_TYPE) {
+		this->fixedGroupMap.insert(map<string, unique_ptr<Group>>::value_type(groupName, std::move(grp))); //保留内存
+	}
+	else {
+		this->cacheGroupMap.insert(map<string, unique_ptr<Group>>::value_type(groupName, std::move(grp)));//保留内存
+		this->feedbackManagerVec.push_back(*fdbManager); //放进vec里面管理
+	}
+	
 }
 void LookUpManager::getFamilyAndNamesFromGroupStruct(GroupStruct& thisGroup,vector<string>* &familysVec,vector<string>* &namesVec){
 	for(int j=0;j<thisGroup.getFamilyList().size();j++){

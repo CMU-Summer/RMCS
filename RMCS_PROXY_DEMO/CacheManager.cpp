@@ -144,10 +144,14 @@ vector<GroupStruct> CacheManager::getGroupInCache_pri(string des){
 			int arg_nums_1=2;
 			const char* args_1[]={"get",strcpy(group_key_,g_strs.at(i).data())};
 			this->cacheConnect.setCommndWithArgs(arg_nums_1,args_1,GET_STR,str);//str已经有了一个str了
-			g.DeSerialize((char*)str);
-			delete str, group_key_, args_1;
-			groupV.push_back(g);
-			delete[] args;
+			if (str) {
+				g.DeSerialize(((string*)str)->data());
+				delete str, group_key_, args_1;
+				groupV.push_back(g);
+			
+			}
+			
+			
 	}
 		delete groupP;
 		return groupV; //返回
@@ -178,8 +182,6 @@ bool CacheManager::flushCacheAndItNameList(const string& key ,vector<string>& li
 	void* intx;
 	bool opt1= this->cacheConnect.setCommndWithArgs(arg_nums_,args_,ADD_VALUE_TO_SET,intx);
 	delete intx, key_, key_, groupP;
-	delete[] args_;
-	delete[] args;
 	if (opt == false) {
 		printf("CACHE_MANAGER_THREAD:cache error:cannot flush some family in cache \n");
 	}
@@ -204,7 +206,6 @@ bool CacheManager::flushCacheGroupState(GroupStruct gst){
 		printf("CACHE_MANAGER_THREAD:cache error:cannot flush some group state  in cache \n");
 	}
 	delete res, key_, objStr;
-	delete[] args_;
 	gst.freeStruct();
 
 	return opt;
@@ -223,7 +224,6 @@ bool CacheManager::flushCacheGroupFeedBackList(GroupfeedbackCustomStruct gfd){
 	void* res;
 	bool opt=this->cacheConnect.setCommndWithArgs(arg_num,args_,SET_STR,res);
 	delete res, key_, objStr;
-	delete[] args_;
 	if (opt == false) {
 		printf("CACHE_MANAGER_THREAD:cache error:cannot add some group 's feedback  in cache \n");
 	}

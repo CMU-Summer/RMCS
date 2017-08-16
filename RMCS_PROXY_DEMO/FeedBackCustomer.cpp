@@ -22,7 +22,7 @@ void FeedBackCustomer::init(){
 
 
 bool FeedBackCustomer::customGfd(){
-	printf("FEEDBACK_CUSTOMER : feedback customer is working!!!!\n");
+	printf("FEEDBACK_CUSTOMER : feedback customer is reay for next feedback !!!!\n");
 	shared_ptr<GroupfeedbackCustomStruct> mapPtr  = this->gfd_quee.wait_and_pop();
 	if(!mapPtr)return false;//没有取到需要消耗的gfd
 	printGroupFeedBack(*mapPtr);//Feedback data display

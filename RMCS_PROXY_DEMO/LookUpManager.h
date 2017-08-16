@@ -18,6 +18,8 @@
 #include "ConfigManager.h"
 //#include "JsonObjectBase.h"
 #include "common.h"
+#define  CACHE_TYPE 0
+#define  FIXED_TYPE 1
 using namespace std;
 using namespace hebi;
 class LookUpManager:public CThread{
@@ -40,6 +42,7 @@ private:
 
 	//group会增加和减少,会不会影响什么？估计不会
 	map<string,unique_ptr<hebi::Group>> cacheGroupMap;//需要更新的map,从缓存里面取，如果key没有就取一下addFh,有就不管
+	map<string, unique_ptr<hebi::Group>> fixedGroupMap;
 	vector<FeedBackManager> feedbackManagerVec;
 	vector<GroupStruct> fixedGroup;
 	CacheManager& cacheManager;
@@ -65,7 +68,7 @@ private:
 	vector<GroupStruct> getGroupListFromConfig();//从配置文件里面获取
 	
 	void addHandlerFromGroups(vector<GroupStruct> gst_vec);//为fixed和缓存的group加处理函数
-	void addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName);//添加一个group的
+	void addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName,int type);//添加一个group的
 	void getFamilyAndNamesFromGroupStruct(GroupStruct& thisGroup,vector<string>* &familysVec,vector<string>* &namesVec);
 	void showGroupFeedBackInfo(const GroupFeedback* group_fbk);//展示group的信息
 	//-----------------------

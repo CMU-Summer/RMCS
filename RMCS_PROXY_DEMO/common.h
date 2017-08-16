@@ -7,6 +7,7 @@
 #define ADD_VALUE_TO_SET  "add_value_to_set"
 #define DELETE_VALUE_TO_SET "delete_value_to_set"
 #define SET_STR "set_str"
+#define DEL_KEY "del_key"
 #define DEFAULT_SLEEP_TIME 100
 #define DEFAULT_FD_FREQUENCY 10
 #define LED_CMD 0
@@ -357,18 +358,17 @@ public:
 
 	}//清除context
 	bool isContainKey(char*  key) {
-		void* intP;
+		void* intP=NULL;
 		int arg_nums = 2;
 		const char* args[] = { "exists",key };
-		this->setCommndWithArgs(arg_nums, args, "keyExist", intP);
-		delete[] args;
-		return (*(int*)intP == 0) ? false : true;
+		this->setCommndWithArgs(arg_nums, args, GET_STR, intP);
+		return (intP==NULL) || (*(int*)intP == 0) ? false : true;
 	}//是否包含Key
 	bool deleteKey(char*  key) {
 		void* intP;
 		int arg_nums = 2;
 		const char* args[] = { "del",key };
-		this->setCommndWithArgs(arg_nums, args, "keyDelete", intP);
+		this->setCommndWithArgs(arg_nums, args, DEL_KEY, intP);
 		delete[] args;
 		return (*(int*)intP == 0) ? false : true;
 
@@ -385,7 +385,7 @@ public:
 			vector<string>* vec = new vector<string>();
 
 			for (int i = 0; i<reply->elements; i++) {
-				vec->push_back((*(reply->element))[i].str);
+				vec->push_back(reply->element[i]->str);
 			}
 			res = (void*)vec;
 			return true;
@@ -405,7 +405,6 @@ public:
 		}
 		case REDIS_REPLY_NIL: {
 			printf("error:get null from redis\n");
-
 			return false;
 		}
 		case REDIS_REPLY_ERROR: {
@@ -442,9 +441,9 @@ public:
 				//设置字符串（序列化对象）
 				return strcmp(reply->str, "OK") == 0;
 			}
-			else {
+			else if(des == DEL_KEY){
 				//奇怪的操作
-				return false;
+				return  reply->integer <= 0 ? false : true;
 			}
 
 
