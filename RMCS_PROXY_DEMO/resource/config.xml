@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-        <sleepTime value="5000"></sleepTime>
+        <sleepTime value="1000"></sleepTime>
         <feedbackFrequency value="10" />
         <redisList>
             <redis ip="60.205.179.19" port="6379" />
@@ -13,7 +13,7 @@
             </database>
         </databases>
 	<groups>
-		<group name = "bitorobotics">
+		<group name = "testGroup">
 			<family name = "SEA-Snake">
 				<names>
 					<name>SA011</name>

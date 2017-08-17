@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <mutex>
+#include <string>
 
 #include "deps/hiredis/hiredis.h"
 
@@ -32,25 +33,36 @@ using namespace std;
 class NameStruct :public CJsonObjectBase  {
 public:
 	string name;
-	bool connected;
-	NameStruct(string name_, bool connect_) :name(name_), connected(connect_) {}
+	int connected;
+	NameStruct(string name_, bool connect_) :name(name_), connected(connect_) {
+		this->SetPropertys();
+	
+	}
+	NameStruct() :name(""), connected(0) {
+		this->SetPropertys();
+
+	}
 	~NameStruct() {}
 	virtual void SetPropertys() {
 		//
 		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
-		this->SetProperty("connected", CJsonObjectBase::asBool, &(this->connected));
+		this->SetProperty("connected", CJsonObjectBase::asInt, &(this->connected));
 	}
 };
 class FamilyStruct :public CJsonObjectBase  {
-private:
+public:
 	string name;
 	vector<NameStruct*> nameList;
 
 public:
-	FamilyStruct() {
+	FamilyStruct():name(""),nameList() {
+		this->SetPropertys();
 
 	}
-	FamilyStruct(string name) { this->name = name; }
+	FamilyStruct(string name) :nameList() {
+		this->name = name;
+		this->SetPropertys();
+	}
 	~FamilyStruct() {
 
 	}
@@ -75,7 +87,14 @@ public:
 		this->nameList = namelist;
 	}
 	vector<NameStruct*>   getNameList() { return nameList; }
-
+	CJsonObjectBase* GenerateJsonObjForDeSerialize(const string& propertyName)
+	{
+		if ("nameList" == propertyName)
+		{
+			return (NameStruct*)(new NameStruct());
+		}
+		return NULL;
+	}
 	virtual void SetPropertys() {
 		//
 		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
@@ -85,14 +104,20 @@ public:
 
 
 class GroupStruct :public CJsonObjectBase  {
-private:
+public:
 	string name;
 	vector<FamilyStruct*> familyList;
 	//初始表初始化
 
 public:
-	GroupStruct() :familyList(), name("") {}
-	GroupStruct(string name_) :familyList(), name(name_) {}
+	GroupStruct() :familyList(), name("") {
+		this->SetPropertys();
+	}
+
+	GroupStruct(string name_) :familyList(), name(name_) {
+		this->SetPropertys();
+	
+	}
 	~GroupStruct() {
 	}
 	void freeStruct() {
@@ -109,8 +134,16 @@ public:
 	vector<FamilyStruct*> getFamilyList() { return familyList; }
 	virtual void SetPropertys() {
 		//
-		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
-		this->SetProperty("familyList", CJsonObjectBase::asVectorArray, &(this->familyList),CJsonObjectBase::asJsonObj);
+		this->SetProperty("name", CJsonObjectBase::asString, &(name));
+		this->SetProperty("familyList", CJsonObjectBase::asVectorArray, &(familyList),CJsonObjectBase::asJsonObj);
+	}
+	CJsonObjectBase* GenerateJsonObjForDeSerialize(const string& propertyName)
+	{
+		if ("familyList" == propertyName)
+		{
+			return (CJsonObjectBase*)(new FamilyStruct());
+		}
+		return NULL;
 	}
 
 };
@@ -121,6 +154,11 @@ public:
 	int led_G;
 	int led_B;
 	Led_field(uint8_t R, uint8_t G, uint8_t B) :led_R(R), led_G(G), led_B(B) {
+		this->SetPropertys();
+
+	}
+	Led_field() :led_R(0), led_G(0), led_B(0) {
+		this->SetPropertys();
 
 	}
 	virtual void SetPropertys() {
@@ -128,6 +166,7 @@ public:
 		this->SetProperty("led_G", asInt, &led_G);
 		this->SetProperty("led_B", asInt, &led_B);
 	}
+
 	~Led_field() {
 
 	}
@@ -140,7 +179,12 @@ public:
 	double torque;
 	double voltage;
 	double motoCurrent;
-	Actuator_field(double p, double v, double t, double vol,double motoCurrent_) :position(p), velocity(v), torque(t), voltage(vol),motoCurrent(motoCurrent_) {}
+	Actuator_field(double p, double v, double t, double vol, double motoCurrent_) :position(p), velocity(v), torque(t), voltage(vol), motoCurrent(motoCurrent_) {
+		this->SetPropertys();
+	}
+	Actuator_field() :position(0), velocity(0), torque(0), voltage(0), motoCurrent(0) {
+		this->SetPropertys();
+	}
 	~Actuator_field() {
 
 
@@ -167,7 +211,11 @@ public:
 	Led_field led_field;
 	Actuator_field actuator_field;
 	FeedbackCustomStruct(Led_field l_f, Actuator_field a_f) :led_field(l_f.led_R, l_f.led_G, l_f.led_B), actuator_field(a_f.position, a_f.velocity, a_f.torque, a_f.voltage,a_f.motoCurrent) {
+		this->SetPropertys();
 
+	}
+	FeedbackCustomStruct():led_field(0,0,0),actuator_field(0,0,0,0,0) {
+		this->SetPropertys();
 	}
 	virtual void SetPropertys() {
 		this->SetProperty("led_field", asJsonObj, &led_field);
@@ -199,6 +247,7 @@ public:
 		moduleFeedBackVec(),
 		groupName(groupName_)
 	{
+		this->SetPropertys();
 
 	}
 	virtual void SetPropertys() {
@@ -208,6 +257,14 @@ public:
 		this->SetProperty("groupName", CJsonObjectBase::asString, &groupName);
 		this->SetProperty("moduleFeedBackVec", CJsonObjectBase::asVectorArray, &moduleFeedBackVec,CJsonObjectBase::asJsonObj);
 
+	}
+	CJsonObjectBase* GenerateJsonObjForDeSerialize(const string& propertyName)
+	{
+		if ("moduleFeedBackVec" == propertyName)
+		{
+			return (CJsonObjectBase*)(new FeedbackCustomStruct());
+		}
+		return NULL;
 	}
 	~GroupfeedbackCustomStruct() {
 
@@ -230,6 +287,11 @@ public:
 	Actuator_field actuator_field;
 	Led_field led_field;
 	CommandStruct(Actuator_field a, Led_field l) :actuator_field(a), led_field(l) {
+		this->SetPropertys();
+
+	}
+	CommandStruct() :actuator_field(0,0,0,0,0), led_field(0,0,0) {
+		this->SetPropertys();
 
 	}
 	~CommandStruct() {
@@ -241,6 +303,7 @@ public:
 		this->SetProperty("actuator_field", asJsonObj, &actuator_field);
 
 	}
+
 };
 class CommandGroupStruct :public CJsonObjectBase  {
 public:
@@ -250,9 +313,11 @@ public:
 	vector<string> names;
 	vector<CommandStruct*> fd;
 	int cmd;
-	CommandGroupStruct() {};
+	CommandGroupStruct() {
+		this->SetPropertys();
+	};
 	CommandGroupStruct(vector<CommandStruct*> fd_,vector<string> fs_,vector<string> names_) :fd(fd_),familys(fs_),names(names_) {
-
+		this->SetPropertys();
 	}
 	~CommandGroupStruct() {
 	}
@@ -268,6 +333,14 @@ public:
 		this->SetProperty("names", asVectorArray, &names,asString);
 		this->SetProperty("fd", asVectorArray, &fd,asJsonObj);
 		this->SetProperty("cmd", asInt, &cmd);
+	}
+	CJsonObjectBase* GenerateJsonObjForDeSerialize(const string& propertyName)
+	{
+		if ("fd" == propertyName)
+		{
+			return (CJsonObjectBase*)(new CommandStruct());
+		}
+		return NULL;
 	}
 
 };
@@ -398,8 +471,8 @@ public:
 			return true;
 		}
 		case REDIS_REPLY_STRING: {
-			string* a = new string(reply->str);
-			res = (void*)a;
+			string* a = new std::string(reply->str);
+			res = a;
 			return true;
 
 		}

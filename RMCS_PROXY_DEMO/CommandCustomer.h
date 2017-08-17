@@ -21,7 +21,18 @@ class CommandCustomer:public CThread
 	//feedback会被feedbackcustomer处理
 
 public:
-	CommandCustomer(queue_safe<CommandGroupStruct>& command_struct_queue_,ConfigManager& cfg,Lookup& lm,int sleepTime_=DEFAULT_SLEEP_TIME):command_struct_queue(command_struct_queue_),cfgManager(cfg), lookup(lm),sleeptime(sleepTime_){
+	CommandCustomer(
+		queue_safe<CommandGroupStruct>& command_struct_queue_,
+		ConfigManager& cfg,
+		map<string, unique_ptr<hebi::Group>>& cacheGroupMap_,//需要更新的map,从缓存里面取，如果key没有就取一下addFh,有就不管
+		map<string, unique_ptr<hebi::Group>>& fixedGroupMap_,
+		int sleepTime_=DEFAULT_SLEEP_TIME
+	):command_struct_queue(command_struct_queue_),
+	  cfgManager(cfg), 
+	  sleeptime(sleepTime_),
+	  cacheGroupMap(cacheGroupMap_),
+	  fixedGroupMap(fixedGroupMap_)
+	  {
 
 
 	}
@@ -38,6 +49,8 @@ public:
 
 
 	}//
+
+
 	hebi::GroupCommand getGroupCommandStrut(CommandStruct ct){
 
 
@@ -50,6 +63,23 @@ public:
 
 
 	}
+	unique_ptr<hebi::Group>& getGroupPtr(string groupname) {
+		//从已存在的group里面获取
+
+		if (this->cacheGroupMap.count(groupname)) {
+			return this->cacheGroupMap[groupname];
+		
+		}
+		else if (this->fixedGroupMap.count(groupname)) {
+			return this->fixedGroupMap[groupname];
+		
+		}
+		else {
+			unique_ptr<Group> gr;
+			return gr;//空指针
+		}
+	
+	}
 	bool customCommand(){
 		
 		
@@ -57,14 +87,17 @@ public:
 
 		CommandGroupStruct* mapPtr = getFakeLedCommand({"SEA-Snake","Spare"}, {"SA011","SA035"},"testGroup",2);
 		
-		if(!mapPtr)return false;//没有取到需要消耗的gfd
-		unique_ptr<hebi::Group> g= this->lookup.getGroupFromNames(mapPtr->names,mapPtr->familys);
+		if(mapPtr==nullptr)return false;//没有取到需要消耗的gfd
+		
+
+
+		unique_ptr<hebi::Group>& g= this->getGroupPtr(mapPtr->groupName);//找得到,就返回引用,否则为空
 		//printf("COMMAND_CUSTOMER : g is not null:%d\n",g!=NULL);
-		if (!g){
-			printf("COMMAND_CUSTOMER : group is  null\n");
+		if (g._Mypair._Get_second() == NULL ){
+			printf("COMMAND_____CUSTOMER: group is  null\n");
 			return false;
 		}
-		printf("COMMAND_CUSTOMER : send led command\n");
+		printf("COMMAND_____CUSTOMER: send led command\n");
 		//创建这个group的command
 		hebi::GroupCommand command(g->size());
 		switch (mapPtr->cmd)
@@ -115,32 +148,35 @@ public:
 		if (g->sendCommandWithAcknowledgement(command, timeout))
 		{
 			
-			printf("COMMAND_CUSTOMER : already sent!\n");
+			printf("COMMAND_____CUSTOMER: already sent!\n");
 		}
 		else
 		{
 		
-			printf("COMMAND_CUSTOMER : send time out\n");
+			printf("COMMAND_____CUSTOMER: send time out\n");
 		}
+		mapPtr->freeStruct();
 		delete mapPtr;
 		return true;
 	}
 private:
 	queue_safe<CommandGroupStruct>& command_struct_queue;
 	ConfigManager& cfgManager;
-	Lookup& lookup;
+
 	int sleeptime;
+	map<string, unique_ptr<hebi::Group>>& cacheGroupMap;//需要更新的map,从缓存里面取，如果key没有就取一下addFh,有就不管
+	map<string, unique_ptr<hebi::Group>>& fixedGroupMap;
 };
 
 void CommandCustomer::run(){
 	while (true)
 	{
-		printf("COMMAND_CUSTOMER : command customer working!!!!!\n");
+		printf("COMMAND_____CUSTOMER: command customer working!!!!!\n");
 		this->customCommand();
 		if(this->sleeptime>0){
 			this_thread::sleep_for(std::chrono::milliseconds(this->sleeptime));
 		}
-		printf("COMMAND_CUSTOMER : command customer is ready for next!!!!!\n");
+		printf("COMMAND_____CUSTOMER: command customer is ready for next!!!!!\n");
 	}
 
 }

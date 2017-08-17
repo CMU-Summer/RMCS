@@ -11,6 +11,8 @@ LookUpManager::LookUpManager(CacheManager& cacheManager_,
 							 queue_safe<GroupfeedbackCustomStruct>& groupFeedbackQueue_,
 							 Lookup& lookup_,
 							 ConfigManager& configManager_,
+							 map<string, unique_ptr<hebi::Group>>& cacheGroupMap_,
+							 map<string, unique_ptr<hebi::Group>>& fixedGroupMap_,
 							 int sleep_time_,
 							 int default_frequency_
 )
@@ -20,11 +22,11 @@ LookUpManager::LookUpManager(CacheManager& cacheManager_,
 	,sleep_time(sleep_time_)
 	,configManager(configManager_)
 	,fixedGroup()
-	,cacheGroupMap()
+	,cacheGroupMap(cacheGroupMap_)
 	,feedbackManagerVec()
 	,fixedAdded(false)
 	,default_frequency(default_frequency_)
-	,fixedGroupMap()
+	,fixedGroupMap(fixedGroupMap_)
 {
 	//初始化
 	//获取值
@@ -58,12 +60,8 @@ void LookUpManager::run() {
 		//3.刷新group里面的name的连接状态，放到上面那个函数里面去做了
 		this->updateGroupConncetState(gst_vec);
 
-		//4.销毁掉来自cache的东西
-		for (int i = 0; i < gst_vec.size();i++) {
-			gst_vec.at(i).freeStruct();
-		}
 
-		//5。线程暂停
+		//4。线程暂停
 		if(this->sleep_time>0){
 			this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
 		}
@@ -158,6 +156,9 @@ vector<GroupStruct> LookUpManager::getGroupsStateFromHeibi(vector<GroupStruct> g
 				if(grp){
 					(*it)->connected=true;//更新状态为true
 				}
+				else {
+					(*it)->connected = false;//更新状态为false
+				}
 
 			}	
 		}
@@ -181,9 +182,11 @@ vector<GroupStruct> LookUpManager::getGroupListFromConfig(){
 void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 	//给fixedgroup添加
 	if(fixedGroup.size()>0 && this->fixedAdded == false){
-		printf("LOOKUPMANAGER_THREAD:add FeedBack Handle to Group\n");
+		printf("LOOKUPMANAGER_THREAD: add FeedBack Handle to Fixed Group\n");
 		for(int i=0;i<fixedGroup.size();i++){
-
+			if (this->fixedGroupMap.count(this->fixedGroup.at(i).getName())) { 
+				
+				continue; }//不需要进行下面的步骤了
 			vector<string>* familyVec=new vector<string>(),*nameVec = new vector<string>();
 			//获取names和familys
 			string gname=fixedGroup.at(i).getName();
@@ -193,17 +196,15 @@ void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 			//放到Map里面
 			
 			//只加一次
-			
-			fixedAdded = true;
 			delete familyVec,nameVec;
 		}
 	}
 	
 	for(int i=0;i<gstVec.size();i++){
-		printf("LOOKUPMANAGER_THREAD:add FeedBack Handle to Group\n");
+		printf("LOOKUPMANAGER_THREAD: add FeedBack Handle to Cache Group\n");
 		if(this->cacheGroupMap.count(gstVec.at(i).getName())){
 			//如果包含什么也不做
-			printf("LOOKUP_MANAGER:this group is already handled!\n");
+			printf("LOOKUPMANAGER_THREAD: this group is already handled!\n");
 		}else {
 			//没有，这个group还没有一个feedbackManager来处理
 			vector<string>* familyVec=new vector<string>(),*nameVec = new vector<string>();
@@ -224,6 +225,11 @@ void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 }//为fixed和缓存的group加处理函数
 
 void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName,int type){
+	//传进来的，根据group的名字，如果cache里面有，就不加了
+	if (this->cacheGroupMap.count(groupName) > 0)return;
+	else if (this->fixedGroupMap.count(groupName) > 0)return;
+	
+	
 	FeedBackManager* fdbManager=new FeedBackManager(this->groupFeedbackQueue); 
 	unique_ptr<Group> grp= this->lookup.getGroupFromNames(*nameVec,*familyVec,DEAULT_SLEEP_TIME);
 	if (!grp){
@@ -259,12 +265,16 @@ void LookUpManager::getFamilyAndNamesFromGroupStruct(GroupStruct& thisGroup,vect
 
 }
 void LookUpManager::showGroupFeedBackInfo(const GroupFeedback* group_fbk) {
-	printf("LOOKUPMANAGER_THREAD:[-------GropFeedBack------]\n[------size:%d]\n",group_fbk->size());
-	for (int i = 0; i < group_fbk->size();i++) {
-		printf("LOOKUPMANAGER_THREAD:moudule[%d][motorCurrent:%f,motorWindingCurrent:%f,voltage:%f,motorSensorTemperature:%f]\n",i,(*group_fbk)[i].actuator().motorCurrent().get(), (*group_fbk)[i].actuator().motorWindingCurrent().get(), (*group_fbk)[i].voltage().get(), (*group_fbk)[i].actuator().motorSensorTemperature().get());
-	
+	printf("LOOKUPMANAGER_THREAD: [-------GroupFeedBack------]\n[size:%d]\n", group_fbk->size());
+	for (int i = 0; i < group_fbk->size(); i++) {
+		printf("LOOKUPMANAGER_THREAD: module[%d] feedback info:", i);
+		printf("voltage %f", (*group_fbk)[i].voltage().get());
+		printf("Motor current %f", (*group_fbk)[i].actuator().motorCurrent().get());
+		printf("position %f", (*group_fbk)[i].actuator().position().get());
+		printf("velocity %f", (*group_fbk)[i].actuator().velocity().get());
+		printf("torque %f\n", (*group_fbk)[i].actuator().torque().get());
 	}
-	printf("LOOKUPMANAGER_THREAD:[-------END------]\n", group_fbk->size());
+	printf("LOOKUPMANAGER_THREAD: [-------END------]\n");
 
 
 

@@ -25,7 +25,7 @@ typedef  long long  LONGLONG;
 typedef  unsigned long long ULONGLONG;
 typedef  float FLOAT;
 typedef double DOUBLE;
-class CJsonObjectBase    
+struct  CJsonObjectBase
 {    
 protected:    
 	enum CEnumJsonTypeMap    
@@ -74,38 +74,50 @@ public:
 		for (int i=0; i < nSize; ++i )    
 		{    
 			void* pAddr = m_vectorPropertyAddr[i];    
-			switch(m_vectorType[i])    
-			{    
-			case asVectorArray:  
-			case asListArray:  
-				new_item[m_vectorName[i]] = DoArraySerialize(pAddr, m_vectorType[i], m_vectorListParamType[i]);  
-				break;  
-			case asSpecialArray:    
-				new_item[m_vectorName[i]] = DoSpecialArraySerialize(m_vectorName[i]);   
-				break;    
-			case asJsonObj:    
-				new_item[m_vectorName[i]] = ((CJsonObjectBase*)pAddr)->DoSerialize();    
-				break;    
-			case asBool:    
-				new_item[m_vectorName[i]] = Serialize<bool>(pAddr);   
-			case asInt:    
-				new_item[m_vectorName[i]] = Serialize<int>(pAddr);   
-				break;    
-			case asUInt:    
-				new_item[m_vectorName[i]] = Serialize<unsigned int>(pAddr);    
-				break;    
-			case asInt64:    
-				new_item[m_vectorName[i]] = Serialize<long long>(pAddr);    
-				break;    
-			case asUInt64:    
-				new_item[m_vectorName[i]] = Serialize<unsigned long long>(pAddr);    
-				break;    
-			case asString:    
-				new_item[m_vectorName[i]] = Serialize<string>(pAddr);    
+			switch (m_vectorType[i])
+			{
+			case asVectorArray:{
+			
+					//一般的非结构
+					new_item[m_vectorName[i]] = DoArraySerialize(pAddr, m_vectorType[i], m_vectorListParamType[i]);
+
+				
+				break;
+			}
+			case asListArray:
+				new_item[m_vectorName[i]] = DoArraySerialize(pAddr, m_vectorType[i], m_vectorListParamType[i]);
+				break;
+			case asSpecialArray:
+				new_item[m_vectorName[i]] = DoSpecialArraySerialize(m_vectorName[i]);
+				break;
+			case asJsonObj:
+				new_item[m_vectorName[i]] = ((CJsonObjectBase*)pAddr)->DoSerialize();
+				break;
+			case asBool:
+				new_item[m_vectorName[i]] = Serialize<bool>(pAddr);
+			case asInt:
+				new_item[m_vectorName[i]] = Serialize<int>(pAddr);
+				break;
+			case asUInt:
+				new_item[m_vectorName[i]] = Serialize<unsigned int>(pAddr);
+				break;
+			case asInt64:
+				new_item[m_vectorName[i]] = Serialize<long long>(pAddr);
+				break;
+			case asUInt64:
+				new_item[m_vectorName[i]] = Serialize<unsigned long long>(pAddr);
+				break;
+			case asString:{
+				
+				new_item[m_vectorName[i]] = Serialize<string>(pAddr);
+				break;
+			}
 			case asFloat:    
 				new_item[m_vectorName[i]] = Serialize<float>(pAddr); 
+				break;
 			case asDouble:    
 				new_item[m_vectorName[i]] = Serialize<double>(pAddr); 
+				break;
 			default:    
 				//我暂时只支持这几种类型，需要的可以自行添加  
 				break;    
@@ -155,11 +167,14 @@ protected:
 				(*(ULONGLONG*)pAddr) = root.get(m_vectorName[i], 0).asUInt64();    
 				break;    
 			case asString:    
-				(*(string*)pAddr) = root.get(m_vectorName[i], "").asString();    
+				(*(string*)pAddr) = root.get(m_vectorName[i], "").asString();  
+				break;
 			case asFloat:
 				(*(float*)pAddr) = root.get(m_vectorName[i], "").asFloat();
+				break;
 			case asDouble:
 				(*(double*)pAddr) = root.get(m_vectorName[i], "").asDouble();
+				break;
 			default:    
 				//我暂时只支持这几种类型，需要的可以自行添加     
 				break;    
@@ -309,7 +324,7 @@ protected:
 			case asBool:    
 				return "";  
 			case asJsonObj:  
-				return DoArraySerialize_Wrapper(vector, CJsonObjectBase*);  
+				return DoArraySerialize_Wrapper(vector, CJsonObjectBase*);
 			case asInt:    
 				return DoArraySerialize_Wrapper(vector, INT);  
 			case asUInt:    
@@ -368,13 +383,23 @@ public:
 	static Json::Value DoArraySerialize(vector<CJsonObjectBase*>* pList)  
 	{  
 		Json::Value arrayValue;  
+		if(pList->size()<=0)return arrayValue;
 		for (vector<CJsonObjectBase*>::iterator it = pList->begin(); it != pList->end(); ++ it)  
 		{  
 			arrayValue.append((*it)->DoSerialize());           
 		}  
 		return arrayValue;  
 	}  
-
+	static Json::Value DoArraySerialize_1(vector<CJsonObjectBase*>* pList)
+	{
+		Json::Value arrayValue;
+		if (pList->size() <= 0)return arrayValue;
+		for (vector<CJsonObjectBase*>::iterator it = pList->begin(); it != pList->end(); ++it)
+		{
+			arrayValue.append((*it)->DoSerialize());
+		}
+		return arrayValue;
+	}
 	template <>  
 	static Json::Value DoArraySerialize(list<CJsonObjectBase*>* pList)  
 	{  
@@ -393,10 +418,15 @@ public:
 private:  
 	template <typename T>  
 	Json::Value Serialize(void* addr)  
-	{  
+	{
 		return (*(T*)addr);  
 	}  
-
+	template <>
+	Json::Value Serialize<string>(void* addr)
+	{
+		string* a = (string*)addr;
+		return a->data();
+	}
 	template <typename T>  
 	static T DeSerialize(Json::Value& root)  
 	{  

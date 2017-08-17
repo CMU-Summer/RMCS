@@ -41,6 +41,8 @@ public:
 		queue_safe<GroupfeedbackCustomStruct> gfd_queue;
 		queue_safe<GroupStruct> gs_queue;
 		queue_safe<CommandGroupStruct> cmd_queue;
+		map<string, unique_ptr<hebi::Group>> cacheGroupMap_;
+		map<string, unique_ptr<hebi::Group>> fixedGroupMap_;
 		printf("--------init hebi lookup--------\n");
 		hebi::Lookup lookup;
 		//hebi::Lookup lookup1;
@@ -72,10 +74,10 @@ public:
 		DataBaseManager db;
 		printf("---------init lookupManager ---------\n");
 		//运行lookup线程
-		LookUpManager lkManager(cacheManger,gfd_queue,lookup,cfgManager,sleepTime,fd_hz);
+		LookUpManager lkManager(cacheManger,gfd_queue,lookup,cfgManager,cacheGroupMap_,fixedGroupMap_,sleepTime,fd_hz);
 		printf("---------init CommandCustomer ---------\n");
 		//运行命令消费者
-		CommandCustomer cmdCusrom(cmd_queue,cfgManager, lookup, sleepTime);
+		CommandCustomer cmdCusrom(cmd_queue,cfgManager,cacheGroupMap_,fixedGroupMap_, sleepTime);
 		printf("---------init FeedBackCustomer ---------\n");
 		//运行回馈消费者
 		FeedBackCustomer fdCustomer(gfd_queue,cacheManger,db, sleepTime);

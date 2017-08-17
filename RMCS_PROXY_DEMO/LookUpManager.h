@@ -41,8 +41,8 @@ private:
 	queue_safe<GroupfeedbackCustomStruct>& groupFeedbackQueue;//收到的异步groupfeedback都应该放到这里
 
 	//group会增加和减少,会不会影响什么？估计不会
-	map<string,unique_ptr<hebi::Group>> cacheGroupMap;//需要更新的map,从缓存里面取，如果key没有就取一下addFh,有就不管
-	map<string, unique_ptr<hebi::Group>> fixedGroupMap;
+	map<string, unique_ptr<hebi::Group>>& cacheGroupMap;//需要更新的map,从缓存里面取，如果key没有就取一下addFh,有就不管
+	map<string, unique_ptr<hebi::Group>>& fixedGroupMap;
 	vector<FeedBackManager> feedbackManagerVec;
 	vector<GroupStruct> fixedGroup;
 	CacheManager& cacheManager;
@@ -78,6 +78,8 @@ public:
 		queue_safe<GroupfeedbackCustomStruct>& groupFeedbackQueue,
 		Lookup& lookup_,
 		ConfigManager& configManager_,
+		map<string, unique_ptr<hebi::Group>>& cacheGroupMap_,
+		map<string, unique_ptr<hebi::Group>>& fixedGroupMap_,
 		int sleep_time_=DEFAULT_SLEEP_TIME,
 		int default_frequency_ = DEFAULT_FD_FREQUENCY
 		);
@@ -86,6 +88,7 @@ public:
 	//引用要在初始化列表中赋值
 	//lookup在里面创建
 	~LookUpManager();
+
 	void run() override; // override run function,to find 
 	void init() ;//init the lookupManager,比如跑起来
 	hebi::Lookup& getLookUp(){return this->lookup;}
