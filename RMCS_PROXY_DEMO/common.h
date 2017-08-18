@@ -596,6 +596,17 @@ class DBconnection {
 
 
 };
+class ServerConfig {
+public:
+	string ip;
+	int port;
+	ServerConfig(string ip_,int port_):ip(ip_),port(port_) {
+		
+	}
+	ServerConfig() :ip(""), port(0) {
 
+	}
+
+};
 
 #endif

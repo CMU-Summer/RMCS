@@ -56,6 +56,7 @@
     <ClCompile Include="FeedBackManager.cpp" />
     <ClCompile Include="InitManager.cpp" />
     <ClCompile Include="LookUpManager.cpp" />
+    <ClCompile Include="ServerApiManager.cpp" />
     <ClCompile Include="src\command.cpp" />
     <ClCompile Include="src\feedback.cpp" />
     <ClCompile Include="src\group.cpp" />

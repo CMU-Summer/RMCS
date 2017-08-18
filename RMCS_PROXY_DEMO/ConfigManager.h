@@ -19,6 +19,7 @@ private:
 	vector<GroupStruct> groupList;
 	vector<RedisCofig> redisList;
 	vector<DBconfig> dbList;
+	vector<ServerConfig> serverList;
 	int sleep_time;
 	int feedBackFrequency;
 public:
@@ -29,6 +30,7 @@ public:
 	vector<GroupStruct> getGroupList();
 	vector<RedisCofig> getRedisList();
 	vector<DBconfig> getDbConfig();
+	vector<ServerConfig> getServersConfig();
 	int getSleepTime();
 	int getFeedbackFrequency();
 };

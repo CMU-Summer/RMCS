@@ -5,6 +5,9 @@
         <redisList>
             <redis ip="60.205.179.19" port="6379" />
         </redisList>
+        <servers>
+            <server ip="127.0.0.1" port="9293" />
+        </servers>
         <databases>
             <database ip="127.0.0.1" port="3306" user="aqe" pwd="qqqq" dbSchme="rmcs" >
                 <parms>

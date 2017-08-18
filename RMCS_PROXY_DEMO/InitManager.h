@@ -8,7 +8,7 @@
 #include "CommandCustomer.h"
 #include "FeedBackCustomer.h"
 #include "FeedBackManager.h"
-
+#include "ServerApiManager.h"
 #include <src/lookup.hpp>
 #include <thread>
 #include "common.h"
@@ -68,18 +68,22 @@ public:
 		//运行缓存管理
 		printf("---------init cacheManager--------\n");
 		CacheManager cacheManger(cfgManager, sleepTime);
-		//加载数据库管理
+		//初始化数据库管理
 		printf("---------init databaseManager ---------\n");
 		DataBaseManager db;
 		printf("---------init lookupManager ---------\n");
-		//运行lookup线程
+		//初始化lookup线程
 		LookUpManager lkManager(cacheManger,gfd_queue,lookup,cfgManager,cacheGroupMap_,fixedGroupMap_,sleepTime,fd_hz);
 		printf("---------init CommandCustomer ---------\n");
-		//运行命令消费者
+		//初始化命令消费者
 		CommandCustomer cmdCusrom(cmd_queue,cfgManager,cacheGroupMap_,fixedGroupMap_, sleepTime);
 		printf("---------init FeedBackCustomer ---------\n");
-		//运行回馈消费者
+		//初始化回馈消费者
 		FeedBackCustomer fdCustomer(gfd_queue,cacheManger,db, sleepTime);
+		//初始化远程服务器管理
+		vector<ServerConfig> sVec = cfgManager.getServersConfig();
+		//ServerApiManager sM(sVec.at(0).ip, sVec.at(0).port, cmd_queue);
+		
 		//``````````````````````````````````
 		printf("---------run cache thread ---------\n");
 

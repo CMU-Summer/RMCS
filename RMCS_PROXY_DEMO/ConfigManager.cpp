@@ -118,6 +118,24 @@ ConfigManager::ConfigManager(string filePath):groupList(),redisList(),dbList(),s
 				}
 			}
 		}
+		else if (v1.first == "servers") {
+			BOOST_FOREACH(ptree::value_type &v2, v1.second) {
+				if (v2.first == "server") {
+					BOOST_FOREACH(ptree::value_type &v3, v2.second) {
+						if (v3.first == "<xmlattr>") {
+							ServerConfig sConfig;
+							sConfig.ip = v3.second.get<string>("ip");
+							sConfig.port = v3.second.get<int>("port");
+							printf("server :[ip=%s,port=%d]\n", sConfig.ip.data(), sConfig.port);
+							this->serverList.push_back(sConfig);
+						}
+					}
+				}
+
+
+			}
+		}
+
 	}
 }
 ConfigManager::~ConfigManager() {
@@ -133,11 +151,5 @@ vector<RedisCofig> ConfigManager::getRedisList(){return this->redisList;}
 vector<DBconfig> ConfigManager::getDbConfig(){return this->dbList;}
 int ConfigManager::getSleepTime() { return this->sleep_time ; }
 int  ConfigManager::getFeedbackFrequency() { return this->feedBackFrequency; }
-/*
-// Test Demo
-int main(void) {
-	ConfigManager("resource/config.xml");
-	system("pause");
-}
-*/
+vector<ServerConfig> ConfigManager::getServersConfig() { return this->serverList; }
 
