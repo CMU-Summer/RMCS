@@ -68,8 +68,3 @@ void FeedBackManager::putToQueue(GroupfeedbackCustomStruct group_fdb_custom){
 
 //-----------------其他类的函数
 
-bool GroupfeedbackCustomStruct::putIntoModuleFeedBackVec(vector<FeedbackCustomStruct*>& fd_custom){
-	this->moduleFeedBackVec.clear();
-	this->moduleFeedBackVec.assign(fd_custom.begin(),fd_custom.end());
-	return true;
-}

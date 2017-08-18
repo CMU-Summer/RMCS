@@ -23,6 +23,12 @@ public:
 	void init() {
 		this->start();
 	}
+	bool updateGroupFeedBackInDataBase(int type);//别的线程调用，放到databaseManager里面的queue,有个区别判断的连接状态不一样
+	bool updateGroupInfoToDataBase();//别的线程用，放到databaseManager里面的queue
+	bool customerFeedBackQueue();//run函数中调用
+	bool customerGroupInfoQueue();//run函数中调用
+	bool flushDatabase(GroupfeedbackCustomStruct gfd,int type);//更新数据库，调用不同的,custom函数中调用
+
 private:
 	int sleep_time;
 

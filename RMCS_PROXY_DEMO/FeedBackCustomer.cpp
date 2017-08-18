@@ -9,7 +9,7 @@ void FeedBackCustomer::run(){
 		if(this->sleeptime>0){
 			this_thread::sleep_for(std::chrono::milliseconds(this->sleeptime));
 		}
-		printf("FDBACKCUSTOMER__THREAD: feedback Customer is ready for next execute\n");
+		printf("FDBKCUSTOMER__THREAD: feedback Customer is ready for next execute\n");
 	}
 
 
@@ -22,7 +22,7 @@ void FeedBackCustomer::init(){
 
 
 bool FeedBackCustomer::customGfd(){
-	printf("FDBACKCUSTOMER__THREAD: feedback customer is reay for next feedback !!!!\n");
+	printf("FDBKCUSTOMER__THREAD: feedback customer is reay for next feedback !!!!\n");
 	shared_ptr<GroupfeedbackCustomStruct> mapPtr  = this->gfd_quee.wait_and_pop();
 	if(!mapPtr)return false;//没有取到需要消耗的gfd
 	printGroupFeedBack(*mapPtr);//Feedback data display
@@ -34,14 +34,14 @@ bool FeedBackCustomer::customGfd(){
 }
 
 bool FeedBackCustomer:: insertCache(GroupfeedbackCustomStruct& gfd){
-	printf("FDBACKCUSTOMER__THREAD: put into cache!!!\n");
+	printf("FDBKCUSTOMER__THREAD: put into cache!!!\n");
 	return this->cacheManager.updateGroupFeedBack(gfd);
 	
 
 }//放进缓存里面
 bool FeedBackCustomer:: insertDb(int type,GroupfeedbackCustomStruct& gfd){
 	//cout<<"put into db!!!"<<endl;
-	printf("FDBACKCUSTOMER__THREAD: put fd into local db or web db!!!\n");
+	printf("FDBKCUSTOMER__THREAD: put fd into local db or web db!!!\n");
 	return true;
 
 

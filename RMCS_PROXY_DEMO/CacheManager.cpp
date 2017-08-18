@@ -1,9 +1,8 @@
 #include "CacheManager.h"
 #include <mutex>
 #include <condition_variable>
-
-CacheManager::CacheManager(string ip_,int port_,
-						   int sleep_time_):cacheConnect(ip_,port_),canUseRedis(true),sleep_time(sleep_time_){
+#include "ConfigManager.h"
+CacheManager::CacheManager(ConfigManager& cofManager,int sleep_time_ ):cacheConnect(),canUseRedis(true),sleep_time(sleep_time_),cfgManager(cofManager){
 
 
 
@@ -11,9 +10,17 @@ CacheManager::CacheManager(string ip_,int port_,
 }
 CacheManager::~CacheManager(){}
 void CacheManager::initCacheManager(){
-	this->isConnect=this->cacheConnect.init();
+	vector<RedisCofig> cogVec=this->cfgManager.getRedisList();
+	if (cogVec.size() <= 0) {
+		printf("CACHE_MANAGER_THREAD: no redis in config:%d\n");
+		this->isConnect = false;
+	}
+	else {
+		this->cacheConnect.setIpAndPort(cogVec.at(0).ip,cogVec.at(0).port);
+		this->isConnect = this->cacheConnect.init();
+		printf("CACHE_MANAGER_THREAD: redis connect status:%d\n", this->isConnect);
+	}
 
-	printf("CACHE_MANAGER_THREAD: redis connect status:%d\n",this->isConnect);
 	this->start();//≈‹œﬂ≥Ã
 
 

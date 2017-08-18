@@ -223,6 +223,8 @@ public:
 		this->SetPropertys();
 	}
 	virtual void SetPropertys() {
+		this->led_field.SetPropertys();
+		this->actuator_field.SetPropertys();
 		this->clearProperty();
 		this->SetProperty("led_field", asJsonObj, &led_field);
 		this->SetProperty("actuator_field", asJsonObj, &actuator_field);
@@ -257,6 +259,9 @@ public:
 
 	}
 	virtual void SetPropertys() {
+		for (int i = 0; i < this->moduleFeedBackVec.size();i++) {
+			moduleFeedBackVec.at(i)->SetPropertys();
+		}
 		this->clearProperty();
 		this->SetProperty("positionsVec", CJsonObjectBase::asVectorArray, &positionsVec,CJsonObjectBase::asDouble);
 		this->SetProperty("velocitysVec", CJsonObjectBase::asVectorArray, &velocitysVec, CJsonObjectBase::asDouble);
@@ -282,10 +287,11 @@ public:
 		}	
 	}
 
-	bool putIntoModuleFeedBackVec(vector<FeedbackCustomStruct*>& fd_custom);//把模块的feedback放进去
-
-
-
+	bool putIntoModuleFeedBackVec(vector<FeedbackCustomStruct*>& fd_custom) {
+		this->moduleFeedBackVec.clear();
+		this->moduleFeedBackVec.assign(fd_custom.begin(), fd_custom.end());
+		return true;
+	}
 
 
 };
@@ -327,6 +333,15 @@ public:
 	CommandGroupStruct(vector<CommandStruct*> fd_,vector<string> fs_,vector<string> names_) :fd(fd_),familys(fs_),names(names_) {
 		this->SetPropertys();
 	}
+	CommandGroupStruct(int cmd_,string groupName_,vector<CommandStruct*> fd_, vector<string> fs_, vector<string> names_)
+		:fd(fd_), 
+		familys(fs_), 
+		names(names_),
+		cmd(cmd_),
+		groupName(groupName_)
+		{
+		this->SetPropertys();
+	}
 	~CommandGroupStruct() {
 	}
 	void freeStruct() {
@@ -336,6 +351,10 @@ public:
 	}
 
 	virtual void SetPropertys() {
+		for (int i = 0; i < fd.size();i++) {
+			this->fd.at(i)->SetPropertys();
+		
+		}
 		this->clearProperty();
 		this->SetProperty("groupName", asString, &groupName);
 		this->SetProperty("familys", asVectorArray, &familys,asString);
@@ -351,6 +370,13 @@ public:
 		}
 		return NULL;
 	}
+	bool putIntoModuleCommandVec(vector<CommandStruct*>& fd_custom) {
+		this->fd.clear();
+		this->fd.assign(fd_custom.begin(), fd_custom.end());
+		return true;
+	}
+
+
 
 };
 
@@ -387,6 +413,7 @@ private:
 	
 public:
 	CacheConnection(string ip_, int port_) :ip(ip_), port(port_), rdc(NULL) {}
+	CacheConnection() :ip(""), port(0), rdc(NULL) {}
 	~CacheConnection() {
 		this->disconnect();
 	}
@@ -486,12 +513,25 @@ public:
 
 		}
 		case REDIS_REPLY_NIL: {
-			printf("error:get null from redis\n");
+			string outString("REDIS__COMMAND_ERROR: null    error ,the redis command args [");
+			for (int i = 0; i < agr_nums;i++) {
+				outString.append(args[i]);
+				outString.append(" ");
+			
+			}
+			outString.append(" ]\n");
+			printf(outString.data());
 			return false;
 		}
 		case REDIS_REPLY_ERROR: {
-			printf("error:executed error\n");
-		
+			string outString("REDIS__COMMAND_ERROR: executed error ,the redis command args [");
+			for (int i = 0; i < agr_nums; i++) {
+				outString.append(args[i]);
+				outString.append(" ");
+
+			}
+			outString.append(" ]\n");
+			printf(outString.data());
 			return false;
 		}
 		case REDIS_REPLY_STATUS: {
@@ -529,18 +569,33 @@ public:
 			}
 
 
-			cout << reply->str << endl;
+			cout <<"UN KNOWN OPERATION: "<< reply->str << endl;
 			return true;
 		}
 		default:
-			cout << "unexcepted error" << endl;
+			string outString("REDIS__COMMAND_ERROR: executed error ,the redis command args is [");
+			for (int i = 0; i < agr_nums; i++) {
+				outString.append(args[i]);
+				outString.append(" ");
+
+			}
+			outString.append(" ]\n");
+			printf(outString.data());
 			return false;
-			break;
+
 		}
 
 
 	}//发送命令
-	//	return true;
+	
 	
 };
+class DBconnection {
+	//数据库连接类
+
+
+
+};
+
+
 #endif

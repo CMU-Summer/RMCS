@@ -8,7 +8,7 @@
 #include <vector>
 #include <mutex>
 #include <condition_variable>
-
+#include "ConfigManager.h"
 
 using namespace std;
 class CacheManager:public CThread
@@ -24,12 +24,13 @@ private:
 	queue_safe<map<string,vector<string>>> family_name_queue;
 	queue_safe<vector<GroupStruct>> group_struct_queue;//主要用来刷
 	queue_safe<GroupfeedbackCustomStruct> group_feedback_queue;
-	
+	ConfigManager& cfgManager;
 	bool canUseRedis;
 
 	std::condition_variable data_cond;  
 public:
-	CacheManager(string ip_,int port_,int sleep_time=DEFAULT_SLEEP_TIME);
+
+	CacheManager(ConfigManager& cofManager, int sleep_time = DEFAULT_SLEEP_TIME);
 	~CacheManager();
 	void initCacheManager();//链接，跑线程等等操作
 	CacheConnection cacheConnect;

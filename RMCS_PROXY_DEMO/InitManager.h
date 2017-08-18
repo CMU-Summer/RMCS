@@ -67,7 +67,7 @@ public:
 		}
 		//运行缓存管理
 		printf("---------init cacheManager--------\n");
-		CacheManager cacheManger(cfgManager.getRedisList().at(0).ip,cfgManager.getRedisList().at(0).port, sleepTime);
+		CacheManager cacheManger(cfgManager, sleepTime);
 		//加载数据库管理
 		printf("---------init databaseManager ---------\n");
 		DataBaseManager db;
