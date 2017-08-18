@@ -36,7 +36,6 @@ public:
 	
 	}
 	static int main(){
-		//printf("----init queue!----\n");
 		printf("--------init queue!--------\n");
 		queue_safe<GroupfeedbackCustomStruct> gfd_queue;
 		queue_safe<GroupStruct> gs_queue;

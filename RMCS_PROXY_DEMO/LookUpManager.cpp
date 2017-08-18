@@ -237,10 +237,11 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 		return;//null不用加
 	}
 	LookUpManager* this_ = this;
-	grp->addFeedbackHandler([&fdbManager,&groupName,&this_](const GroupFeedback* group_fbk)->void{
+	string* groupName_ = new string(groupName);
+	grp->addFeedbackHandler([fdbManager,groupName_,&this_](const GroupFeedback* group_fbk)->void{
 		//用fdbManager里面的函数
 		this_->showGroupFeedBackInfo(group_fbk);
-		GroupfeedbackCustomStruct gfb_custom= fdbManager->toGroupFbCustomStruct(group_fbk,groupName);
+		GroupfeedbackCustomStruct gfb_custom= fdbManager->toGroupFbCustomStruct(group_fbk, groupName_->data());
 		fdbManager->putToQueue(gfb_custom);
 	});
 	grp->setFeedbackFrequencyHz(this->default_frequency);

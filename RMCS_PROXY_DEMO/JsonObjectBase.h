@@ -190,6 +190,14 @@ protected:
 		m_vectorType.push_back(type);    
 		m_vectorListParamType.push_back(listParamType);  
 	}    
+	void clearProperty() {
+		m_vectorName.clear();
+		m_vectorPropertyAddr.clear();
+		m_vectorType.clear();
+		m_vectorListParamType.clear();
+	
+	}
+
 	virtual void SetPropertys() = 0;    
 	//有特殊对象需要序列化时，请重载此函数   
 	virtual Json::Value DoSpecialArraySerialize(const string& propertyName){ return "";}  
@@ -283,7 +291,7 @@ protected:
 public:  
 	//常见类型列表的反序列化   
 	template <typename T1, typename T2>  
-	static bool DoArrayDeSerialize(void* addr, Json::Value& node)  
+	  bool DoArrayDeSerialize(void* addr, Json::Value& node)  
 	{  
 		if (!node.isArray())  
 		{  
@@ -298,7 +306,7 @@ public:
 
 	//特殊对象列表的反序列化  
 	template<typename T1>  
-	static bool DoObjArrayDeSerialize(const string& propertyName, void* addr, Json::Value& node, GenerateJsonObjForDeSerializeFromOutSide funGenerate)  
+	  bool DoObjArrayDeSerialize(const string& propertyName, void* addr, Json::Value& node, GenerateJsonObjForDeSerializeFromOutSide funGenerate)  
 	{  
 		if (!node.isArray())  
 		{  
@@ -369,7 +377,7 @@ protected:
 	}  
 public:  
 	template <typename T1>  
-	static Json::Value DoArraySerialize(T1* pList)  
+	  Json::Value DoArraySerialize(T1* pList)  
 	{  
 		Json::Value arrayValue;  
 		for (T1::iterator it = pList->begin(); it != pList->end(); ++ it)  
@@ -380,7 +388,7 @@ public:
 	}     
 
 	template <>  
-	static Json::Value DoArraySerialize(vector<CJsonObjectBase*>* pList)  
+	  Json::Value DoArraySerialize(vector<CJsonObjectBase*>* pList)  
 	{  
 		Json::Value arrayValue;  
 		if(pList->size()<=0)return arrayValue;
@@ -390,7 +398,7 @@ public:
 		}  
 		return arrayValue;  
 	}  
-	static Json::Value DoArraySerialize_1(vector<CJsonObjectBase*>* pList)
+	  Json::Value DoArraySerialize_1(vector<CJsonObjectBase*>* pList)
 	{
 		Json::Value arrayValue;
 		if (pList->size() <= 0)return arrayValue;
@@ -401,7 +409,7 @@ public:
 		return arrayValue;
 	}
 	template <>  
-	static Json::Value DoArraySerialize(list<CJsonObjectBase*>* pList)  
+	  Json::Value DoArraySerialize(list<CJsonObjectBase*>* pList)  
 	{  
 		Json::Value arrayValue;  
 		for (list<CJsonObjectBase*>::iterator it = pList->begin(); it != pList->end(); ++ it)  
@@ -410,7 +418,7 @@ public:
 		}  
 		return arrayValue;  
 	}  
-	static string JsonValueToString(Json::Value& tvalue)  
+	  string JsonValueToString(Json::Value& tvalue)  
 	{  
 		Json::FastWriter writer;      
 		return writer.write(tvalue);  
@@ -428,57 +436,57 @@ private:
 		return a->data();
 	}
 	template <typename T>  
-	static T DeSerialize(Json::Value& root)  
+	  T DeSerialize(Json::Value& root)  
 	{  
 		return GetData<T>(root);  
 	}  
 
 	template <typename T>  
-	static T GetData(Json::Value& root)  
+	  T GetData(Json::Value& root)  
 	{  
 		T temp;  
 		return temp;  
 	}  
 
 	template <>  
-	static bool GetData(Json::Value& root)  
+	  bool GetData(Json::Value& root)  
 	{  
 		return root.asBool();  
 	}  
 
 	template <>  
-	static INT GetData(Json::Value& root)  
+	  INT GetData(Json::Value& root)  
 	{  
 		return root.asInt();  
 	}  
 
 	template <>  
-	static UINT GetData(Json::Value& root)  
+	  UINT GetData(Json::Value& root)  
 	{  
 		return root.asUInt();  
 	}  
 	template <>  
-	static LONGLONG GetData(Json::Value& root)  
+	  LONGLONG GetData(Json::Value& root)  
 	{  
 		return root.asInt64();  
 	}  
 	template <>  
-	static ULONGLONG GetData(Json::Value& root)  
+	  ULONGLONG GetData(Json::Value& root)  
 	{  
 		return root.asUInt64();  
 	}  
 	template <>  
-	static string GetData(Json::Value& root)  
+	  string GetData(Json::Value& root)  
 	{  
 		return root.asString();  
 	}  
 	template <>  
-	static float GetData(Json::Value& root)  
+	  float GetData(Json::Value& root)  
 	{  
 		return root.asFloat();  
 	}
 	template <>  
-	static double GetData(Json::Value& root)  
+	  double GetData(Json::Value& root)  
 	{  
 		return root.asDouble();  
 	}

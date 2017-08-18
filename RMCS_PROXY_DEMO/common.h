@@ -45,6 +45,7 @@ public:
 	~NameStruct() {}
 	virtual void SetPropertys() {
 		//
+		this->clearProperty();
 		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
 		this->SetProperty("connected", CJsonObjectBase::asInt, &(this->connected));
 	}
@@ -97,6 +98,7 @@ public:
 	}
 	virtual void SetPropertys() {
 		//
+		this->clearProperty();
 		this->SetProperty("name", CJsonObjectBase::asString, &(this->name));
 		this->SetProperty("nameList", CJsonObjectBase::asVectorArray, &(this->nameList),CJsonObjectBase::asJsonObj);
 	}
@@ -134,6 +136,7 @@ public:
 	vector<FamilyStruct*> getFamilyList() { return familyList; }
 	virtual void SetPropertys() {
 		//
+		this->clearProperty();
 		this->SetProperty("name", CJsonObjectBase::asString, &(name));
 		this->SetProperty("familyList", CJsonObjectBase::asVectorArray, &(familyList),CJsonObjectBase::asJsonObj);
 	}
@@ -162,6 +165,7 @@ public:
 
 	}
 	virtual void SetPropertys() {
+		this->clearProperty();
 		this->SetProperty("led_R", asInt, &led_R);
 		this->SetProperty("led_G", asInt, &led_G);
 		this->SetProperty("led_B", asInt, &led_B);
@@ -191,6 +195,7 @@ public:
 
 	}
 	virtual void SetPropertys() {
+		this->clearProperty();
 		this->SetProperty("position", asDouble, &position);
 		this->SetProperty("velocity", asDouble, &velocity);
 		this->SetProperty("torque", asDouble, &torque);
@@ -218,6 +223,7 @@ public:
 		this->SetPropertys();
 	}
 	virtual void SetPropertys() {
+		this->clearProperty();
 		this->SetProperty("led_field", asJsonObj, &led_field);
 		this->SetProperty("actuator_field", asJsonObj, &actuator_field);
 
@@ -251,6 +257,7 @@ public:
 
 	}
 	virtual void SetPropertys() {
+		this->clearProperty();
 		this->SetProperty("positionsVec", CJsonObjectBase::asVectorArray, &positionsVec,CJsonObjectBase::asDouble);
 		this->SetProperty("velocitysVec", CJsonObjectBase::asVectorArray, &velocitysVec, CJsonObjectBase::asDouble);
 		this->SetProperty("torqueVec", CJsonObjectBase::asVectorArray, &torqueVec, CJsonObjectBase::asDouble);
@@ -299,6 +306,7 @@ public:
 
 	}
 	virtual void SetPropertys() {
+		this->clearProperty();
 		this->SetProperty("led_field", asJsonObj, &led_field);
 		this->SetProperty("actuator_field", asJsonObj, &actuator_field);
 
@@ -328,6 +336,7 @@ public:
 	}
 
 	virtual void SetPropertys() {
+		this->clearProperty();
 		this->SetProperty("groupName", asString, &groupName);
 		this->SetProperty("familys", asVectorArray, &familys,asString);
 		this->SetProperty("names", asVectorArray, &names,asString);

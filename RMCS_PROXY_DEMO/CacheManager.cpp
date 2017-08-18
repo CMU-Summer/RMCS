@@ -187,9 +187,10 @@ bool CacheManager::flushCacheAndItNameList(const string& key ,vector<string>& li
 	bool opt1= this->cacheConnect.setCommndWithArgs(arg_nums_,args_,ADD_VALUE_TO_SET,intx);
 	delete intx, groupP;
 	delete[] key_, key__;
+	/*
 	for (int i = 0; i<list.size(); i++) {
 		delete[] args[2 + i];
-	}
+	}*/
 	if (opt == false) {
 		printf("CACHE_MANAGER_THREAD: cache error:cannot flush some family in cache \n");
 	}

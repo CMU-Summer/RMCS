@@ -25,7 +25,7 @@ bool FeedBackCustomer::customGfd(){
 	printf("FDBACKCUSTOMER__THREAD: feedback customer is reay for next feedback !!!!\n");
 	shared_ptr<GroupfeedbackCustomStruct> mapPtr  = this->gfd_quee.wait_and_pop();
 	if(!mapPtr)return false;//没有取到需要消耗的gfd
-	//printGroupFeedBack(*mapPtr);//Feedback data display
+	printGroupFeedBack(*mapPtr);//Feedback data display
 	bool opt=this->insertCache(*mapPtr);
 	bool opt1=this->insertDb(LOCAL,*mapPtr);
 	bool opt2=this->insertDb(WEB,*mapPtr);
