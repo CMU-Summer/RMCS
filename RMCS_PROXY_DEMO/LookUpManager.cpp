@@ -3,8 +3,7 @@
 #include "ConfigManager.h"
 #include "FeedBackManager.h"
 #define D_S_T 50
-#define FIXED_TYPE 0
-#define CACHE_TYPE 1
+
 using namespace std;
 using namespace hebi;
 LookUpManager::LookUpManager(CacheManager& cacheManager_,

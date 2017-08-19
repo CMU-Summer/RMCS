@@ -16,10 +16,9 @@
 #include "queue_safe.h"
 #include "FeedBackManager.h"
 #include "ConfigManager.h"
-//#include "JsonObjectBase.h"
 #include "common.h"
-#define  CACHE_TYPE 0
-#define  FIXED_TYPE 1
+#define FIXED_TYPE 0
+#define CACHE_TYPE 1
 using namespace std;
 using namespace hebi;
 class LookUpManager:public CThread{

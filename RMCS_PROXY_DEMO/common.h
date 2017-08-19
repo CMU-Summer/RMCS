@@ -1,6 +1,6 @@
 #ifndef  COMMON_H
 #define  COMMON_H
-//#include "JsonObjectBase.h"
+
 #define PUT_LIST "put_list"
 #define GET_LIST "get_list"
 #define GET_STR  "get_str"
@@ -22,13 +22,13 @@
 #include <mutex>
 #include <string>
 
-#include "deps/hiredis/hiredis.h"
-
-
-//#include "src/Win32_Interop/win32fixes.h"
 #include <vector>
 #include <map>
-
+#include <tacopie/tacopie>
+#include <cpp_redis/cpp_redis>
+#ifdef _WIN32
+	#include <Winsock2.h>
+#endif /* _WIN32 */
 using namespace std;
 class NameStruct :public CJsonObjectBase  {
 public:
@@ -182,11 +182,11 @@ public:
 	double velocity;
 	double torque;
 	double voltage;
-	double motoCurrent;
-	Actuator_field(double p, double v, double t, double vol, double motoCurrent_) :position(p), velocity(v), torque(t), voltage(vol), motoCurrent(motoCurrent_) {
+	double motorCurrent;
+	Actuator_field(double p, double v, double t, double vol, double motoCurrent_) :position(p), velocity(v), torque(t), voltage(vol), motorCurrent(motoCurrent_) {
 		this->SetPropertys();
 	}
-	Actuator_field() :position(0), velocity(0), torque(0), voltage(0), motoCurrent(0) {
+	Actuator_field() :position(0), velocity(0), torque(0), voltage(0), motorCurrent(0) {
 		this->SetPropertys();
 	}
 	~Actuator_field() {
@@ -200,7 +200,7 @@ public:
 		this->SetProperty("velocity", asDouble, &velocity);
 		this->SetProperty("torque", asDouble, &torque);
 		this->SetProperty("voltage", asDouble, &voltage);
-		this->SetProperty("motoCurrent", asDouble, &motoCurrent);
+		this->SetProperty("motorCurrent", asDouble, &motorCurrent);
 	}
 
 };
@@ -215,7 +215,7 @@ public:
 
 	Led_field led_field;
 	Actuator_field actuator_field;
-	FeedbackCustomStruct(Led_field l_f, Actuator_field a_f) :led_field(l_f.led_R, l_f.led_G, l_f.led_B), actuator_field(a_f.position, a_f.velocity, a_f.torque, a_f.voltage,a_f.motoCurrent) {
+	FeedbackCustomStruct(Led_field l_f, Actuator_field a_f) :led_field(l_f.led_R, l_f.led_G, l_f.led_B), actuator_field(a_f.position, a_f.velocity, a_f.torque, a_f.voltage,a_f.motorCurrent) {
 		this->SetPropertys();
 
 	}
@@ -404,27 +404,44 @@ class CacheConnection {
 	get/set 方法
 
 	*/
+	
 private:
 	string ip;
 	int port;
-	redisContext* rdc;
-
-	mutable std::mutex mut;
+	cpp_redis::future_client client;
+	//mutable std::mutex mut;
 	
 public:
-	CacheConnection(string ip_, int port_) :ip(ip_), port(port_), rdc(NULL) {}
-	CacheConnection() :ip(""), port(0), rdc(NULL) {}
+	CacheConnection(string ip_,int port_):ip (ip_),port(port_){
+	
+	}
+	CacheConnection() {
+	
+	}
 	~CacheConnection() {
-		this->disconnect();
+		
 	}
 
-
-
 	bool connect() {
-		printf("connecting to redis [ip:%s,port:%d]\n",this->ip.data(),this->port);
-		const string ip_ = this->ip;
-		rdc = redisConnect(this->ip.data(), this->port);
-		return rdc == NULL ? false : true;
+		#ifdef _WIN32
+		//! Windows netword DLL init
+		WORD version = MAKEWORD(2, 2);
+		WSADATA data;
+
+		if (WSAStartup(version, &data) != 0) {
+			std::cerr << "WSAStartup() failure" << std::endl;
+			
+			return false;
+		}
+		#endif /* _WIN32 */
+		printf("connecting to redis [ip:%s,port:%d]\n", this->ip.data(), this->port);
+		CacheConnection* this_ = this;
+		client.connect(this->ip, this->port, [&this_](cpp_redis::redis_client&) {
+			printf("failed connect to redis [ip:%s,port:%d]\n", this_->ip.data(), this_->port);
+		
+		});
+
+		return client.is_connected();
 	
 
 	}//连接
@@ -435,21 +452,23 @@ public:
 		}
 		else
 		{
-			const string ip_ = this->ip;
-			rdc = redisConnect(this->ip.data(), this->port);
-			return rdc == NULL ? false : true;
+			CacheConnection* this_ = this;
+			client.connect(this->ip, this->port, [&this_](cpp_redis::redis_client&) {
+				printf("failed connect to redis [ip:%s,port:%d]\n", this_->ip.data(), this_->port);
+
+			});
+			return client.is_connected();
 		}
 	
 
 	}//重新连接
 	bool disconnect() {
-		freeContext();
-		rdc = NULL;
+		client.disconnect(true);
 		return true;
 	}//断开
 	bool isConnected() {
 
-		return rdc == NULL ? false : true;
+		return this->client.is_connected();
 
 
 	}//是否连接
@@ -461,11 +480,6 @@ public:
 		this->ip = ip_;
 		this->port = port_;
 	}//重新设置
-
-	void freeContext() {
-	redisFree(this->rdc);
-
-	}//清除context
 	bool isContainKey(char*  key) {
 		void* intP=NULL;
 		int arg_nums = 2;
@@ -485,108 +499,87 @@ public:
 	}//删除键
 	bool setCommndWithArgs(int agr_nums, const char** args, string des, void* &res) {
 		if (this->isConnected() == false) return false;
-		std::lock_guard<std::mutex> lk(mut);
-		redisReply *reply =(redisReply*)redisCommandArgv(this->rdc, agr_nums, args, NULL);
-		switch (reply->type)
-		{
-		case REDIS_REPLY_ARRAY: {
-			//是数组，那么就需要读数组
-			vector<string>* vec = new vector<string>();
+		//std::lock_guard<std::mutex> lk(mut);
+		vector<string> argVe;
+		for (int i = 0; i < agr_nums; i++) {
+			argVe.push_back(args[i]);
+		}
+		std::future<cpp_redis::reply> rpF = client.send(argVe);//组织命令
+		client.sync_commit(std::chrono::milliseconds(3000));//3秒钟延迟发送
+		cpp_redis::reply rp = rpF.get();//等待返回
 
-			for (int i = 0; i<reply->elements; i++) {
-				vec->push_back(reply->element[i]->str);
+
+		cpp_redis::reply::type t = rp.get_type();
+		if (t == cpp_redis::reply::type::array) {
+			vector<string>* vec = new vector<string>();
+			vector<cpp_redis::reply> rVec = rp.as_array();
+			for (int i = 0; i < rVec.size(); i++) {
+				vec->push_back(rVec.at(i).as_string());
 			}
 			res = (void*)vec;
 			return true;
-
 		}
-		case REDIS_REPLY_INTEGER: {
-			LONGLONG* a = new LONGLONG();
-			(*a) = reply->integer;
+		else if (t == cpp_redis::reply::type::integer) {
+			//条数,比如插入删除什么的
+			int* a = new int;
+			*a = rp.as_integer();
 			res = (void*)a;
 			return true;
 		}
-		case REDIS_REPLY_STRING: {
-			string* a = new std::string(reply->str);
-			res = a;
+		else if (t == cpp_redis::reply::type::simple_string) {
+			//返回的字符串
+			string* a = new std::string(rp.as_string());
+			res = (void*)a;
 			return true;
-
 		}
-		case REDIS_REPLY_NIL: {
-			string outString("REDIS__COMMAND_ERROR: null    error ,the redis command args [");
-			for (int i = 0; i < agr_nums;i++) {
-				outString.append(args[i]);
-				outString.append(" ");
-			
-			}
-			outString.append(" ]\n");
-			printf(outString.data());
-			return false;
+		else if (t == cpp_redis::reply::type::bulk_string) {
+			//返回的字符串
+			string* a = new std::string(rp.as_string());
+			res = (void*)a;
+			return true;
 		}
-		case REDIS_REPLY_ERROR: {
-			string outString("REDIS__COMMAND_ERROR: executed error ,the redis command args [");
+		else if (t == cpp_redis::reply::type::null) {
+			//空值对象
+			//string s = rp.error();
+			string outString("REDIS__COMMAND_ERROR: error null ,the redis command is [ ");
 			for (int i = 0; i < agr_nums; i++) {
 				outString.append(args[i]);
 				outString.append(" ");
-
 			}
 			outString.append(" ]\n");
 			printf(outString.data());
 			return false;
 		}
-		case REDIS_REPLY_STATUS: {
-			//某个操作的，比如DEL SET 放东西的操作,删除和查键就不算在里面了
-			if (des == GET_LIST) {
-				//获取列表,不会触发
-				return  true;
-			}
-			else if (des == PUT_LIST) {
-				//放列表的操作
-				return  reply->integer <= 0 ? false : true;
-
-			}
-			else if (des == ADD_VALUE_TO_SET) {
-				//创建或添加set
-				return  reply->integer <= 0 ? false : true;
-
-			}
-			else if (des == DELETE_VALUE_TO_SET) {
-				//删除某个set的成员
-				return  reply->integer <= 0 ? false : true;
-			}
-			else if (des == GET_STR) {
-				//获取字符串(序列化对象),不会到这里
-
-
-			}
-			else if (des == SET_STR) {
-				//设置字符串（序列化对象）
-				return strcmp(reply->str, "OK") == 0;
-			}
-			else if(des == DEL_KEY){
-				//奇怪的操作
-				return  reply->integer <= 0 ? false : true;
-			}
-
-
-			cout <<"UN KNOWN OPERATION: "<< reply->str << endl;
-			return true;
-		}
-		default:
-			string outString("REDIS__COMMAND_ERROR: executed error ,the redis command args is [");
+		else if (t == cpp_redis::reply::type::error) {
+			//错误
+			string s = rp.error();
+			string outString("REDIS__COMMAND_ERROR: error null ,the redis command is [ ");
 			for (int i = 0; i < agr_nums; i++) {
 				outString.append(args[i]);
 				outString.append(" ");
-
 			}
 			outString.append(" ]\n");
 			printf(outString.data());
 			return false;
 
 		}
+		else {
+			string outString("REDIS__COMMAND_ERROR:unknowen error ,the redis command is [ ");
+			for (int i = 0; i < agr_nums; i++) {
+				outString.append(args[i]);
+				outString.append(" ");
+			}
+			outString.append(" ]\n");
+			printf(outString.data());
+			return false;
 
 
-	}//发送命令
+		}
+
+
+	}
+
+//发送命令
 	
 	
 };

@@ -38,7 +38,7 @@ bool CacheManager::updateCacheFamilyAndItsNames(map<string,vector<string>> famil
 	//已经在队列函数中处理了锁
 
 	printf("LOOKUPMANAGER_THREAD: put family and its names into queue\n");
-	if(this->isConnect == false)return false;
+	if(this->cacheConnect.isConnected() == false)return false;
 	else {
 		this->family_name_queue.push(familyMap);
 		return true;
@@ -52,7 +52,7 @@ bool CacheManager::updateCacheFamilyAndItsNames(map<string,vector<string>> famil
 bool CacheManager::updateCacheGroupStateList(vector<GroupStruct> groupStructVec){
 	//cout<<"put groups connect status into queue"<<endl;
 	printf("LOOKUPMANAGER_THREAD: put groups connect status into queue\n");
-	if(this->isConnect == false)return false;
+	if(this->cacheConnect.isConnected() == false)return false;
 	else {
 		this->group_struct_queue.push(groupStructVec);
 		return true;
@@ -61,7 +61,7 @@ bool CacheManager::updateCacheGroupStateList(vector<GroupStruct> groupStructVec)
 }
 //放入队列
 //锁
-bool CacheManager::isConnected(){return this->isConnect;}//是否正在连接上的
+bool CacheManager::isConnected(){return this->cacheConnect.isConnected();}//是否正在连接上的
 void CacheManager::customfamilyMap(){
 	shared_ptr<map<string,vector<string>>> mapPtr  = this->family_name_queue.try_pop();
 	if(!mapPtr)return ;//没有取到
@@ -257,7 +257,7 @@ bool CacheManager::flushCacheGroupFeedBackList(GroupfeedbackCustomStruct gfd){
 bool CacheManager::updateGroupFeedBack(GroupfeedbackCustomStruct gfd){
 	printf("FDBACKCUSTOMER__THREAD: put group feed back into queue\n");
 	//cout<<"put group feed back into queue"<<endl;
-	if(this->isConnect == false)return false;
+	if(this->cacheConnect.isConnected() == false)return false;
 	else {
 		this->group_feedback_queue.push(gfd);
 		return true;

@@ -155,9 +155,6 @@
     <ClCompile Include="src\trajectory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="win32fixes.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ServerApiManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

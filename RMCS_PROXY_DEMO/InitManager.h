@@ -12,8 +12,8 @@
 #include <src/lookup.hpp>
 #include <thread>
 #include "common.h"
-#define NO_QFORKIMPL //这一行必须加才能正常使用
-#include "src/Win32_Interop/win32fixes.h"
+
+
 class InitManager
 	/*
 	这个类是一开始初始化的
@@ -44,12 +44,19 @@ public:
 		map<string, unique_ptr<hebi::Group>> fixedGroupMap_;
 		printf("--------init hebi lookup--------\n");
 		hebi::Lookup lookup;
-		//hebi::Lookup lookup1;
 		//加载配置
 		int sleepTime;
 		int fd_hz;
 		printf("--------init configManager--------\n");
 		ConfigManager cfgManager("resource/config.xml");
+		vector<ServerConfig> sCof = cfgManager.getServersConfig();
+		vector<RedisCofig>  rCof = cfgManager.getRedisList();
+		vector<DBconfig>  dbCof=cfgManager.getDbConfig();
+		CacheManager* cacheMangerPtr=NULL;
+		LookUpManager* lkManagerPtr = NULL;
+		CommandCustomer* cmdCusromPtr = NULL;
+		FeedBackCustomer* fdCustomerPtr = NULL;
+
 		if (cfgManager.getSleepTime() <= DEFAULT_SLEEP_TIME) {
 			sleepTime = DEFAULT_SLEEP_TIME;
 
@@ -80,10 +87,18 @@ public:
 		printf("---------init FeedBackCustomer ---------\n");
 		//初始化回馈消费者
 		FeedBackCustomer fdCustomer(gfd_queue,cacheManger,db, sleepTime);
+		printf("---------init ServerApiManager ---------\n");
 		//初始化远程服务器管理
-		vector<ServerConfig> sVec = cfgManager.getServersConfig();
-		//ServerApiManager sM(sVec.at(0).ip, sVec.at(0).port, cmd_queue);
 		
+// 		ServerApiManager* sMptr=NULL;
+// 		if (sCof.size() > 0) {
+// 			ServerApiManager sM(sCof.at(0).ip, sCof.at(0).port, cmd_queue, BUF_SIZE, sleepTime);
+// 			sMptr = &sM;
+// 		}
+// 		else {
+// 			printf("---------fail to init ServerApiManager ---------\n");
+// 		
+// 		}
 		//``````````````````````````````````
 		printf("---------run cache thread ---------\n");
 
@@ -94,7 +109,16 @@ public:
 		cmdCusrom.init();
 		printf("---------run feedbackCustomer thread ---------\n");
 		fdCustomer.init();
-		printf("---------all working!---------\n");
+	
+// 		if (sMptr) {
+// 			printf("---------run ServerApiListener thread ---------\n");
+// 			sMptr->init();
+// 		}
+// 		else {
+// 			printf("---------dead ServerApiListener thread ---------\n");
+// 		
+// 		}
+		printf("--------- working!---------\n");
 		cacheManger.join();
 		printf("---------cacheManger join!---------\n");
 		lkManager.join();
@@ -103,6 +127,8 @@ public:
 		printf("---------cmdCusrom join!---------\n");
 		fdCustomer.join();
 		printf("---------fdCustomer join!---------\n");
+		//sMptr->join();
+		printf("---------serverListener join!---------\n");
 		int i;
 		cin >> i;
 		return 0;
