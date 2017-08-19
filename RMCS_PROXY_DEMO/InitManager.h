@@ -92,8 +92,8 @@ public:
 		
 		ServerApiManager* sMptr=NULL;
 		if (sCof.size() > 0) {
-			ServerApiManager sM(sCof.at(0).ip, sCof.at(0).port, cmd_queue, BUF_SIZE, sleepTime);
-			sMptr = &sM;
+			 
+			sMptr =new  ServerApiManager(sCof.at(0).ip, sCof.at(0).port, cmd_queue, BUF_SIZE, sleepTime);
 		}
 		else {
 			printf("---------fail to init ServerApiManager ---------\n");

@@ -119,14 +119,14 @@ bool ServerApiManager::getCommandstrFromStream(){
 bool ServerApiManager::init(){
 	this->connected=this->connectToWebServer();
 	if (connected) {
-		printf("SERVERMANAGER_THREAD: connect to web successfully [ip:%s,port:%d]", this->ip, this->port);
+		printf("SERVERMANAGER_THREAD: connect to web successfully [ip:%s,port:%d]", this->ip.data(), this->port);
 		this->start();//连接成功就开始start	
 		return true;
 		
 	}
 	else {
 		
-		printf("SERVERMANAGER_THREAD: connect to web failed [ip:%s,port:%d]", this->ip, this->port);
+		printf("SERVERMANAGER_THREAD: connect to web failed [ip:%s,port:%d]", this->ip.data(), this->port);
 		return false;
 	
 	}
@@ -173,7 +173,7 @@ bool ServerApiManager::connectToWebServer(){
 	
 		return false;
 	}
-
+	printf("SERVERMANAGER_THREAD: connect successfully! \n");
 	return true;
 }//连接远程数据库
 ServerApiManager::ServerApiManager(string ip_, int port_, queue_safe<CommandGroupStruct>& gcmd_queue, int buf_size_,int sleepTime_):
