@@ -245,7 +245,7 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 		GroupfeedbackCustomStruct gfb_custom= fdbManager->toGroupFbCustomStruct(group_fbk, groupName_->data());
 		time_point<system_clock> now_time = system_clock::now(); //当前时间  
 		time_t now_c = system_clock::to_time_t(now_time);
-		gfb_custom.timeStamp = (long)now_c;
+		gfb_custom.timeStamp = (INT64)now_c;
 		fdbManager->putToQueue(gfb_custom);
 	});
 	grp->setFeedbackFrequencyHz(this->default_frequency);

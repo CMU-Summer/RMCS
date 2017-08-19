@@ -12,7 +12,7 @@
 #include <src/lookup.hpp>
 #include <thread>
 #include "common.h"
-
+#include <chrono>
 
 class InitManager
 	/*
@@ -90,15 +90,15 @@ public:
 		printf("---------init ServerApiManager ---------\n");
 		//初始化远程服务器管理
 		
-// 		ServerApiManager* sMptr=NULL;
-// 		if (sCof.size() > 0) {
-// 			ServerApiManager sM(sCof.at(0).ip, sCof.at(0).port, cmd_queue, BUF_SIZE, sleepTime);
-// 			sMptr = &sM;
-// 		}
-// 		else {
-// 			printf("---------fail to init ServerApiManager ---------\n");
-// 		
-// 		}
+		ServerApiManager* sMptr=NULL;
+		if (sCof.size() > 0) {
+			ServerApiManager sM(sCof.at(0).ip, sCof.at(0).port, cmd_queue, BUF_SIZE, sleepTime);
+			sMptr = &sM;
+		}
+		else {
+			printf("---------fail to init ServerApiManager ---------\n");
+		
+		}
 		//``````````````````````````````````
 		printf("---------run cache thread ---------\n");
 
@@ -110,14 +110,14 @@ public:
 		printf("---------run feedbackCustomer thread ---------\n");
 		fdCustomer.init();
 	
-// 		if (sMptr) {
-// 			printf("---------run ServerApiListener thread ---------\n");
-// 			sMptr->init();
-// 		}
-// 		else {
-// 			printf("---------dead ServerApiListener thread ---------\n");
-// 		
-// 		}
+		if (sMptr) {
+			printf("---------run ServerApiListener thread ---------\n");
+			sMptr->init();
+		}
+		else {
+			printf("---------dead ServerApiListener thread ---------\n");
+		
+		}
 		printf("--------- working!---------\n");
 		cacheManger.join();
 		printf("---------cacheManger join!---------\n");

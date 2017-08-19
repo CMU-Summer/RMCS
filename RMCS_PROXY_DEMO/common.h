@@ -249,7 +249,7 @@ public:
 	vector<FeedbackCustomStruct*> moduleFeedBackVec;
 
 	GroupfeedbackCustomStruct(vector<double> pVec,
-		vector<double> vVec, vector<double> tVec, string groupName_) :
+	vector<double> vVec, vector<double> tVec, string groupName_) :
 		positionsVec(pVec),
 		velocitysVec(vVec),
 		torqueVec(tVec),
@@ -411,7 +411,7 @@ private:
 	string ip;
 	int port;
 	cpp_redis::future_client client;
-	//mutable std::mutex mut;
+	mutable std::mutex mut;
 	
 public:
 	CacheConnection(string ip_,int port_):ip (ip_),port(port_){
@@ -501,7 +501,7 @@ public:
 	}//É¾³ý¼ü
 	bool setCommndWithArgs(int agr_nums, const char** args, string des, void* &res) {
 		if (this->isConnected() == false) return false;
-		//std::lock_guard<std::mutex> lk(mut);
+		std::lock_guard<std::mutex> lk(mut);
 		vector<string> argVe;
 		for (int i = 0; i < agr_nums; i++) {
 			argVe.push_back(args[i]);

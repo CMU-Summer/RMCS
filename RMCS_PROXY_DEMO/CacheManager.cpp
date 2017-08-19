@@ -255,7 +255,7 @@ bool CacheManager::flushCacheGroupFeedBackList(GroupfeedbackCustomStruct gfd){
 
 }//刷新远端缓存里面的groupFeedback
 bool CacheManager::updateGroupFeedBack(GroupfeedbackCustomStruct gfd){
-	printf("FDBACKCUSTOMER__THREAD: put group feed back into queue\n");
+	printf("FDBKCUSTOMER__THREAD: put group feed back into queue\n");
 	//cout<<"put group feed back into queue"<<endl;
 	if(this->cacheConnect.isConnected() == false)return false;
 	else {
