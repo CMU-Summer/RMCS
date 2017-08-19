@@ -2,8 +2,10 @@
 #include "src/lookup.hpp"
 #include "ConfigManager.h"
 #include "FeedBackManager.h"
+#include <chrono>
+#include <ctime>
 #define D_S_T 50
-
+using namespace std::chrono;
 using namespace std;
 using namespace hebi;
 LookUpManager::LookUpManager(CacheManager& cacheManager_,
@@ -241,6 +243,9 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 		//用fdbManager里面的函数
 		this_->showGroupFeedBackInfo(group_fbk);
 		GroupfeedbackCustomStruct gfb_custom= fdbManager->toGroupFbCustomStruct(group_fbk, groupName_->data());
+		time_point<system_clock> now_time = system_clock::now(); //当前时间  
+		time_t now_c = system_clock::to_time_t(now_time);
+		gfb_custom.timeStamp = (long)now_c;
 		fdbManager->putToQueue(gfb_custom);
 	});
 	grp->setFeedbackFrequencyHz(this->default_frequency);

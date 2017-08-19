@@ -245,6 +245,7 @@ public:
 	vector<double> velocitysVec;
 	vector<double> torqueVec;
 	string groupName;
+	LONG timeStamp;
 	vector<FeedbackCustomStruct*> moduleFeedBackVec;
 
 	GroupfeedbackCustomStruct(vector<double> pVec,
@@ -268,6 +269,7 @@ public:
 		this->SetProperty("torqueVec", CJsonObjectBase::asVectorArray, &torqueVec, CJsonObjectBase::asDouble);
 		this->SetProperty("groupName", CJsonObjectBase::asString, &groupName);
 		this->SetProperty("moduleFeedBackVec", CJsonObjectBase::asVectorArray, &moduleFeedBackVec,CJsonObjectBase::asJsonObj);
+		this->SetProperty("timeStamp", CJsonObjectBase::asInt64, &timeStamp);
 
 	}
 	CJsonObjectBase* GenerateJsonObjForDeSerialize(const string& propertyName)
