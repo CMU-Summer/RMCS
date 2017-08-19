@@ -368,7 +368,9 @@ public:
 	{
 		if ("fd" == propertyName)
 		{
-			return (CJsonObjectBase*)(new CommandStruct());
+			CommandStruct* com = new CommandStruct();
+			com->SetPropertys();
+			return com;
 		}
 		return NULL;
 	}
