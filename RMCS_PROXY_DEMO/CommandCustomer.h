@@ -82,9 +82,9 @@ public:
 	bool customCommand(){
 		
 		
-		shared_ptr<CommandGroupStruct> mapPtr  = this->command_struct_queue.wait_and_pop();
+		//shared_ptr<CommandGroupStruct> mapPtr  = this->command_struct_queue.wait_and_pop();
 
-		//CommandGroupStruct* mapPtr = getFakeLedCommand({"SEA-Snake","Spare"}, {"SA011","SA035"},"testGroup",2);
+		CommandGroupStruct* mapPtr = getFakeLedCommand({"SEA-Snake","Spare"}, {"SA011","SA035"},"testGroup",2);
 		
 		if(mapPtr==nullptr)return false;//没有取到需要消耗的gfd
 		
@@ -155,7 +155,7 @@ public:
 			printf("COMMAND_____CUSTOMER: send time out\n");
 		}
 		mapPtr->freeStruct();
-		//delete mapPtr;
+
 		return true;
 	}
 private:
