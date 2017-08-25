@@ -50,19 +50,27 @@ void LookUpManager::run() {
 		//再次确认，抽取cache里面的group，更新状态；更新cahce里面的family和name的关系表
 		vector<GroupStruct> gst_vec = this->getGroupListFromCache();//取出来
 
-		//1.给没有异步处理方法的group添加handler
+
+
+		//1.更新维护的cacheGroupList列表
+		this->changecacheGroupMap(gst_vec);
+
+
+		//2.给没有异步处理方法的group添加handler
 		this->addHandlerFromGroups(gst_vec);
 
 		
-		//2.刷新f and n 
+		//3.刷新f and n 
 		this->updateFamilyAndNamesMap(this->getNewestMapFromHibi());
 
 
-		//3.刷新group里面的name的连接状态，放到上面那个函数里面去做了
+		//4.刷新group里面的name的连接状态，放到上面那个函数里面去做了
 		this->updateGroupConncetState(gst_vec);
 
+		
 
-		//4。线程暂停
+
+		//5。线程暂停
 		if(this->sleep_time>0){
 			this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
 		}
@@ -282,5 +290,31 @@ void LookUpManager::showGroupFeedBackInfo(const GroupFeedback* group_fbk) {
 	printf("LOOKUPMANAGER_THREAD: [-------END------]\n");
 
 
+
+}
+void LookUpManager::changecacheGroupMap(vector<GroupStruct> groupStruts) {
+	map<string, string> cMap;
+	//构建一个Map
+	for (int i = 0; i < groupStruts.size();i++) {
+		string a = groupStruts.at(i).getName();
+		cMap[a] = a;
+	}
+	//遍历保存的老的cacheMap
+	map<string, unique_ptr<Group>>::iterator it;
+	vector<string> groupsNeedtoDelete;
+	for (it = this->cacheGroupMap.begin(); it != this->cacheGroupMap.end();it++) {
+		if (cMap.count(it->first)<=0) {
+			//最新的cache的group里面，不包含老的group，那就需要删除
+			//放在一个数组里面
+			groupsNeedtoDelete.push_back(it->first);
+			printf("LOOKUPMANAGER_THREAD: this group need to be deleted :%s\n",it->first.data());
+		}
+	
+	}
+	for (int i = 0; i < groupsNeedtoDelete.size();i++) {
+		this->cacheGroupMap[groupsNeedtoDelete.at(i)].release();//释放
+		this->cacheGroupMap[groupsNeedtoDelete.at(i)].reset(nullptr);//然后删除
+		this->cacheGroupMap.erase(groupsNeedtoDelete.at(i));//删除掉
+	}
 
 }

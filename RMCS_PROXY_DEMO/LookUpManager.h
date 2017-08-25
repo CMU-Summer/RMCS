@@ -61,7 +61,7 @@ private:
 	void updateGroupConncetState(vector<GroupStruct> groupInCache,int default_timeout=0);//刷新group的连接状态,这里面的
 	bool updateGroupsStateInCache(vector<GroupStruct> groupStrut);//这个放到cacheManager的队列里面去，能放进去就是true
 	vector<GroupStruct> getGroupsStateFromHeibi(vector<GroupStruct> groupVec,int default_int);//从heibi里面获得cahce里面定义的group的连接状态
-	
+	void changecacheGroupMap(vector<GroupStruct> groupStrut);//修改map，删除掉不存在的
 	
 
 	vector<GroupStruct> getGroupListFromConfig();//从配置文件里面获取

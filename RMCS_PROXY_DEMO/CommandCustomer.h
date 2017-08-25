@@ -62,19 +62,28 @@ public:
 	}
 	unique_ptr<hebi::Group>& getGroupPtr(string groupname) {
 		//从已存在的group里面获取
+		try
+		{
+			if (this->cacheGroupMap.count(groupname)) {
+				return this->cacheGroupMap[groupname];
 
-		if (this->cacheGroupMap.count(groupname)) {
-			return this->cacheGroupMap[groupname];
-		
+			}
+			else if (this->fixedGroupMap.count(groupname)) {
+				return this->fixedGroupMap[groupname];
+
+			}
+			else {
+				unique_ptr<Group> gr;
+				return gr;//空指针
+			}
 		}
-		else if (this->fixedGroupMap.count(groupname)) {
-			return this->fixedGroupMap[groupname];
-		
-		}
-		else {
+		catch (const std::exception&)
+		{
+			printf("COMMAND_____CUSTOMER: cache map error\n");
 			unique_ptr<Group> gr;
 			return gr;//空指针
 		}
+		
 	
 	}
 
