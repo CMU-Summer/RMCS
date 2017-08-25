@@ -61,5 +61,22 @@ e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(135): warning
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(144): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(77): warning C4172: 返回局部变量或临时变量的地址: gr
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(84): warning C4172: 返回局部变量或临时变量的地址: gr
+cpp_redis.lib(future_client.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(future_client.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(redis_client.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(redis_client.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(reply.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(reply.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(redis_connection.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(redis_connection.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(array_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(array_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(builders_factory.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(builders_factory.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(bulk_string_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(bulk_string_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(error_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(error_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(integer_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(integer_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(reply_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(reply_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(simple_string_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(simple_string_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(error.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(error.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(tcp_client.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(tcp_client.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(thread_pool.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(thread_pool.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(io_service.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(io_service.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(self_pipe.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(self_pipe.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(tcp_socket.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(tcp_socket.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
   RMCS_PROXY_DEMO.vcxproj -> E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\RMCS_PROXY_DEMO.exe
   RMCS_PROXY_DEMO.vcxproj -> E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\RMCS_PROXY_DEMO.pdb (Full PDB)
