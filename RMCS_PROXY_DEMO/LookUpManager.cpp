@@ -243,9 +243,9 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 		//用fdbManager里面的函数
 		this_->showGroupFeedBackInfo(group_fbk);
 		GroupfeedbackCustomStruct gfb_custom= fdbManager->toGroupFbCustomStruct(group_fbk, groupName_->data());
-		time_point<system_clock> now_time = system_clock::now(); //当前时间  
-		time_t now_c = system_clock::to_time_t(now_time);
-		gfb_custom.timeStamp = (INT64)now_c;
+		auto time_now = chrono::system_clock::now();
+		auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch());
+		gfb_custom.timeStamp = (INT64)duration_in_ms.count();
 		fdbManager->putToQueue(gfb_custom);
 	});
 	grp->setFeedbackFrequencyHz(this->default_frequency);

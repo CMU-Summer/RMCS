@@ -1,1 +1,582 @@
-﻿
+﻿  trajectory.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\trajectory.cpp(12): warning C4267: “初始化”: 从“size_t”转换到“const int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\trajectory.cpp(24): warning C4244: “初始化”: 从“Eigen::EigenBase<Derived>::Index”转换到“int”，可能丢失数据
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,-1,0,-1,-1>
+          ]
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\trajectory.cpp(25): warning C4244: “初始化”: 从“Eigen::EigenBase<Derived>::Index”转换到“int”，可能丢失数据
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,-1,0,-1,-1>
+          ]
+  mac_address.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\mac_address.cpp(71): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  lookup.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\lookup.cpp(35): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\lookup.cpp(48): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+  kinematics.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\hebi_kinematic_parameters.h(62): warning C4838: 从“double”转换到“float”需要收缩转换
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\hebi_kinematic_parameters.h(62): warning C4305: “初始化”: 从“double”到“float”截断
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\hebi_kinematic_parameters.h(81): warning C4838: 从“double”转换到“float”需要收缩转换
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\hebi_kinematic_parameters.h(81): warning C4305: “初始化”: 从“double”到“float”截断
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\kinematics.cpp(113): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\kinematics.cpp(189): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\kinematics.cpp(190): warning C4244: “初始化”: 从“Eigen::EigenBase<Derived>::Index”转换到“int”，可能丢失数据
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\kinematics.cpp(216): warning C4244: “初始化”: 从“Eigen::EigenBase<Derived>::Index”转换到“int”，可能丢失数据
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  info.cpp
+  group_info.cpp
+  group_feedback.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  group_command.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\group_command.cpp(43): warning C4244: “参数”: 从“const double”转换到“float”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\group_command.cpp(50): warning C4244: “参数”: 从“const double”转换到“float”，可能丢失数据
+  group.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  feedback.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\feedback.cpp(109): warning C4244: “return”: 从“int64_t”转换到“int”，可能丢失数据
+  command.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\command.cpp(214): warning C4244: “return”: 从“int64_t”转换到“int”，可能丢失数据
+  ServerApiManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::FastWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(182): note: 参见“Json::FastWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(212): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(222): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(240): note: 参见“Json::StyledWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(241): note: 参见“Json::StyledWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(242): note: 参见“Json::StyledWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(306): note: 参见“Json::StyledStreamWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(308): note: 参见“Json::StyledStreamWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentation_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(310): note: 参见“Json::StyledStreamWriter::indentation_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(54): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(55): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(61): warning C4996: 'Json::Reader': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(35): note: 参见“Json::Reader”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(63): warning C4996: 'Json::Reader::parse': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(77): note: 参见“Json::Reader::parse”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(131): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(423): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(424): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::nodes_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(237): note: 参见“Json::Reader::nodes_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::errors_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(238): note: 参见“Json::Reader::errors_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::document_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(239): note: 参见“Json::Reader::document_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::commentsBefore_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(245): note: 参见“Json::Reader::commentsBefore_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(596): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(600): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(606): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\serverapimanager.cpp(27): warning C4474: printf: 格式字符串中传递的参数太多
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\serverapimanager.cpp(27): note: 占位符和其参数预计 0 可变参数，但提供的却是 2 参数
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\serverapimanager.cpp(86): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\um\winsock2.h(1828): note: 参见“inet_addr”的声明
+  LookUpManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::FastWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(182): note: 参见“Json::FastWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(212): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(222): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(240): note: 参见“Json::StyledWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(241): note: 参见“Json::StyledWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(242): note: 参见“Json::StyledWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(306): note: 参见“Json::StyledStreamWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(308): note: 参见“Json::StyledStreamWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentation_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(310): note: 参见“Json::StyledStreamWriter::indentation_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(54): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(55): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(61): warning C4996: 'Json::Reader': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(35): note: 参见“Json::Reader”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(63): warning C4996: 'Json::Reader::parse': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(77): note: 参见“Json::Reader::parse”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(131): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(423): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(424): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::nodes_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(237): note: 参见“Json::Reader::nodes_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::errors_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(238): note: 参见“Json::Reader::errors_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::document_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(239): note: 参见“Json::Reader::document_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::commentsBefore_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(245): note: 参见“Json::Reader::commentsBefore_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(596): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(600): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(606): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\lookupmanager.cpp(251): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+  InitManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::FastWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(182): note: 参见“Json::FastWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(212): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(222): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(240): note: 参见“Json::StyledWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(241): note: 参见“Json::StyledWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(242): note: 参见“Json::StyledWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(306): note: 参见“Json::StyledStreamWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(308): note: 参见“Json::StyledStreamWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentation_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(310): note: 参见“Json::StyledStreamWriter::indentation_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(54): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(55): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(61): warning C4996: 'Json::Reader': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(35): note: 参见“Json::Reader”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(63): warning C4996: 'Json::Reader::parse': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(77): note: 参见“Json::Reader::parse”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(131): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(423): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(424): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::nodes_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(237): note: 参见“Json::Reader::nodes_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::errors_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(238): note: 参见“Json::Reader::errors_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::document_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(239): note: 参见“Json::Reader::document_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::commentsBefore_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(245): note: 参见“Json::Reader::commentsBefore_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(596): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(600): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(606): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(126): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(135): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+  FeedBackManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::FastWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(182): note: 参见“Json::FastWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(212): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(222): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(240): note: 参见“Json::StyledWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(241): note: 参见“Json::StyledWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(242): note: 参见“Json::StyledWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(306): note: 参见“Json::StyledStreamWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(308): note: 参见“Json::StyledStreamWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentation_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(310): note: 参见“Json::StyledStreamWriter::indentation_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(54): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(55): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(61): warning C4996: 'Json::Reader': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(35): note: 参见“Json::Reader”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(63): warning C4996: 'Json::Reader::parse': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(77): note: 参见“Json::Reader::parse”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(131): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(423): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(424): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::nodes_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(237): note: 参见“Json::Reader::nodes_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::errors_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(238): note: 参见“Json::Reader::errors_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::document_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(239): note: 参见“Json::Reader::document_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::commentsBefore_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(245): note: 参见“Json::Reader::commentsBefore_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(596): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(600): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(606): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\feedbackmanager.cpp(25): warning C4244: “初始化”: 从“Eigen::EigenBase<Derived>::Index”转换到“int”，可能丢失数据
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\feedbackmanager.cpp(29): warning C4244: “=”: 从“Eigen::EigenBase<Derived>::Index”转换到“int”，可能丢失数据
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\feedbackmanager.cpp(33): warning C4244: “=”: 从“Eigen::EigenBase<Derived>::Index”转换到“int”，可能丢失数据
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  FeedBackCustomer.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::FastWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(182): note: 参见“Json::FastWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(212): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(222): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(240): note: 参见“Json::StyledWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(241): note: 参见“Json::StyledWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(242): note: 参见“Json::StyledWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(306): note: 参见“Json::StyledStreamWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(308): note: 参见“Json::StyledStreamWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentation_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(310): note: 参见“Json::StyledStreamWriter::indentation_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(54): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(55): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(61): warning C4996: 'Json::Reader': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(35): note: 参见“Json::Reader”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(63): warning C4996: 'Json::Reader::parse': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(77): note: 参见“Json::Reader::parse”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(131): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(423): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(424): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::nodes_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(237): note: 参见“Json::Reader::nodes_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::errors_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(238): note: 参见“Json::Reader::errors_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::document_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(239): note: 参见“Json::Reader::document_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::commentsBefore_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(245): note: 参见“Json::Reader::commentsBefore_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(596): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(600): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(606): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+  DataBaseManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::FastWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(182): note: 参见“Json::FastWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(212): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(222): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(240): note: 参见“Json::StyledWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(241): note: 参见“Json::StyledWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(242): note: 参见“Json::StyledWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(306): note: 参见“Json::StyledStreamWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(308): note: 参见“Json::StyledStreamWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentation_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(310): note: 参见“Json::StyledStreamWriter::indentation_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(54): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(55): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(61): warning C4996: 'Json::Reader': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(35): note: 参见“Json::Reader”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(63): warning C4996: 'Json::Reader::parse': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(77): note: 参见“Json::Reader::parse”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(131): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(423): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(424): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::nodes_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(237): note: 参见“Json::Reader::nodes_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::errors_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(238): note: 参见“Json::Reader::errors_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::document_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(239): note: 参见“Json::Reader::document_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::commentsBefore_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(245): note: 参见“Json::Reader::commentsBefore_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(596): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(600): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(606): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+  CThread.cpp
+  ConfigManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::FastWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(182): note: 参见“Json::FastWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(212): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(222): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(240): note: 参见“Json::StyledWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(241): note: 参见“Json::StyledWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(242): note: 参见“Json::StyledWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(306): note: 参见“Json::StyledStreamWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(308): note: 参见“Json::StyledStreamWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentation_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(310): note: 参见“Json::StyledStreamWriter::indentation_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(54): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(55): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(61): warning C4996: 'Json::Reader': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(35): note: 参见“Json::Reader”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(63): warning C4996: 'Json::Reader::parse': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(77): note: 参见“Json::Reader::parse”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(131): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(423): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(424): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::nodes_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(237): note: 参见“Json::Reader::nodes_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::errors_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(238): note: 参见“Json::Reader::errors_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::document_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(239): note: 参见“Json::Reader::document_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::commentsBefore_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(245): note: 参见“Json::Reader::commentsBefore_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(596): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(600): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(606): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\configmanager.cpp(45): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“unsigned __int64”
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\configmanager.cpp(45): note: 请考虑在格式字符串中使用“%zd”
+  CacheManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::FastWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(182): note: 参见“Json::FastWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(212): warning C4996: 'Json::Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(145): note: 参见“Json::Writer::~Writer”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(222): warning C4996: 'Json::Writer::write': Use StreamWriter instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(147): note: 参见“Json::Writer::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(240): note: 参见“Json::StyledWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::document_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(241): note: 参见“Json::StyledWriter::document_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(215): warning C4996: 'Json::StyledWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(242): note: 参见“Json::StyledWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::childValues_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(306): note: 参见“Json::StyledStreamWriter::childValues_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentString_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(308): note: 参见“Json::StyledStreamWriter::indentString_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(279): warning C4996: 'Json::StyledStreamWriter::indentation_': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(310): note: 参见“Json::StyledStreamWriter::indentation_”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(54): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(55): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(61): warning C4996: 'Json::Reader': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(35): note: 参见“Json::Reader”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(63): warning C4996: 'Json::Reader::parse': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(77): note: 参见“Json::Reader::parse”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(73): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(131): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(423): warning C4996: 'Json::FastWriter': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): note: 参见“Json::FastWriter”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(424): warning C4996: 'Json::FastWriter::write': Use StreamWriterBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(177): note: 参见“Json::FastWriter::write”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::nodes_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(237): note: 参见“Json::Reader::nodes_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::errors_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(238): note: 参见“Json::Reader::errors_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::document_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(239): note: 参见“Json::Reader::document_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning C4996: 'Json::Reader::commentsBefore_': Use CharReader and CharReaderBuilder instead
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\reader.h(245): note: 参见“Json::Reader::commentsBefore_”的声明
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(596): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(600): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(606): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“std::string”
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(16): warning C4473: “printf”: 没有为格式字符串传递足够的参数
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(16): note: 占位符和其参数预计 1 可变参数，但提供的却是 0 参数
+  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(16): note: 缺失的可变参数 1 为格式字符串“%d”所需
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(42): warning C4101: “e”: 未引用的局部变量
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(114): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(176): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(202): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(207): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(215): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(243): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(266): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
+  正在生成代码...
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(76): warning C4172: 返回局部变量或临时变量的地址: gr
+cpp_redis.lib(future_client.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(future_client.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(redis_client.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(redis_client.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(reply.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(reply.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(redis_connection.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(redis_connection.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(array_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(array_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(builders_factory.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(builders_factory.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(bulk_string_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(bulk_string_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(error_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(error_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(integer_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(integer_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(reply_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(reply_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+cpp_redis.lib(simple_string_builder.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(simple_string_builder.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(error.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(error.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(tcp_client.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(tcp_client.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(thread_pool.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(thread_pool.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(io_service.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(io_service.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(self_pipe.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(self_pipe.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+tacopie.lib(tcp_socket.obj) : warning LNK4099: 未找到 PDB“tacopie.pdb”(使用“tacopie.lib(tcp_socket.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\tacopie.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+  RMCS_PROXY_DEMO.vcxproj -> E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\RMCS_PROXY_DEMO.exe
+  RMCS_PROXY_DEMO.vcxproj -> E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\RMCS_PROXY_DEMO.pdb (Full PDB)

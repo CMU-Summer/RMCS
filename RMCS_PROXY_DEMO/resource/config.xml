@@ -3,7 +3,7 @@
         <sleepTime value="1000"></sleepTime>
         <feedbackFrequency value="1" />
         <redisList>
-            <redis ip="60.205.179.19" port="6379" />
+            <redis ip="60.205.179.19" port="6379" password="rmcsCache..."/>
         </redisList>
         <servers>
             <server ip="127.0.0.1" port="9293" />

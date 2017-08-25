@@ -11,33 +11,33 @@ int main() {
 		return -1;
 	}
 #endif /* _WIN32 */
-	return InitManager::main();
+//	return InitManager::main();
 
 //-----------------test code for put feedbcak to cache---------------
-// 	ConfigManager cManager("resource/config.xml");
-// 	CacheManager c(cManager,300);
-// 	c.initCacheManager();
-// 	int defalut_sleeptime=2000;
-// 	for (int k = 0; k < 100;k++) {
-// 		GroupfeedbackCustomStruct gfd({ 0,0 }, { 0,0 }, { 0,0 }, "testGroupName");
-// 		vector<FeedbackCustomStruct*> fdVec;
-// 		for (int i = 0; i < 2; i++) {
-// 			FeedbackCustomStruct* fdPtr = new FeedbackCustomStruct(Led_field(0, 0, 0), Actuator_field(0, 0, 0, 0, 0));
-// 			fdVec.push_back(fdPtr);
-// 
-// 		}
-// 		gfd.putIntoModuleFeedBackVec(fdVec);
-// 		time_point<system_clock> now_time = system_clock::now(); //当前时间  
-// 		time_t now_c = system_clock::to_time_t(now_time);
-// 		gfd.timeStamp = (INT64)now_c;
-// 		bool opt=c.updateGroupFeedBack(gfd);
-// 		if (!opt) {
-// 			cout << "put to queue false" << endl;
-// 		}
-// 		this_thread::sleep_for(std::chrono::milliseconds(defalut_sleeptime));
-// 	
-// 	
-// 	}
+	ConfigManager cManager("resource/config.xml");
+	CacheManager c(cManager,300);
+	c.initCacheManager();
+	int defalut_sleeptime=2000;
+	for (int k = 0; k < 100;k++) {
+		GroupfeedbackCustomStruct gfd({ 0,0 }, { 0,0 }, { 0,0 }, "testGroupName");
+		vector<FeedbackCustomStruct*> fdVec;
+		for (int i = 0; i < 2; i++) {
+			FeedbackCustomStruct* fdPtr = new FeedbackCustomStruct(Led_field(0, 0, 0), Actuator_field(0, 0, 0, 0, 0));
+			fdVec.push_back(fdPtr);
+
+		}
+		gfd.putIntoModuleFeedBackVec(fdVec);
+		auto time_now = chrono::system_clock::now();
+		auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch()); 
+		gfd.timeStamp = (INT64)duration_in_ms.count();
+		bool opt=c.updateGroupFeedBack(gfd);
+		if (!opt) {
+			cout << "put to queue false" << endl;
+		}
+		this_thread::sleep_for(std::chrono::milliseconds(defalut_sleeptime));
+	
+	
+	}
 //-----------------test code for put feedbcak to cache---------------
 
 

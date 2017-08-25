@@ -2,6 +2,7 @@
 #include <mutex>
 #include <condition_variable>
 #include "ConfigManager.h"
+#include <stdexcept>
 CacheManager::CacheManager(ConfigManager& cofManager,int sleep_time_ ):cacheConnect(),canUseRedis(true),sleep_time(sleep_time_),cfgManager(cofManager){
 
 
@@ -17,8 +18,31 @@ void CacheManager::initCacheManager(){
 	}
 	else {
 		this->cacheConnect.setIpAndPort(cogVec.at(0).ip,cogVec.at(0).port);
-		this->isConnect = this->cacheConnect.init();
-		printf("CACHE_MANAGER_THREAD: redis connect status:%d\n", this->isConnect);
+		try
+		{
+			this->isConnect = this->cacheConnect.init();
+			if (this->isConnect) {
+				//去验证密码
+				bool opt=this->cacheConnect.authPwd(cogVec.at(0).password);
+				if (opt) {
+					printf("CACHE_MANAGER_THREAD: redis auth successfully \n");
+					this->isConnect = true;
+				}
+				else {
+					printf("CACHE_MANAGER_THREAD: redis auth failed\n");
+					this->isConnect = false;//验证没通过等于没连
+				}
+			
+			}
+
+
+
+			printf("CACHE_MANAGER_THREAD: redis connect status:%d\n", this->isConnect);
+		}
+		catch (exception* e)
+		{
+			printf("CACHE_MANAGER_THREAD: redis connect error.\n");
+		}
 	}
 
 	this->start();//跑线程

@@ -59,6 +59,7 @@ ConfigManager::ConfigManager(string filePath):groupList(),redisList(),dbList(),s
 							RedisCofig redCog;
 							redCog.ip=v3.second.get<string>("ip");
 							redCog.port=v3.second.get<int>("port");
+							redCog.password= v3.second.get<string>("password");
 							printf("redis :[ip=%s,port=%d]\n",redCog.ip.data(),redCog.port);
 							this->redisList.push_back(redCog);
 						}
@@ -126,6 +127,7 @@ ConfigManager::ConfigManager(string filePath):groupList(),redisList(),dbList(),s
 							ServerConfig sConfig;
 							sConfig.ip = v3.second.get<string>("ip");
 							sConfig.port = v3.second.get<int>("port");
+							
 							printf("server :[ip=%s,port=%d]\n", sConfig.ip.data(), sConfig.port);
 							this->serverList.push_back(sConfig);
 						}

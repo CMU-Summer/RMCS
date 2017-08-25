@@ -245,7 +245,7 @@ public:
 	vector<double> velocitysVec;
 	vector<double> torqueVec;
 	string groupName;
-	LONG timeStamp;
+	INT64 timeStamp;
 	vector<FeedbackCustomStruct*> moduleFeedBackVec;
 
 	GroupfeedbackCustomStruct(vector<double> pVec,
@@ -390,6 +390,7 @@ class RedisCofig {
 public:
 	string ip;
 	int port;
+	string password;
 };
 class DBconfig {
 public:
@@ -582,7 +583,32 @@ public:
 
 
 	}
+	bool authPwd(string password) {
+		if (this->isConnected() == false) return false;
+		std::lock_guard<std::mutex> lk(mut);
+		std::future<cpp_redis::reply> rpF = client.auth(password); 
+		client.sync_commit(std::chrono::milliseconds(3000));//3秒钟延迟发送
+		cpp_redis::reply rp = rpF.get();//等待返回
+		try
+		{
+			if (rp.is_error() == false) {
+				//没出错
+				printf("redis password is right [password:%s]\n", password);
+				return true;
+			}
+			else {
+				printf("redis password is wrong [password:%s]\n", password);
+				return false;
+			}
+		}
+		catch (const std::exception&)
+		{
+			printf("redis auth error! [password:%s]\n", password);
+			return false;
+		}
 
+
+	}
 //发送命令
 	
 	
