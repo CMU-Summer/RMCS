@@ -53,7 +53,7 @@ public:
 
 	bool flushCacheAndItNameList(const string& key ,vector<string>& list);//把东西放进缓存里面
 	bool updateGroupFeedBack(GroupfeedbackCustomStruct gfd);//更新缓存feedbacklist,只增不减
-	 
+	string getGroupCommandJsonStrFromCache();//获取一条命令
 	int sleep_time;
 private:
 	vector<GroupStruct> getGroupInCache_pri(string des);//获取cache中的list

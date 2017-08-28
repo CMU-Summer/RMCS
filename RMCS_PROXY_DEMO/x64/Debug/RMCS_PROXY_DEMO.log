@@ -1,4 +1,5 @@
-﻿  CacheManager.cpp
+﻿  InitManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\src\eigen\src\core\arch\cuda\half.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(159): warning C4996: 'Json::Writer': Use StreamWriter instead
   e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(143): note: 参见“Json::Writer”的声明
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\include\json\writer.h(163): warning C4996: 'Json::Writer::~Writer': Use StreamWriter instead
@@ -53,26 +54,10 @@ e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): warning 
   e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\jsonobjectbase.h(498): note: 此诊断出现在编译器生成的函数“Json::Reader::~Reader(void)”中
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(500): warning C4154: 删除数组表达式；转换到提供的指针
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\common.h(530): warning C4244: “=”: 从“int64_t”转换到“int”，可能丢失数据
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(16): warning C4473: “printf”: 没有为格式字符串传递足够的参数
-  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(16): note: 占位符和其参数预计 1 可变参数，但提供的却是 0 参数
-  e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(16): note: 缺失的可变参数 1 为格式字符串“%d”所需
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(42): warning C4101: “e”: 未引用的局部变量
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(114): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(176): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(202): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(207): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(215): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(243): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\cachemanager.cpp(266): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(335): note: 参见“strncpy”的声明
-  正在生成代码...
-  正在跳过...(未检测到相关更改)
-  ConfigManager.cpp
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(135): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(144): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(77): warning C4172: 返回局部变量或临时变量的地址: gr
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\commandcustomer.h(84): warning C4172: 返回局部变量或临时变量的地址: gr
 cpp_redis.lib(future_client.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(future_client.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
 cpp_redis.lib(redis_client.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(redis_client.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样
 cpp_redis.lib(reply.obj) : warning LNK4099: 未找到 PDB“cpp_redis.pdb”(使用“cpp_redis.lib(reply.obj)”或在“E:\tools\project\RMCS_PROXY_DEMO\x64\Debug\cpp_redis.pdb”中寻找)；正在链接对象，如同没有调试信息一样

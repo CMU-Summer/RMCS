@@ -298,7 +298,26 @@ void CacheManager::customGroupFeedBack(){
 	this->flushCacheGroupFeedBackList(*mapPtr);
 
 }
-	
+string CacheManager::getGroupCommandJsonStrFromCache() {
+	//调用命令获取字符串数组
+	void* str;
+	int argNum = 2;
+	const char* a[] = {"lpop","command_c"};//命令都在command_c里面
+	if (this->isConnect == false)return "";
+	if (this->cacheConnect.setCommndWithArgs(2, a, GET_STR, str)) {
+		
+		string s((*(string*)str));
+		delete str;
+		return s;
+	}
+	else {
+		//成功了 str就是一个string
+		//获取失败了
+		return "";
+	}
+
+
+}
 
 
  //消耗队列里面的groupFeedBack

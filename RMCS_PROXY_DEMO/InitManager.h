@@ -13,7 +13,7 @@
 #include <thread>
 #include "common.h"
 #include <chrono>
-
+#include "ServerListenerApi.h"
 class InitManager
 	/*
 	这个类是一开始初始化的
@@ -87,18 +87,18 @@ public:
 		printf("---------init FeedBackCustomer ---------\n");
 		//初始化回馈消费者
 		FeedBackCustomer fdCustomer(gfd_queue,cacheManger,db, sleepTime);
-		printf("---------init ServerApiManager ---------\n");
+		printf("---------init ServerListener ---------\n");
 		//初始化远程服务器管理
-		
-		ServerApiManager* sMptr=NULL;
-		if (sCof.size() > 0) {
-			 
-			sMptr =new  ServerApiManager(sCof.at(0).ip, sCof.at(0).port, cmd_queue, BUF_SIZE, sleepTime);
-		}
-		else {
-			printf("---------fail to init ServerApiManager ---------\n");
-		
-		}
+		ServerListener serverListener(cmd_queue, cacheManger, sleepTime);
+// 		ServerApiManager* sMptr=NULL;
+// 		if (sCof.size() > 0) {
+// 			 
+// 			sMptr =new  ServerApiManager(sCof.at(0).ip, sCof.at(0).port, cmd_queue, BUF_SIZE, sleepTime);
+// 		}
+// 		else {
+// 			printf("---------fail to init ServerApiManager ---------\n");
+// 		
+// 		}
 		//``````````````````````````````````
 		printf("---------run cache thread ---------\n");
 
@@ -109,15 +109,8 @@ public:
 		cmdCusrom.init();
 		printf("---------run feedbackCustomer thread ---------\n");
 		fdCustomer.init();
-	
-		if (sMptr) {
-			printf("---------run ServerApiListener thread ---------\n");
-			sMptr->init();
-		}
-		else {
-			printf("---------dead ServerApiListener thread ---------\n");
-		
-		}
+		printf("---------run feedbackCustomer thread ---------\n");
+		serverListener.init();
 		printf("--------- working!---------\n");
 		cacheManger.join();
 		printf("---------cacheManger join!---------\n");
