@@ -16,7 +16,7 @@
             </database>
         </databases>
 	<groups>
-		<group name = "configGroup1">
+		<group name = "testGroup">
 			<family name = "SEA-snake">
 				<names>
 					<name>SA011</name>

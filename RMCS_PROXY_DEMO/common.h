@@ -593,17 +593,17 @@ public:
 		{
 			if (rp.is_error() == false) {
 				//Ã»³ö´í
-				printf("redis password is right [password:%s]\n", password);
+				printf("redis password is right [password:%s]\n", password.data());
 				return true;
 			}
 			else {
-				printf("redis password is wrong [password:%s]\n", password);
+				printf("redis password is wrong [password:%s]\n", password.data());
 				return false;
 			}
 		}
 		catch (const std::exception&)
 		{
-			printf("redis auth error! [password:%s]\n", password);
+			printf("redis auth error! [password:%s]\n", password.data());
 			return false;
 		}
 
