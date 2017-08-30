@@ -12,43 +12,44 @@ int main() {
 		return -1;
 	}
 #endif /* _WIN32 */
-	return InitManager::main();
+	//return InitManager::main();
 
 //-----------------test code for put feedbcak to cache---------------
-// 	default_random_engine e;
-// 	e.seed(10); //种子
-// 	uniform_int_distribution<unsigned> u_led(0, 253); //灯随机数
-// 	uniform_real_distribution<double> u_current(0, 0.1); // 电流随机数
-// 	uniform_real_distribution<double> u_position(-0.5, 0.5); // 位置随机数
-// 	uniform_real_distribution<double> u_velocity(-0.3, 0.3); // 速度随机数
-// 	uniform_real_distribution<double> u_torque(-0.3, 1.3); // 速度随机数
-// 	ConfigManager cManager("resource/config.xml");
-// 	CacheManager c(cManager,300);
-// 	c.initCacheManager();
-// 	int defalut_sleeptime=2000;
-// 	for (int k = 0; k < 100;k++) {
-// 		GroupfeedbackCustomStruct gfd({ 0,0 }, { 0,0 }, { 0,0 }, "group1_g");
-// 		vector<FeedbackCustomStruct*> fdVec;
-// 		for (int i = 0; i < 2; i++) {
-// 			double u_voltage = k < 36 ? 36 : k<=46?k:46;
-// 			FeedbackCustomStruct* fdPtr = new FeedbackCustomStruct(Led_field(u_led(e), u_led(e), u_led(e)), Actuator_field(0.3, 0.5,0.7, u_voltage, 0.08));
-// 			fdVec.push_back(fdPtr);
-// 
-// 		}
-// 		gfd.putIntoModuleFeedBackVec(fdVec);
-// 		auto time_now = chrono::system_clock::now();
-// 		auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch()); 
-// 		gfd.timeStamp = (INT64)duration_in_ms.count();
-// 		bool opt=c.updateGroupFeedBack(gfd);
-// 		if (!opt) {
-// 			cout << "put to queue false" << endl;
-// 		}
-// 		this_thread::sleep_for(std::chrono::milliseconds(defalut_sleeptime));
-//-----------------test code for put feedbcak to cache---------------
-	
+	default_random_engine e;
+	e.seed(10); //种子
+	uniform_int_distribution<unsigned> u_led(0, 253); //灯随机数
+	uniform_real_distribution<double> u_current(0, 0.1); // 电流随机数
+	uniform_real_distribution<double> u_position(-0.5, 0.5); // 位置随机数
+	uniform_real_distribution<double> u_velocity(-0.3, 0.3); // 速度随机数
+	uniform_real_distribution<double> u_torque(-0.3, 1.3); // 速度随机数
+	ConfigManager cManager("resource/config.xml");
+	CacheManager c(cManager,300);
+	c.initCacheManager();
+	int defalut_sleeptime=500;
+	for (int k = 0; k < 1500;k++) {
+		GroupfeedbackCustomStruct gfd({ 0,0 }, { 0,0 }, { 0,0 }, "group1_g");
+		vector<FeedbackCustomStruct*> fdVec;
+		for (int i = 0; i < 2; i++) {
+		
+			FeedbackCustomStruct* fdPtr = new FeedbackCustomStruct(Led_field(u_led(e), u_led(e), u_led(e)), Actuator_field(u_position(e),u_velocity(e) ,u_torque(e),u_velocity(e) ,u_current(e)));
+			fdVec.push_back(fdPtr);
+
+		}
+		gfd.putIntoModuleFeedBackVec(fdVec);
+		auto time_now = chrono::system_clock::now();
+		auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch()); 
+		gfd.timeStamp = (INT64)duration_in_ms.count();
+		bool opt=c.updateGroupFeedBack(gfd);
+		if (!opt) {
+			cout << "put to queue false" << endl;
+		}
+		this_thread::sleep_for(std::chrono::milliseconds(defalut_sleeptime));
 	}
+//-----------------test code for put feedbcak to cache---------------
 
 
+
+}
 
 //-------------------test code for Serialize---------------------
 // 	gfd.SetPropertys();
