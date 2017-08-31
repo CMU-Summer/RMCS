@@ -52,11 +52,11 @@ void LookUpManager::run() {
 
 
 
-		//1.更新维护的cacheGroupList列表
+		//1.更新维护的cacheGroupList列表,删除Redis中已被删除的group
 		this->changecacheGroupMap(gst_vec);
 
 
-		//2.给没有异步处理方法的group添加handler
+		//2.给新增的group添加handler
 		this->addHandlerFromGroups(gst_vec);
 
 		
@@ -85,6 +85,33 @@ void LookUpManager::init() {
 
 
 	this->fixedGroup.assign(grpList.begin(),grpList.end()); 
+	
+
+	vector<GroupStruct> groupStructVec;
+	for (int i = 0;i < fixedGroup.size();i++) {
+		GroupStruct groupStruct;
+		string groupName = fixedGroup.at(i).getName();
+		groupName = groupName + "_fix";
+		fixedGroup.at(i).setName(groupName);
+		groupStruct.setName(groupName);
+		vector<FamilyStruct*> familyList = fixedGroup.at(i).familyList;
+		for (int j = 0;j < familyList.size();j++) {
+			FamilyStruct* family = new FamilyStruct();
+			family->setName(familyList.at(j)->getName());
+			vector<NameStruct*> nameList = familyList.at(j)->nameList;
+			for (int k = 0;k < nameList.size();k++) {
+				NameStruct* name = new NameStruct();
+				name->name = nameList.at(k)->name;
+				name->connected = nameList.at(k)->connected;
+				family->nameList.push_back(name);
+			}
+			groupStruct.familyList.push_back(family);
+		}
+
+
+		groupStructVec.push_back(groupStruct);
+	}
+	this->cacheManager.updateCacheGroupStateList(groupStructVec);
 	
 	this->start();//启动线程,还有其他的操作？
 
@@ -247,16 +274,15 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 	}
 	LookUpManager* this_ = this;
 	string* groupName_ = new string(groupName);
+	grp->setFeedbackFrequencyHz(this->default_frequency);
 	grp->addFeedbackHandler([fdbManager,groupName_,&this_](const GroupFeedback* group_fbk)->void{
 		//用fdbManager里面的函数
 		this_->showGroupFeedBackInfo(group_fbk);
 		GroupfeedbackCustomStruct gfb_custom= fdbManager->toGroupFbCustomStruct(group_fbk, groupName_->data());
-		auto time_now = chrono::system_clock::now();
-		auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch());
-		gfb_custom.timeStamp = (INT64)duration_in_ms.count();
+
 		fdbManager->putToQueue(gfb_custom);
 	});
-	grp->setFeedbackFrequencyHz(this->default_frequency);
+	
 	if (type == FIXED_TYPE) {
 		this->fixedGroupMap.insert(map<string, unique_ptr<Group>>::value_type(groupName, std::move(grp))); //保留内存
 	}

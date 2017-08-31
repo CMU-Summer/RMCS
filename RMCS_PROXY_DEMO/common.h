@@ -9,7 +9,7 @@
 #define SET_STR "set_str"
 #define DEL_KEY "del_key"
 #define DEFAULT_SLEEP_TIME 100
-#define DEFAULT_FD_FREQUENCY 10
+#define DEFAULT_FD_FREQUENCY 1
 #define LED_CMD 0
 #define POSITION_CMD 1
 #define TURQUE_CMD 2

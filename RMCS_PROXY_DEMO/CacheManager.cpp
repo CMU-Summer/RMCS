@@ -111,9 +111,15 @@ void CacheManager::customGroupStateMap(){
 
 		//放之前要先判断下，这个group还在不在缓存里面了，因为有可能被删掉
 		char* keyTemp=new char[strlen(it->getName().data())+1];
-		if(this->cacheConnect.isContainKey(strncpy(keyTemp,it->getName().data(),it->getName().length()+1))){
+
+		if( this->cacheConnect.isContainKey(strncpy(keyTemp,it->getName().data(),it->getName().length()+1))){
 			this->flushCacheGroupState(*it);
 		}
+		else if (it->getName().size() > 4) {
+			string postfix = it->getName().substr(it->getName().size() - 4);
+			if(postfix.compare("_fix") == 0 )
+				this->flushCacheGroupState(*it);
+		} 
 		delete[] keyTemp;
 
 	}
