@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-        <sleepTime value="1000"></sleepTime>
+        <sleepTime value="300"></sleepTime>
         <feedbackFrequency value="1" />
         <redisList>
-            <redis ip="47.94.200.159" port="6379" password="rmcsCache..."/>
+            <redis ip="98.142.139.215" port="6379" password="rmcsCache..."/>
         </redisList>
         <servers>
             <server ip="127.0.0.1" port="9293" />

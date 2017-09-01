@@ -6,9 +6,7 @@ void FeedBackCustomer::run(){
 	{
 		
 		customGfd();
-		if(this->sleeptime>0){
-			this_thread::sleep_for(std::chrono::milliseconds(this->sleeptime));
-		}
+		
 		printf("FDBKCUSTOMER__THREAD: feedback Customer is ready for next execute\n");
 	}
 

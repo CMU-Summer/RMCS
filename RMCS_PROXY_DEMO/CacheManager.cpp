@@ -87,35 +87,52 @@ bool CacheManager::updateCacheGroupStateList(vector<GroupStruct> groupStructVec)
 //锁
 bool CacheManager::isConnected(){return this->cacheConnect.isConnected();}//是否正在连接上的
 void CacheManager::customfamilyMap(){
-	shared_ptr<map<string,vector<string>>> mapPtr  = this->family_name_queue.try_pop();
-	if(!mapPtr)return ;//没有取到
+	int index = 0;
+	int size = family_name_queue.size();
+	while (index<size)
+	{
+		shared_ptr<map<string, vector<string>>> mapPtr = this->family_name_queue.try_pop();
+		if (!mapPtr)return;//没有取到
 
-	printf("CACHE_MANAGER_THREAD: get family and names from queue\n");
-	map<string,vector<string>>::iterator it;
-	for(it=mapPtr->begin();it!=mapPtr->end();it++){
+		printf("CACHE_MANAGER_THREAD: get family and names from queue\n");
+		map<string, vector<string>>::iterator it;
+		for (it = mapPtr->begin(); it != mapPtr->end(); it++) {
 			//放进family的集合里面去
 			//缓存里面有family的set 和group 的 set 
-			this->flushCacheAndItNameList(it->first,it->second);
+			this->flushCacheAndItNameList(it->first, it->second);
+		}
+		index++;
 	}
 
 }//消耗队列里面的familyMap，锁
 void CacheManager::customGroupStateMap(){
 	//
-	shared_ptr<vector<GroupStruct>> mapPtr  = this->group_struct_queue.try_pop();
-	if(!mapPtr)return ;//没有取到需要消耗的groupVec
+	int conut = 0;
+	int size = group_struct_queue.size();
+	while (conut<size) {
+		shared_ptr<vector<GroupStruct>> mapPtr = this->group_struct_queue.try_pop();
+		if (!mapPtr)return;//没有取到需要消耗的groupVec
 
 
-	printf("CACHE_MANAGER_THREAD: get group status from queue\n");
-	vector<GroupStruct>::iterator it;
-	for(it=mapPtr->begin();it!=mapPtr->end();it++){
+		printf("CACHE_MANAGER_THREAD: get group status from queue\n");
+		vector<GroupStruct>::iterator it;
+		for (it = mapPtr->begin(); it != mapPtr->end(); it++) {
 
-		//放之前要先判断下，这个group还在不在缓存里面了，因为有可能被删掉
-		char* keyTemp=new char[strlen(it->getName().data())+1];
-		if(this->cacheConnect.isContainKey(strncpy(keyTemp,it->getName().data(),it->getName().length()+1))){
-			this->flushCacheGroupState(*it);
+			//放之前要先判断下，这个group还在不在缓存里面了，因为有可能被删掉
+			char* keyTemp = new char[strlen(it->getName().data()) + 1];
+
+			if (this->cacheConnect.isContainKey(strncpy(keyTemp, it->getName().data(), it->getName().length() + 1))) {
+				this->flushCacheGroupState(*it);
+			}
+			else if (it->getName().size() > 4) {
+				string postfix = it->getName().substr(it->getName().size() - 4);
+				if (postfix.compare("_fix") == 0)
+					this->flushCacheGroupState(*it);
+			}
+			delete[] keyTemp;
+
 		}
-		delete[] keyTemp;
-
+		conut++;
 	}
 
 } // 消耗队列里面的groupStructVec，锁
@@ -289,13 +306,17 @@ bool CacheManager::updateGroupFeedBack(GroupfeedbackCustomStruct gfd){
 
 }//更新缓存feedbacklist,只增不减
 void CacheManager::customGroupFeedBack(){
-	
-	shared_ptr<GroupfeedbackCustomStruct> mapPtr  = this->group_feedback_queue.try_pop();
-	
-	if(!mapPtr)return ;//没有取到需要消耗的groupVec
-	printf("CACHE_MANAGER_THREAD: get one feedback from queue\n");
-
-	this->flushCacheGroupFeedBackList(*mapPtr);
+	int count=0;
+	int size = group_feedback_queue.size();
+	while (count<size)
+	{
+		shared_ptr<GroupfeedbackCustomStruct> mapPtr = this->group_feedback_queue.try_pop();
+		if (!mapPtr)return;//没有取到需要消耗的groupVec
+		printf("CACHE_MANAGER_THREAD: get one feedback from queue\n");
+		this->flushCacheGroupFeedBackList(*mapPtr);
+		mapPtr = this->group_feedback_queue.try_pop();
+		count++;
+	}
 
 }
 string CacheManager::getGroupCommandJsonStrFromCache() {
@@ -318,6 +339,21 @@ string CacheManager::getGroupCommandJsonStrFromCache() {
 
 
 }
-
-
+bool CacheManager::updateFixedGroupToCache(vector<GroupStruct>& gVec ) {
+	for (int i = 0; i < gVec.size();i++) {
+		this->flushFixedGroupNameToCache(gVec.at(i).getName());
+	}
+}
+void  CacheManager::flushFixedGroupNameToCache(string gName) {
+	char* key_ = new char[strlen(gName.data()) + 1];
+	const char* args[] = { "sadd","group", key_};
+	int argNums = 3;
+	void* res=NULL;
+	this->cacheConnect.setCommndWithArgs(argNums,args, ADD_VALUE_TO_SET, res);
+	if ((int*)res <= 0) {
+		printf("CACHE_MANAGER_THREAD: cannot add fixed group to cache \n");
+	}
+	if (!res)delete res; //释放空间
+	delete[] key_; //删除键
+}
  //消耗队列里面的groupFeedBack

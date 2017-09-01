@@ -5,7 +5,6 @@ e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\cthread.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\databasemanager.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\feedbackcustomer.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\feedbackmanager.obj
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\initmanager.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\lookupmanager.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\serverapimanager.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\serverlistener.obj
@@ -20,7 +19,13 @@ e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\kinematics.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\lookup.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\mac_address.obj
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\trajectory.obj
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\cachemanager.obj
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\initmanager.obj
+e:\tools\project\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.pdb
+e:\tools\project\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.exe
+e:\tools\project\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.ilk
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.tlog\cl.command.1.tlog
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.tlog\cl.read.1.tlog
 e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.tlog\cl.write.1.tlog
-e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.tlog\metagen.write.1.tlog
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.tlog\link.command.1.tlog
+e:\tools\project\rmcs_proxy_demo\rmcs_proxy_demo\x64\debug\rmcs_proxy_demo.tlog\link.read.1.tlog

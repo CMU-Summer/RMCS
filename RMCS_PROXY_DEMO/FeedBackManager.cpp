@@ -16,6 +16,8 @@ FeedBackManager::~FeedBackManager(){
 }
 GroupfeedbackCustomStruct FeedBackManager::toGroupFbCustomStruct(const GroupFeedback* group_fdb,string groupName){
 	printf( "change gfd to custom_gfd\n");
+	
+   // positionVec,velVec,torqueVec 无意义
    Eigen::VectorXd vxd= group_fdb->getPosition();//列向量，1列多行
    Eigen::VectorXd vxd1= group_fdb->getTorque();//列向量，1列多行
    Eigen::VectorXd vxd2= group_fdb->getVelocity();//列向量，1列多行
@@ -35,6 +37,8 @@ GroupfeedbackCustomStruct FeedBackManager::toGroupFbCustomStruct(const GroupFeed
 	   velVec.push_back(static_cast<double>( vxd2[j]));
    }
    //获得group的位置速度扭矩
+
+
    vector<FeedbackCustomStruct*> moduleVec;
    for(int j=0;j<group_fdb->size();j++){
 	   //获得每一个的
@@ -44,6 +48,10 @@ GroupfeedbackCustomStruct FeedBackManager::toGroupFbCustomStruct(const GroupFeed
    }
    GroupfeedbackCustomStruct g(positionVec,velVec,torqueVec,groupName);
    g.putIntoModuleFeedBackVec(moduleVec);
+   auto time_now = chrono::system_clock::now();
+   auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch());
+   g.timeStamp = (INT64)duration_in_ms.count();
+
    return g;
 
 

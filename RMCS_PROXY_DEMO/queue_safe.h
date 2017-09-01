@@ -83,6 +83,11 @@ public:
 		std::lock_guard<std::mutex> lk(mut);  
 		return data_queue.empty();  
 	}  
+	int size() const {
+		std::lock_guard<std::mutex> lk(mut);
+		return data_queue.size();
+	
+	}
 }; /* queue_safe */
 
 #endif /* COMMON_SOURCE_CPP_THREADSAFE_QUEUE_H_ */
