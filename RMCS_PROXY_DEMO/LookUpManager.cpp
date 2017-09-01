@@ -219,24 +219,7 @@ vector<GroupStruct> LookUpManager::getGroupListFromConfig(){
 }//从配置文件里面获取
 void LookUpManager::addHandlerFromGroups(vector<GroupStruct> gstVec){
 	//给fixedgroup添加
-	if(fixedGroup.size()>0 && this->fixedAdded == false){
-		printf("LOOKUPMANAGER_THREAD: add FeedBack Handle to Fixed Group\n");
-		for(int i=0;i<fixedGroup.size();i++){
-			if (this->fixedGroupMap.count(this->fixedGroup.at(i).getName())) { 
-				
-				continue; }//不需要进行下面的步骤了
-			vector<string>* familyVec=new vector<string>(),*nameVec = new vector<string>();
-			//获取names和familys
-			string gname=fixedGroup.at(i).getName();
-			this->getFamilyAndNamesFromGroupStruct(fixedGroup.at(i),familyVec,nameVec);
-			//给找到的group添加feedbackManager
-			this->addHandlerForOneGroup(familyVec,nameVec,gname,FIXED_TYPE);
-			//放到Map里面
-			
-			//只加一次
-			delete familyVec,nameVec;
-		}
-	}
+
 	
 	for(int i=0;i<gstVec.size();i++){
 		printf("LOOKUPMANAGER_THREAD: add FeedBack Handle to Cache Group\n");
