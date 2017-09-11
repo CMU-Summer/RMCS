@@ -10,6 +10,7 @@ CacheManager::CacheManager(ConfigManager& cofManager,int sleep_time_ ):cacheConn
 
 }
 CacheManager::~CacheManager(){}
+
 void CacheManager::initCacheManager(){
 	vector<RedisCofig> cogVec=this->cfgManager.getRedisList();
 	if (cogVec.size() <= 0) {
@@ -57,6 +58,12 @@ vector<GroupStruct> CacheManager::getGroupInCache(){
 	return this->getGroupInCache_pri(GET_LIST);
 
 }//获取cache中的list,需要锁
+
+vector<FamilyStruct> CacheManager::getFamilyInCache() {
+	printf("LOOKUPMANAGER_THREAD: get families from cache\n");
+	return this->getFamilyInCache_pri(GET_LIST);
+	
+}
 
 bool CacheManager::updateCacheFamilyAndItsNames(map<string,vector<string>> familyMap){
 	//已经在队列函数中处理了锁
@@ -164,7 +171,58 @@ bool CacheManager::reconnect(){
 	}
 }//重新连接
 
+vector<FamilyStruct> CacheManager::getFamilyInCache_pri(string des) {
+	void* familyP = NULL;
+	int arg_nums = 2;
+	const char* args[] = { "smembers","family", };
+	bool opt = this->cacheConnect.setCommndWithArgs(arg_nums, args, des, familyP);//返回的是向量
 
+	if (opt == false) {
+		printf("LOOKUPMANAGER_THREAD: can not get family list from cache\n");
+		vector<FamilyStruct> emptyGroup;
+		return emptyGroup;
+
+	}
+	else {
+		printf("LOOKUPMANAGER_THREAD: get family list from cache\n");
+
+	}
+	vector<string>& f_strs = *(vector<string>*)familyP;
+	vector<FamilyStruct> familyV;
+	for (int i = 0;i<f_strs.size();i++) {
+		FamilyStruct f;
+		f.setName(f_strs.at(i).data()); //设置family_name
+		//取str
+		void* str = NULL;
+		char* family_key_ = new char[strlen(f_strs.at(i).data()) + 1];
+		int arg_nums_1 = 2;
+		const char* args_1[] = { "smembers",strncpy(family_key_,f_strs.at(i).data(),f_strs.at(i).length() + 1) };
+		bool opt = this->cacheConnect.setCommndWithArgs(arg_nums_1, args_1, GET_STR, str);
+
+		if (opt == false) {
+			printf("CACHEMANAGER_THREAD: can not get family %s from cache\n", f_strs.at(i).data());
+
+		}
+		else {
+			printf("CACHEMANAGER_THREAD: get family %s from cache\n", f_strs.at(i).data());
+			vector<string>& n_strs = *(vector<string>*)str;
+			vector<NameStruct*> names_vec;
+			for (int j = 0;j < n_strs.size();j++) {
+				NameStruct* name_st = new NameStruct();
+				name_st->name = n_strs.at(j);
+				names_vec.push_back(name_st);
+			}
+			f.setNameList(names_vec);
+			delete str;
+			delete[] family_key_;
+		}
+		familyV.push_back(f);
+	}
+	delete familyP;
+	printf("CACHE_MANAGER_THREAD: delete familyP\n");
+	return familyV; //返回
+
+}
 
 
 vector<GroupStruct> CacheManager::getGroupInCache_pri(string des){
@@ -175,11 +233,13 @@ vector<GroupStruct> CacheManager::getGroupInCache_pri(string des){
 		bool opt = this->cacheConnect.setCommndWithArgs(arg_nums,args,des,groupP);//返回的是向量
 			
 		if (opt == false) {
-			printf("LOOKUPMANAGER_THREAD: can not get group list from cache\n");
+			printf("CACHE_MANAGER_THREAD: can not get group list from cache\n");
+			vector<GroupStruct> nullGroup;
+			return nullGroup;
 		
 		}
 		else {
-			printf("LOOKUPMANAGER_THREAD: get group list from cache\n");
+			printf("CACHE_MANAGER_THREAD: get group list from cache\n");
 		
 		}
 		vector<string>& g_strs = *(vector<string>*)groupP;
@@ -196,16 +256,13 @@ vector<GroupStruct> CacheManager::getGroupInCache_pri(string des){
 				string* a = (string*)str;
 				g.DeSerialize(a->data());
 				delete str;
-				delete[] group_key_;
-				
+				delete[] group_key_;	
 				groupV.push_back(g);
 			
 			}
-			
-			
 	}
 		delete groupP;
-		printf("LOOKUPMANAGER_THREAD: delete groupP\n");
+		printf("CACHE_MANAGER_THREAD: delete groupP\n");
 		return groupV; //返回
 
 	
@@ -343,9 +400,11 @@ bool CacheManager::updateFixedGroupToCache(vector<GroupStruct>& gVec ) {
 	for (int i = 0; i < gVec.size();i++) {
 		this->flushFixedGroupNameToCache(gVec.at(i).getName());
 	}
+	return true; // = = 
 }
 void  CacheManager::flushFixedGroupNameToCache(string gName) {
 	char* key_ = new char[strlen(gName.data()) + 1];
+	strncpy(key_, gName.data(), gName.length() + 1);
 	const char* args[] = { "sadd","group", key_};
 	int argNums = 3;
 	void* res=NULL;
@@ -357,3 +416,94 @@ void  CacheManager::flushFixedGroupNameToCache(string gName) {
 	delete[] key_; //删除键
 }
  //消耗队列里面的groupFeedBack
+
+ModuleInfo CacheManager::getLastModuleInfo(string familyName, string name) {
+	void* modP = NULL;
+	int arg_nums = 4;
+
+	string key = familyName + "_" + name;
+	char* key_ = new char[strlen(key.data()) + 1];
+	strncpy(key_, key.data(), key.length() + 1);
+	const char* args[] = { "lrange", key_,"-1", "-1" };
+
+	bool opt = this->cacheConnect.setCommndWithArgs(arg_nums, args, GET_LIST, modP);//返回的是向量
+
+	if (opt == false) {
+		printf("CACHE_MANAGER_THREAD: can not get module %s_%s from cache\n", familyName, name);
+		ModuleInfo mod;
+		mod.startTime = -1;
+		mod.endTime = -1;
+		return mod;
+	}
+	else {
+		printf("CACHE_MANAGER_THREAD: get module %s_%s from cache\n",familyName, name);
+		vector<string>& mod_strs = *(vector<string>*)modP;
+		vector<ModuleInfo> modV;
+		if (mod_strs.size() == 0) {
+			printf("CACHE_MANAGER_THREAD: can not get module %s_%s from cache\n", familyName, name);
+			ModuleInfo mod;
+			mod.startTime = -1;
+			mod.endTime = -1;
+			return mod;
+		}
+		for (int i = 0;i < mod_strs.size();i++) {
+			ModuleInfo mod;
+			string s = mod_strs.at(i);
+			mod.DeSerialize(s.data());
+			modV.push_back(mod);
+		}
+		if(!modP)delete modP;
+		delete[] key_;
+		return modV.at(0);
+	}
+}
+
+
+void CacheManager::insertModuleInfo(string familyName, string name, INT64 timestamp) {
+	ModuleInfo mod;
+	mod.startTime = timestamp;
+	mod.endTime = -1;
+	mod.SetPropertys();
+	string s(mod.Serialize());
+	char* objStr = new char[strlen(s.data()) + 1];
+	strncpy(objStr, s.data(), s.length() + 1);
+	string key = familyName + "_" + name;
+	char* key_ = new char[strlen(key.data()) + 1];
+	strncpy(key_, key.data(), key.length() + 1);
+	const char* args[] = { "rpush", key_, objStr };
+
+	int arg_nums = 3;
+	void* res = NULL;
+	this->cacheConnect.setCommndWithArgs(arg_nums, args, SET_STR, res);
+	if (res != NULL)delete res;
+	delete[] key_, objStr;
+
+
+	return;
+
+}
+
+void CacheManager::updateModuleInfo(string familyName, string name, ModuleInfo mod_, INT64 endTime) {
+	ModuleInfo mod;
+	mod.SetPropertys();
+	mod.startTime = mod_.startTime;
+	mod.endTime = endTime;
+	string s(mod.Serialize());
+	char* objStr = new char[strlen(s.data()) + 1];
+	strncpy(objStr, s.data(), s.length() + 1);
+
+	string key = familyName + "_" + name;
+	char* key_ = new char[strlen(key.data()) + 1];
+	strncpy(key_, key.data(), key.length() + 1);
+	const char* args[] = { "lset", key_, "-1", objStr };
+
+	int arg_nums = 4;
+	void* res = NULL;
+	this->cacheConnect.setCommndWithArgs(arg_nums, args, SET_STR, res);
+	if (res != NULL)delete res;
+	delete[] key_, objStr;
+
+
+	return;
+
+}

@@ -57,6 +57,7 @@ private:
 	map<string,vector<string>> getNewestMapFromHibi();//获得最新的family map的引用,返回处的函数中进行销毁
 	bool isFirstRun;//是否第一次运行，是的话为true，否则为false,初始化为false,第一次run的时候不去读，等sleep时间,然后getEntryList
 
+	vector<FamilyStruct> getFamilyListFromCache(); //从缓存中获取当前所有family信息
 	vector<GroupStruct> getGroupListFromCache();//从缓存里获取当前用户定义的group的信息,到map去查
 	void updateGroupConncetState(vector<GroupStruct> groupInCache,int default_timeout=0);//刷新group的连接状态,这里面的
 	bool updateGroupsStateInCache(vector<GroupStruct> groupStrut);//这个放到cacheManager的队列里面去，能放进去就是true
@@ -66,6 +67,7 @@ private:
 
 	vector<GroupStruct> getGroupListFromConfig();//从配置文件里面获取
 	
+	void updateModuleLoad(vector<FamilyStruct> fst_vec); //更新维护模块开关机信息
 	void addHandlerFromGroups(vector<GroupStruct> gst_vec);//为fixed和缓存的group加处理函数
 	void addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName,int type);//添加一个group的
 	void getFamilyAndNamesFromGroupStruct(GroupStruct& thisGroup,vector<string>* &familysVec,vector<string>* &namesVec);

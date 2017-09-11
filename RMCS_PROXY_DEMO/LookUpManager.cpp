@@ -50,7 +50,10 @@ void LookUpManager::run() {
 		//再次确认，抽取cache里面的group，更新状态；更新cahce里面的family和name的关系表
 		vector<GroupStruct> gst_vec = this->getGroupListFromCache();//取出来
 
+		vector<FamilyStruct> fst_vec = this->getFamilyListFromCache(); 
 
+		// 0.更新维护模块开关机信息
+		this->updateModuleLoad(fst_vec);
 
 		//1.更新维护的cacheGroupList列表,删除Redis中已被删除的group
 		this->changecacheGroupMap(gst_vec);
@@ -156,6 +159,11 @@ vector<GroupStruct> LookUpManager::getGroupListFromCache(){
 
 }//从缓存里获取当前用户定义的group的信息,到map去查
 
+vector<FamilyStruct> LookUpManager::getFamilyListFromCache() {
+	return this->cacheManager.getFamilyInCache();
+
+}//从缓存里获取当前缓存中的family的信息
+
 
 void LookUpManager::updateGroupConncetState(vector<GroupStruct> groupInCache,int default_timeout){
 	//根据这些group，去判断是否连接了
@@ -181,6 +189,56 @@ bool LookUpManager::updateGroupsStateInCache(vector<GroupStruct> groupStrut){
 	return this->cacheManager.updateCacheGroupStateList(groupStrut);
 }//这个放到cacheManager的队列里面去，能放进去就是true
 
+
+void LookUpManager::updateModuleLoad(vector<FamilyStruct> fst_vec) {
+	string familyName;
+	string name;
+	for (int i = 0;i < fst_vec.size();i++) {
+		FamilyStruct family_st = fst_vec.at(i);
+		familyName = family_st.getName();
+		for (int j = 0;j < family_st.nameList.size();j++) {
+			name = family_st.nameList.at(j)->name;
+			unique_ptr<Group> grp = this->lookup.getConnectedGroupFromName(name, familyName);
+			ModuleInfo mod = this->cacheManager.getLastModuleInfo(familyName, name);
+			if (grp) {
+				if (mod.startTime != -1 && mod.endTime == -1) {
+					continue; // 模块已经开启，并且已有记录
+				}
+				else {
+					// 已有模块或者新模块刚开启，写入新纪录
+					auto time_now = chrono::system_clock::now();
+					auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch());
+					INT64 timestamp = (INT64)duration_in_ms.count();
+					this->cacheManager.insertModuleInfo(familyName, name, timestamp);
+				}
+
+			}
+			else {
+				if (mod.startTime == -1) {
+					continue; // 出现异常，但不影响整体记录
+				}
+				else {
+					if (mod.endTime == -1) {
+						// 更新已开启模块的关闭时间
+						auto time_now = chrono::system_clock::now();
+						auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch());
+						INT64 endTime = (INT64)duration_in_ms.count();
+						this->cacheManager.updateModuleInfo(familyName, name, mod, endTime);
+					}
+					else {
+						continue; //模块已关闭，并且已被成功记录
+					}
+				}
+
+			}
+		}
+
+	}
+
+}
+
+
+
 vector<GroupStruct> LookUpManager::getGroupsStateFromHeibi(vector<GroupStruct> groupVec,int default_int){
 	for(int i=0;i<groupVec.size();i++){
 		for(int j=0;j<groupVec.at(i).getFamilyList().size();j++){
@@ -202,8 +260,6 @@ vector<GroupStruct> LookUpManager::getGroupsStateFromHeibi(vector<GroupStruct> g
 		}
 	}	
 	return groupVec;//更新完返回
-
-
 
 
 }//从heibi里面获得cahce里面定义的group的连接状态
@@ -303,6 +359,8 @@ void LookUpManager::showGroupFeedBackInfo(const GroupFeedback* group_fbk) {
 
 
 }
+
+
 void LookUpManager::changecacheGroupMap(vector<GroupStruct> groupStruts) {
 	map<string, string> cMap;
 	//构建一个Map

@@ -29,11 +29,14 @@ private:
 
 	std::condition_variable data_cond;  
 public:
-
+	void CacheManager::updateModuleInfo(string familyName, string name, ModuleInfo mod_, INT64 endTime);
+	void CacheManager::insertModuleInfo(string familyName, string name, INT64 timestamp);
+	ModuleInfo CacheManager::getLastModuleInfo(string familyName, string name);
 	CacheManager(ConfigManager& cofManager, int sleep_time = DEFAULT_SLEEP_TIME);
 	~CacheManager();
 	void initCacheManager();//链接，跑线程等等操作
 	CacheConnection cacheConnect;
+	vector<FamilyStruct> getFamilyInCache();//获取cache中的family
 	vector<GroupStruct> getGroupInCache();//获取cache中的list
 	bool updateCacheFamilyAndItsNames(map<string,vector<string>> familyMap);
 	//函数内部放入队列
@@ -57,6 +60,7 @@ public:
 	bool updateFixedGroupToCache(vector<GroupStruct>& fixedGroupVec);//
 	int sleep_time;
 private:
+	vector<FamilyStruct> getFamilyInCache_pri(string des);//获取中的cache中的family
 	vector<GroupStruct> getGroupInCache_pri(string des);//获取cache中的list
 	bool flushCacheGroupState(GroupStruct gst);//刷新缓存里面的groupstrut
 	bool flushCacheGroupFeedBackList(GroupfeedbackCustomStruct gfd);//刷新远端缓存里面的groupFeedback

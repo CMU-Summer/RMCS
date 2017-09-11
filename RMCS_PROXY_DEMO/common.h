@@ -30,6 +30,24 @@
 	#include <Winsock2.h>
 #endif /* _WIN32 */
 using namespace std;
+class ModuleInfo :public CJsonObjectBase {
+public:
+	INT64 startTime;
+	INT64 endTime;
+
+	ModuleInfo::ModuleInfo() :startTime(-1), endTime(-1) {
+		this->SetPropertys();
+	}
+
+	ModuleInfo::~ModuleInfo() {};
+
+	virtual void SetPropertys() {
+		this->clearProperty();
+		this->SetProperty("startTime", CJsonObjectBase::asInt64, &startTime);
+		this->SetProperty("endTime", CJsonObjectBase::asInt64, &endTime);
+	}
+};
+
 class NameStruct :public CJsonObjectBase  {
 public:
 	string name;
