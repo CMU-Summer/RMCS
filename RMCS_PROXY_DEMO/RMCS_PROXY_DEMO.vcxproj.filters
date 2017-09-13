@@ -36,9 +36,6 @@
     <ClInclude Include="DataBaseManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ServerApiManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CacheManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -94,9 +91,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="JsonObjectBase.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerListenerApi.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -156,12 +150,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\trajectory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerApiManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerListener.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

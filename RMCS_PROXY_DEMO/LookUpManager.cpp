@@ -87,7 +87,7 @@ void LookUpManager::run() {
 
 } // override run function,to find 
 
-void LookUpManager::reset() {
+void LookUpManager::forceSetEndTime() {
 	this->cacheManager.forceSetEndTime(false);
 }
 
@@ -134,7 +134,7 @@ void LookUpManager::init() {
 	this->start();//启动线程,还有其他的操作？
 
 }//init the lookupManager,比如跑起来
-//----------------------
+
 void LookUpManager::updateFamilyAndNamesMap(map<string,vector<string>> newFandNMap){
 	
 	this->cacheManager.updateCacheFamilyAndItsNames(newFandNMap);

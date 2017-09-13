@@ -34,7 +34,6 @@ class LookUpManager:public CThread{
 	*/
 
 private:
-	//------------------------
 	
 	hebi::Lookup& lookup; //hebi接口对象
 	int default_frequency ;
@@ -49,11 +48,8 @@ private:
 	ConfigManager& configManager;
 	int sleep_time; //休眠时间，取默认值
 	bool fixedAdded;
-	//----------------------
 	
 
-
-	//----------------------
 	void updateFamilyAndNamesMap(map<string,vector<string>> newFandNMap);//更新缓存中的map,指针在函数内进行销毁
 	map<string,vector<string>> getNewestMapFromHibi();//获得最新的family map的引用,返回处的函数中进行销毁
 	bool isFirstRun;//是否第一次运行，是的话为true，否则为false,初始化为false,第一次run的时候不去读，等sleep时间,然后getEntryList
@@ -73,7 +69,7 @@ private:
 	void addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName,int type);//添加一个group的
 	void getFamilyAndNamesFromGroupStruct(GroupStruct& thisGroup,vector<string>* &familysVec,vector<string>* &namesVec);
 	void showGroupFeedBackInfo(const GroupFeedback* group_fbk);//展示group的信息
-	//-----------------------
+
 public:
 	bool stop_flag; // stop signal
 	LookUpManager(
@@ -91,12 +87,12 @@ public:
 	//引用要在初始化列表中赋值
 	//lookup在里面创建
 	~LookUpManager();
-	void LookUpManager::reset();
+	void LookUpManager::forceSetEndTime();
 
 	void run() override; // override run function,to find 
 	void init() ;//init the lookupManager,比如跑起来
 	hebi::Lookup& getLookUp(){return this->lookup;}
-	//-------------------
+
 	static const int  DEAULT_SLEEP_TIME=50; //默认的休眠时间
 
 

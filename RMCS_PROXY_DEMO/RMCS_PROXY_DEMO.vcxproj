@@ -31,8 +31,6 @@
     <ClInclude Include="JsonObjectBase.h" />
     <ClInclude Include="LookUpManager.h" />
     <ClInclude Include="queue_safe.h" />
-    <ClInclude Include="ServerApiManager.h" />
-    <ClInclude Include="ServerListenerApi.h" />
     <ClInclude Include="src\color.hpp" />
     <ClInclude Include="src\command.hpp" />
     <ClInclude Include="src\feedback.hpp" />
@@ -57,8 +55,6 @@
     <ClCompile Include="FeedBackManager.cpp" />
     <ClCompile Include="InitManager.cpp" />
     <ClCompile Include="LookUpManager.cpp" />
-    <ClCompile Include="ServerApiManager.cpp" />
-    <ClCompile Include="ServerListener.cpp" />
     <ClCompile Include="src\command.cpp" />
     <ClCompile Include="src\feedback.cpp" />
     <ClCompile Include="src\group.cpp" />

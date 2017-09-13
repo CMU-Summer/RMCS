@@ -8,12 +8,10 @@
 #include "CommandCustomer.h"
 #include "FeedBackCustomer.h"
 #include "FeedBackManager.h"
-#include "ServerApiManager.h"
 #include <src/lookup.hpp>
 #include <thread>
 #include "common.h"
 #include <chrono>
-#include "ServerListenerApi.h"
 #include <stdlib.h>
 class InitManager
 	/*
@@ -29,11 +27,7 @@ class InitManager
 {
 public:
 
-
-
 	InitManager() {
-	
-	
 	
 	}
 	static int main(){
@@ -82,27 +76,15 @@ public:
 		printf("---------init lookupManager ---------\n");
 		//初始化lookup线程
 		LookUpManager lkManager(cacheManger,gfd_queue,lookup,cfgManager,cacheGroupMap_,fixedGroupMap_,sleepTime,fd_hz);
-//		printf("---------init CommandCustomer ---------\n");
-//		//初始化命令消费者
+//       初始化命令消费者
+//       printf("---------init CommandCustomer ---------\n");
 //		CommandCustomer cmdCusrom(cmd_queue,cfgManager,cacheGroupMap_,fixedGroupMap_, sleepTime);
+		
+        //初始化回馈消费者
 		printf("---------init FeedBackCustomer ---------\n");
-		//初始化回馈消费者
 		FeedBackCustomer fdCustomer(gfd_queue,cacheManger,db, sleepTime);
-		printf("---------init ServerListener ---------\n");
-		//初始化远程服务器管理
-		ServerListener serverListener(cmd_queue, cacheManger, sleepTime);
-// 		ServerApiManager* sMptr=NULL;
-// 		if (sCof.size() > 0) {
-// 			 
-// 			sMptr =new  ServerApiManager(sCof.at(0).ip, sCof.at(0).port, cmd_queue, BUF_SIZE, sleepTime);
-// 		}
-// 		else {
-// 			printf("---------fail to init ServerApiManager ---------\n");
-// 		
-// 		}
-		//``````````````````````````````````
-		printf("---------run cache thread ---------\n");
 
+		printf("---------run cache thread ---------\n");
 		cacheManger.initCacheManager();//1
 		printf("---------run lookupManager thread ---------\n");
 		lkManager.init();//2
@@ -110,8 +92,7 @@ public:
 //		cmdCusrom.init();
 		printf("---------run feedbackCustomer thread ---------\n");
 		fdCustomer.init();//3
-//		printf("---------run feedbackCustomer thread ---------\n");
-//		serverListener.init();//
+
 		printf("--------- working!---------\n");
 
 		while (true) {
@@ -120,8 +101,7 @@ public:
 			cin.sync();
 			cin >> command;
 			if (command == "exit") { // if receive STOP_COMMAND
-				lkManager.reset();
-									 //cacheManger.forceSetEndTime(false);
+				lkManager.forceSetEndTime();
 				cacheManger.stop_flag = true;
 				lkManager.stop_flag = true;
 				fdCustomer.stop_flag = true;
@@ -146,15 +126,11 @@ public:
 	}
 	~InitManager() {
 	
-	
-	
 	}
 
 private:
 
 };
-
-
 
 
 #endif
