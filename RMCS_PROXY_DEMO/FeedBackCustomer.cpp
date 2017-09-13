@@ -4,7 +4,8 @@
 void FeedBackCustomer::run(){
 	while (true)
 	{
-		
+		if (stop_flag) // if stop signal received
+			return;
 		customGfd();
 		
 		printf("FDBKCUSTOMER__THREAD: feedback Customer is ready for next execute\n");
@@ -14,7 +15,7 @@ void FeedBackCustomer::run(){
 }
 
 void FeedBackCustomer::init(){
-
+	stop_flag = false;
 	this->start();//跑起来
 } //初始化
 

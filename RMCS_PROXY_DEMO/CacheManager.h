@@ -20,6 +20,7 @@ class CacheManager:public CThread
 	提供缓存中的列表或者map的操作接口
 	*/
 private:
+
 	bool isConnect;//是否已经连接
 	queue_safe<map<string,vector<string>>> family_name_queue;
 	queue_safe<vector<GroupStruct>> group_struct_queue;//主要用来刷
@@ -29,6 +30,8 @@ private:
 
 	std::condition_variable data_cond;  
 public:
+	bool stop_flag; // stop signal
+	void CacheManager::forceSetEndTime(bool flag); // 强行设置最后一条记录的endTime
 	void CacheManager::updateModuleInfo(string familyName, string name, ModuleInfo mod_, INT64 endTime);
 	void CacheManager::insertModuleInfo(string familyName, string name, INT64 timestamp);
 	ModuleInfo CacheManager::getLastModuleInfo(string familyName, string name);

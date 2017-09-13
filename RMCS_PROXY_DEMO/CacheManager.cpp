@@ -12,6 +12,7 @@ CacheManager::CacheManager(ConfigManager& cofManager,int sleep_time_ ):cacheConn
 CacheManager::~CacheManager(){}
 
 void CacheManager::initCacheManager(){
+	stop_flag = false;
 	vector<RedisCofig> cogVec=this->cfgManager.getRedisList();
 	if (cogVec.size() <= 0) {
 		printf("CACHE_MANAGER_THREAD: no redis in config:%d\n");
@@ -149,6 +150,9 @@ void CacheManager::setIpAndPort(string ip_,string port_){
 void CacheManager::run(){
 	while (true)
 	{
+		if (stop_flag) { // if stop flag received
+			return;
+		}
 		//cout<<"lookupManager thread work"<<endl;
 		printf("CACHE_MANAGER_THREAD: cache manager thread work\n");
 		customfamilyMap();//消耗下队列
@@ -429,18 +433,18 @@ ModuleInfo CacheManager::getLastModuleInfo(string familyName, string name) {
 	bool opt = this->cacheConnect.setCommndWithArgs(arg_nums, args, GET_LIST, modP);//返回的是向量
 
 	if (opt == false) {
-		printf("CACHE_MANAGER_THREAD: can not get module %s_%s from cache\n", familyName, name);
+		printf("CACHE_MANAGER_THREAD: can not get module %s_%s from cache\n", familyName.data(), name.data());
 		ModuleInfo mod;
 		mod.startTime = -1;
 		mod.endTime = -1;
 		return mod;
 	}
 	else {
-		printf("CACHE_MANAGER_THREAD: get module %s_%s from cache\n",familyName, name);
+		printf("CACHE_MANAGER_THREAD: get module %s_%s from cache\n",familyName.data(), name.data());
 		vector<string>& mod_strs = *(vector<string>*)modP;
 		vector<ModuleInfo> modV;
 		if (mod_strs.size() == 0) {
-			printf("CACHE_MANAGER_THREAD: can not get module %s_%s from cache\n", familyName, name);
+			printf("CACHE_MANAGER_THREAD: can not get module %s_%s from cache\n", familyName.data(), name.data());
 			ModuleInfo mod;
 			mod.startTime = -1;
 			mod.endTime = -1;
@@ -507,3 +511,34 @@ void CacheManager::updateModuleInfo(string familyName, string name, ModuleInfo m
 	return;
 
 }
+
+void CacheManager::forceSetEndTime(bool flag) {
+	string familyName;
+	string name;
+	vector<FamilyStruct> fst_vec = this->getFamilyInCache_pri(GET_LIST);
+	for (int i = 0;i < fst_vec.size();i++) {
+		FamilyStruct family_st = fst_vec.at(i);
+		familyName = family_st.getName();
+		for (int j = 0;j < family_st.nameList.size();j++) {
+			name = family_st.nameList.at(j)->name;
+			ModuleInfo mod = this->getLastModuleInfo(familyName, name);
+			if (mod.startTime != -1 && mod.endTime == -1) {
+				if (flag == true) {
+					// Do error marking at the init time
+					INT64 endTime = -2;
+					this->updateModuleInfo(familyName, name, mod, endTime);
+				}
+				else {
+					// Force set end time at abnormal closing
+					auto time_now = chrono::system_clock::now();
+					auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(time_now.time_since_epoch());
+					INT64 endTime = (INT64)duration_in_ms.count();
+					this->updateModuleInfo(familyName, name, mod, endTime);
+				}
+			}
+
+		}
+	}
+
+}
+

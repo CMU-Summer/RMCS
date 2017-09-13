@@ -14,6 +14,7 @@
 #include "common.h"
 #include <chrono>
 #include "ServerListenerApi.h"
+#include <stdlib.h>
 class InitManager
 	/*
 	这个类是一开始初始化的
@@ -54,7 +55,7 @@ public:
 		vector<DBconfig>  dbCof=cfgManager.getDbConfig();
 		CacheManager* cacheMangerPtr=NULL;
 		LookUpManager* lkManagerPtr = NULL;
-		CommandCustomer* cmdCusromPtr = NULL;
+//		CommandCustomer* cmdCusromPtr = NULL;
 		FeedBackCustomer* fdCustomerPtr = NULL;
 
 		if (cfgManager.getSleepTime() <= DEFAULT_SLEEP_TIME) {
@@ -81,9 +82,9 @@ public:
 		printf("---------init lookupManager ---------\n");
 		//初始化lookup线程
 		LookUpManager lkManager(cacheManger,gfd_queue,lookup,cfgManager,cacheGroupMap_,fixedGroupMap_,sleepTime,fd_hz);
-		printf("---------init CommandCustomer ---------\n");
-		//初始化命令消费者
-		CommandCustomer cmdCusrom(cmd_queue,cfgManager,cacheGroupMap_,fixedGroupMap_, sleepTime);
+//		printf("---------init CommandCustomer ---------\n");
+//		//初始化命令消费者
+//		CommandCustomer cmdCusrom(cmd_queue,cfgManager,cacheGroupMap_,fixedGroupMap_, sleepTime);
 		printf("---------init FeedBackCustomer ---------\n");
 		//初始化回馈消费者
 		FeedBackCustomer fdCustomer(gfd_queue,cacheManger,db, sleepTime);
@@ -102,29 +103,45 @@ public:
 		//``````````````````````````````````
 		printf("---------run cache thread ---------\n");
 
-		cacheManger.initCacheManager();
+		cacheManger.initCacheManager();//1
 		printf("---------run lookupManager thread ---------\n");
-		lkManager.init();
-		printf("---------run commandCustomer thread ---------\n");
-		cmdCusrom.init();
+		lkManager.init();//2
+//		printf("---------run commandCustomer thread ---------\n");
+//		cmdCusrom.init();
 		printf("---------run feedbackCustomer thread ---------\n");
-		fdCustomer.init();
-		printf("---------run feedbackCustomer thread ---------\n");
-		serverListener.init();
+		fdCustomer.init();//3
+//		printf("---------run feedbackCustomer thread ---------\n");
+//		serverListener.init();//
 		printf("--------- working!---------\n");
+
+		while (true) {
+			string command;
+			cin.clear();
+			cin.sync();
+			cin >> command;
+			if (command == "exit") { // if receive STOP_COMMAND
+				lkManager.reset();
+									 //cacheManger.forceSetEndTime(false);
+				cacheManger.stop_flag = true;
+				lkManager.stop_flag = true;
+				fdCustomer.stop_flag = true;
+				break;
+			}
+				
+		}
 		cacheManger.join();
 		printf("---------cacheManger join!---------\n");
-		lkManager.join();
-		printf("---------lkManager join!---------\n");
-		cmdCusrom.join();
-		printf("---------cmdCusrom join!---------\n");
 		fdCustomer.join();
 		printf("---------fdCustomer join!---------\n");
-		//sMptr->join();
-		printf("---------serverListener join!---------\n");
-		int i;
-		cin >> i;
-		return 0;
+		lkManager.join();
+		
+		printf("---------lkManager join!---------\n");
+//		cmdCusrom.join();
+//		printf("---------cmdCusrom join!---------\n");
+
+		printf("---------RMCS All Threads Stopped!\n-----------");
+
+		exit(1);
 		
 	}
 	~InitManager() {

@@ -40,13 +40,17 @@ LookUpManager::LookUpManager(CacheManager& cacheManager_,
 //引用要在初始化列表中赋值
 //lookup在里面创建
 LookUpManager::~LookUpManager(){
-	//没有确定需要释放什么东西
+	
+	// 进行异常处理,将所有不完整的记录的结束时间全部置位
+	this->cacheManager.forceSetEndTime(false);
 
 
 }
 void LookUpManager::run() {
 	//逻辑运行的地方
 	while(true){
+		if (stop_flag) return; // if stop signal reveived
+
 		//再次确认，抽取cache里面的group，更新状态；更新cahce里面的family和name的关系表
 		vector<GroupStruct> gst_vec = this->getGroupListFromCache();//取出来
 
@@ -82,7 +86,16 @@ void LookUpManager::run() {
 
 
 } // override run function,to find 
+
+void LookUpManager::reset() {
+	this->cacheManager.forceSetEndTime(false);
+}
+
 void LookUpManager::init() {
+	stop_flag = false;
+	
+	this->cacheManager.forceSetEndTime(true);
+
 	//获取
 	vector<GroupStruct> grpList=this->getGroupListFromConfig();
 
@@ -234,7 +247,10 @@ void LookUpManager::updateModuleLoad(vector<FamilyStruct> fst_vec) {
 		}
 
 	}
-
+	// Release the resource
+	for (int i = 0;i < fst_vec.size();i++) {
+		fst_vec.at(i).freeStruct();
+	}
 }
 
 
@@ -316,12 +332,14 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 	LookUpManager* this_ = this;
 	string* groupName_ = new string(groupName);
 	grp->setFeedbackFrequencyHz(this->default_frequency);
-	grp->addFeedbackHandler([fdbManager,groupName_,&this_](const GroupFeedback* group_fbk)->void{
+
+	grp->addFeedbackHandler([fdbManager, groupName_, &this_](const GroupFeedback* group_fbk)->void {
 		//用fdbManager里面的函数
 		this_->showGroupFeedBackInfo(group_fbk);
-		GroupfeedbackCustomStruct gfb_custom= fdbManager->toGroupFbCustomStruct(group_fbk, groupName_->data());
+		GroupfeedbackCustomStruct gfb_custom = fdbManager->toGroupFbCustomStruct(group_fbk, groupName_->data());
 
 		fdbManager->putToQueue(gfb_custom);
+
 	});
 	
 	if (type == FIXED_TYPE) {

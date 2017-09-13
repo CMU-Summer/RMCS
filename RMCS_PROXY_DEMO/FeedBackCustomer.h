@@ -16,11 +16,13 @@ class FeedBackCustomer:public CThread{
 	//可读化feedback里面已经有一个具体的group信息，不用担心无法确定是那个group的feedback
 	//调用缓存接口，写入到服务器缓存里面去
 private: 
+	
 	queue_safe<GroupfeedbackCustomStruct>& gfd_quee;
 	CacheManager& cacheManager;
 	DataBaseManager& dbManager;
 	int sleeptime;
 public:
+	bool stop_flag; // stop signal
 	FeedBackCustomer(queue_safe<GroupfeedbackCustomStruct>& q,CacheManager& cacheManager_,DataBaseManager dbManager_,int sleeptime_=DEFAULT_SLEEP_TIME):
 	cacheManager(cacheManager_),
 	dbManager(dbManager_),
