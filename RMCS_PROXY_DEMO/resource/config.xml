@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
         <sleepTime value="300"></sleepTime>
-        <feedbackFrequency value="1" />
+        <feedbackFrequency value="1"/>
         <redisList>
             <redis ip="98.142.139.215" port="6379" password="rmcsCache..."/>
         </redisList>

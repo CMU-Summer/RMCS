@@ -74,5 +74,4 @@ void FeedBackManager::putToQueue(GroupfeedbackCustomStruct group_fdb_custom){
 }//放进队列，这里面就要锁些东西了
 
 
-//-----------------其他类的函数
 

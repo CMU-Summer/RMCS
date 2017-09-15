@@ -59,7 +59,7 @@ public:
 			sleepTime = cfgManager.getSleepTime();
 		
 		}
-		if (cfgManager.getFeedbackFrequency() <= DEFAULT_FD_FREQUENCY) {
+		if (cfgManager.getFeedbackFrequency() >= DEFAULT_FD_FREQUENCY) {
 			fd_hz = DEFAULT_FD_FREQUENCY;
 
 		}
@@ -111,8 +111,8 @@ public:
 		}
 		cacheManger.join();
 		printf("---------cacheManger join!---------\n");
-		fdCustomer.join();
-		printf("---------fdCustomer join!---------\n");
+//		fdCustomer.join();
+//		printf("---------fdCustomer join!---------\n");
 		lkManager.join();
 		
 		printf("---------lkManager join!---------\n");

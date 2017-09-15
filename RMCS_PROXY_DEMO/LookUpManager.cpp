@@ -67,11 +67,11 @@ void LookUpManager::run() {
 		this->addHandlerFromGroups(gst_vec);
 
 		
-		//3.刷新f and n 
+		//3.刷新f and n  添加新增的
 		this->updateFamilyAndNamesMap(this->getNewestMapFromHibi());
 
 
-		//4.刷新group里面的name的连接状态，放到上面那个函数里面去做了
+		//4.刷新group里面的module的连接状态
 		this->updateGroupConncetState(gst_vec);
 
 		
@@ -211,7 +211,9 @@ void LookUpManager::updateModuleLoad(vector<FamilyStruct> fst_vec) {
 		familyName = family_st.getName();
 		for (int j = 0;j < family_st.nameList.size();j++) {
 			name = family_st.nameList.at(j)->name;
-			unique_ptr<Group> grp = this->lookup.getConnectedGroupFromName(name, familyName);
+			// =.=
+			unique_ptr<Group> grp = this->lookup.getGroupFromNames({ name }, {familyName}, DEAULT_SLEEP_TIME);
+			//unique_ptr<Group> grp = this->lookup.getConnectedGroupFromName(name, familyName);
 			ModuleInfo mod = this->cacheManager.getLastModuleInfo(familyName, name);
 			if (grp) {
 				if (mod.startTime != -1 && mod.endTime == -1) {
@@ -264,7 +266,9 @@ vector<GroupStruct> LookUpManager::getGroupsStateFromHeibi(vector<GroupStruct> g
 			vector<NameStruct*>& nameListMap=groupVec.at(i).getFamilyList().at(j)->getNameList();
 			vector<NameStruct*>::iterator it;
 			for(it=nameListMap.begin();it!=nameListMap.end();it++){
-				unique_ptr<Group> grp=this->lookup.getConnectedGroupFromName((*it)->name,familyName);
+				// =.= 
+				unique_ptr<Group> grp = this->lookup.getGroupFromNames({ (*it)->name }, { familyName }, DEAULT_SLEEP_TIME);
+				//unique_ptr<Group> grp=this->lookup.getConnectedGroupFromName((*it)->name,familyName);
 				if(grp){
 					(*it)->connected=true;//更新状态为true
 				}
