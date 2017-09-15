@@ -1,26 +1,135 @@
 #include "kinematics.hpp"
-#include "hebi_kinematic_parameters.h"
+#include "hebi.h"
 
 namespace hebi {
 namespace kinematics {
 
+////////////////////////// Objectives
+
+EndEffectorPositionObjective::EndEffectorPositionObjective(const Eigen::Vector3f& obj)
+  : _weight(1.0f), _x(obj[0]), _y(obj[1]), _z(obj[2])
+{ } 
+
+EndEffectorPositionObjective::EndEffectorPositionObjective(float weight, const Eigen::Vector3f& obj)
+  : _weight(weight), _x(obj[0]), _y(obj[1]), _z(obj[2])
+{ } 
+
+HebiStatusCode EndEffectorPositionObjective::addObjective(HebiIKPtr ik) const
+{
+  return hebiIKAddObjectiveEndEffectorPosition(ik, _weight, _x, _y, _z);
+}
+
+EndEffectorSO3Objective::EndEffectorSO3Objective(const Eigen::Matrix3f& matrix)
+  : _weight(1.0f), _matrix{
+    matrix(0,0), matrix(0,1), matrix(0,2),
+    matrix(1,0), matrix(1,1), matrix(1,2),
+    matrix(2,0), matrix(2,1), matrix(2,2)}
+{ }
+
+EndEffectorSO3Objective::EndEffectorSO3Objective(float weight, const Eigen::Matrix3f& matrix)
+  : _weight(weight), _matrix{
+    matrix(0,0), matrix(0,1), matrix(0,2),
+    matrix(1,0), matrix(1,1), matrix(1,2),
+    matrix(2,0), matrix(2,1), matrix(2,2)}
+{ }
+
+HebiStatusCode EndEffectorSO3Objective::addObjective(HebiIKPtr ik) const
+{
+  return hebiIKAddObjectiveEndEffectorSO3(ik, _weight, _matrix);
+}
+
+EndEffectorTipAxisObjective::EndEffectorTipAxisObjective(const Eigen::Vector3f& obj)
+  : _weight(1.0f), _x(obj[0]), _y(obj[1]), _z(obj[2])
+{ } 
+
+EndEffectorTipAxisObjective::EndEffectorTipAxisObjective(float weight, const Eigen::Vector3f& obj)
+  : _weight(weight), _x(obj[0]), _y(obj[1]), _z(obj[2])
+{ } 
+
+HebiStatusCode EndEffectorTipAxisObjective::addObjective(HebiIKPtr ik) const
+{
+  return hebiIKAddObjectiveEndEffectorTipAxis(ik, _weight, _x, _y, _z);
+}
+
+JointLimitConstraint::JointLimitConstraint(const Eigen::VectorXd& min_positions, const Eigen::VectorXd& max_positions)
+  : _weight(1.0f), _min_positions(min_positions), _max_positions(max_positions)
+{ } 
+
+JointLimitConstraint::JointLimitConstraint(float weight, const Eigen::VectorXd& min_positions, const Eigen::VectorXd& max_positions)
+  : _weight(weight), _min_positions(min_positions), _max_positions(max_positions)
+{ } 
+
+HebiStatusCode JointLimitConstraint::addObjective(HebiIKPtr ik) const
+{
+  if (_min_positions.size() != _max_positions.size())
+    return HebiStatusInvalidArgument;
+
+  int num_joints = _min_positions.size();
+
+  auto min_positions_array = new double[num_joints];
+  {
+    Map<Eigen::VectorXd> tmp(min_positions_array, num_joints);
+    tmp = _min_positions;
+  }
+  auto max_positions_array = new double[num_joints];
+  {
+    Map<Eigen::VectorXd> tmp(max_positions_array, num_joints);
+    tmp = _max_positions;
+  }
+  
+  auto res = hebiIKAddConstraintJointAngles(ik, _weight, num_joints, min_positions_array, max_positions_array);
+
+  delete[] min_positions_array;
+  delete[] max_positions_array;
+
+  return res;
+}
+
 ////////////////////////// Kinematic Bodies
-//
+
 std::unique_ptr<KinematicBody> KinematicBody::createX5()
 {
-  auto tmp = hebiActuatorCreate(
-    hebiKinematicParametersX5.com,
-    hebiKinematicParametersX5.input_to_joint,
-    hebiKinematicParametersX5.joint_rotation_axis,
-    hebiKinematicParametersX5.joint_to_output);
+  HebiKinematicParametersActuator params;
+  hebiKinematicParametersX5(&params);
+
+  auto tmp = hebiBodyCreateActuator(
+    params.com,
+    params.input_to_joint,
+    params.joint_rotation_axis,
+    params.joint_to_output);
   return std::unique_ptr<KinematicBody>(new KinematicBody(tmp));
 }
 
 std::unique_ptr<KinematicBody> KinematicBody::createX5Link(float length, float twist)
 {
-  auto link_params = hebiKinematicParametersX5Link(length, twist);
-  auto tmp = hebiStaticBodyCreate(link_params.com, 1, link_params.output);
+  HebiKinematicParametersStaticBody params;
+  hebiKinematicParametersX5Link(&params, length, twist);
+  auto tmp = hebiBodyCreateStatic(params.com, 1, params.output);
   return std::unique_ptr<KinematicBody>(new KinematicBody(tmp));
+}
+
+std::unique_ptr<KinematicBody> KinematicBody::createX5LightBracket(HebiMountingType mounting)
+{
+  std::unique_ptr<KinematicBody> new_body;
+  HebiKinematicParametersStaticBody params;
+  if (hebiKinematicParametersX5LightBracket(&params, mounting) == HebiStatusSuccess)
+  {
+    auto tmp = hebiBodyCreateStatic(params.com, 1, params.output);
+    new_body.reset(new KinematicBody(tmp));
+  }
+  return new_body;
+}
+
+std::unique_ptr<KinematicBody> KinematicBody::createX5HeavyBracket(HebiMountingType mounting)
+{
+  std::unique_ptr<KinematicBody> new_body;
+  HebiKinematicParametersStaticBody params;
+  if (hebiKinematicParametersX5HeavyBracket(&params, mounting) == HebiStatusSuccess)
+  {
+    auto tmp = hebiBodyCreateStatic(params.com, 1, params.output);
+    new_body.reset(new KinematicBody(tmp));
+  }
+  return new_body;
 }
 
 std::unique_ptr<KinematicBody> KinematicBody::createGenericLink(const Eigen::Vector3f& com, const Eigen::Matrix4f& output)
@@ -32,7 +141,7 @@ std::unique_ptr<KinematicBody> KinematicBody::createGenericLink(const Eigen::Vec
   tmp_com = com;
   tmp_output = output;
   
-  auto tmp = hebiStaticBodyCreate(c_com, 1, c_output);
+  auto tmp = hebiBodyCreateStatic(c_com, 1, c_output);
   return std::unique_ptr<KinematicBody>(new KinematicBody(tmp));
 }
 
@@ -92,9 +201,7 @@ bool Kinematics::addBody(std::unique_ptr<KinematicBody> body)
   bool was_added = (hebiKinematicsAddBody(internal_, nullptr, 0, body->getInternal()) == 0);
   if (was_added)
     body->consume();
-  // Destroy the C++ wrapper no matter what (this should automatically happen
-  // anyway as we go out of scope...)
-  body.reset(nullptr);
+  body.reset();
   return was_added;
 }
 
@@ -105,15 +212,15 @@ void Kinematics::getForwardKinematics(HebiFrameType frame_type, const Eigen::Vec
 void Kinematics::getFK(HebiFrameType frame_type, const Eigen::VectorXd& positions, Matrix4fVector& frames) const
 {
   // Put data into an array
-  double* positions_array = new double[positions.size()];
+  auto positions_array = new double[positions.size()];
   {
     Map<Eigen::VectorXd> tmp(positions_array, positions.size());
     tmp = positions;
   }
-  int num_frames = getFrameCount(frame_type);
-  float* frame_array = new float[16 * num_frames];
+  size_t num_frames = getFrameCount(frame_type);
+  auto frame_array = new float[16 * num_frames];
   // Get data from C API
-  hebiKinematicsGetForwardKinematics(internal_, frame_type, (double*)positions_array, (float*) frame_array);
+  hebiKinematicsGetForwardKinematics(internal_, frame_type, positions_array, frame_array);
   delete[] positions_array;
   // Copy into vector of matrices passed in
   frames.resize(num_frames);
@@ -128,7 +235,7 @@ void Kinematics::getFK(HebiFrameType frame_type, const Eigen::VectorXd& position
 void Kinematics::getEndEffector(HebiFrameType frame_type, const Eigen::VectorXd& positions, Eigen::Matrix4f& transform) const
 {
   // Put data into an array
-  double* positions_array = new double[positions.size()];
+  auto positions_array = new double[positions.size()];
   {
     Map<Eigen::VectorXd> tmp(positions_array, positions.size());
     tmp = positions;
@@ -143,36 +250,6 @@ void Kinematics::getEndEffector(HebiFrameType frame_type, const Eigen::VectorXd&
   }
 }
 
-void Kinematics::solveInverseKinematics(const Eigen::Vector3f& target_xyz, const Eigen::VectorXd& initial_positions, Eigen::VectorXd& result) const
-{
-  solveIK(target_xyz, initial_positions, result);
-}
-void Kinematics::solveIK(const Eigen::Vector3f& target_xyz, const Eigen::VectorXd& initial_positions, Eigen::VectorXd& result) const
-{
-  // Put data into an array
-  float* target_xyz_array = new float[target_xyz.size()];
-  {
-    Map<Eigen::Vector3f> tmp(target_xyz_array);
-    tmp = target_xyz;
-  }
-  double* positions_array = new double[initial_positions.size()];
-  {
-    Map<Eigen::VectorXd> tmp(positions_array, initial_positions.size());
-    tmp = initial_positions;
-  }
-  double* result_array = new double[initial_positions.size()];
-  hebiKinematicsSolveIK(internal_, (const float*)target_xyz_array, (const double*)positions_array, (double*) result_array);
-  delete[] target_xyz_array;
-  delete[] positions_array;
-
-  {
-    Map<Eigen::VectorXd> tmp(result_array, initial_positions.size());
-    result = tmp;
-  }
-  delete[] result_array;
-}
-
-
 void Kinematics::getJacobians(HebiFrameType frame_type, const Eigen::VectorXd& positions, MatrixXfVector& jacobians) const
 {
   getJ(frame_type, positions, jacobians);
@@ -180,18 +257,18 @@ void Kinematics::getJacobians(HebiFrameType frame_type, const Eigen::VectorXd& p
 void Kinematics::getJ(HebiFrameType frame_type, const Eigen::VectorXd& positions, MatrixXfVector& jacobians) const
 {
   // Put data into an array
-  double* positions_array = new double[positions.size()];
+  auto positions_array = new double[positions.size()];
   {
     Map<Eigen::VectorXd> tmp(positions_array, positions.size());
     tmp = positions;
   }
 
-  int num_frames = getFrameCount(frame_type);
-  int num_dofs = positions.size();
-  int rows = 6 * num_frames;
-  int cols = num_dofs;
-  float* jacobians_array = new float[rows * cols];
-  hebiKinematicsGetJacobians(internal_, frame_type, (const double*) positions_array, (float*) jacobians_array);
+  size_t num_frames = getFrameCount(frame_type);
+  size_t num_dofs = positions.size();
+  size_t rows = 6 * num_frames;
+  size_t cols = num_dofs;
+  auto jacobians_array = new float[rows * cols];
+  hebiKinematicsGetJacobians(internal_, frame_type, positions_array, jacobians_array);
   delete[] positions_array;
   jacobians.resize(num_frames);
   for (int i = 0; i < num_frames; ++i)
@@ -213,7 +290,7 @@ void Kinematics::getJEndEffector(HebiFrameType frame_type, const Eigen::VectorXd
   // NOTE: could make this more efficient by writing additional lib function
   // for this, instead of tossing away almost everything from the full one!
 
-  int num_dofs = positions.size();
+  size_t num_dofs = positions.size();
   jacobian.resize(6, num_dofs);
   jacobian = *tmp_jacobians.rbegin();
 }

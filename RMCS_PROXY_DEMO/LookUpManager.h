@@ -40,8 +40,8 @@ private:
 	queue_safe<GroupfeedbackCustomStruct>& groupFeedbackQueue;//收到的异步groupfeedback都应该放到这里
 
 	//group会增加和减少,会不会影响什么？估计不会
-	map<string, unique_ptr<hebi::Group>>& cacheGroupMap;//需要更新的map,从缓存里面取，如果key没有就取一下addFh,有就不管
-	map<string, unique_ptr<hebi::Group>>& fixedGroupMap;
+	map<string, shared_ptr<hebi::Group>>& cacheGroupMap;//需要更新的map,从缓存里面取，如果key没有就取一下addFh,有就不管
+	map<string, shared_ptr<hebi::Group>>& fixedGroupMap;
 	vector<FeedBackManager> feedbackManagerVec;
 	vector<GroupStruct> fixedGroup;
 	CacheManager& cacheManager;
@@ -68,17 +68,17 @@ private:
 	void addHandlerFromGroups(vector<GroupStruct> gst_vec);//为fixed和缓存的group加处理函数
 	void addHandlerForOneGroup(vector<string>* &familyVec,vector<string>* &nameVec,string groupName,int type);//添加一个group的
 	void getFamilyAndNamesFromGroupStruct(GroupStruct& thisGroup,vector<string>* &familysVec,vector<string>* &namesVec);
-	void showGroupFeedBackInfo(const GroupFeedback* group_fbk);//展示group的信息
+	void showGroupFeedBackInfo(const hebi::GroupFeedback* group_fbk);//展示group的信息
 
 public:
 	bool stop_flag; // stop signal
 	LookUpManager(
 		CacheManager& cacheManager,
 		queue_safe<GroupfeedbackCustomStruct>& groupFeedbackQueue,
-		Lookup& lookup_,
+		hebi::Lookup& lookup_,
 		ConfigManager& configManager_,
-		map<string, unique_ptr<hebi::Group>>& cacheGroupMap_,
-		map<string, unique_ptr<hebi::Group>>& fixedGroupMap_,
+		map<string, shared_ptr<hebi::Group>>& cacheGroupMap_,
+		map<string, shared_ptr<hebi::Group>>& fixedGroupMap_,
 		int sleep_time_=DEFAULT_SLEEP_TIME,
 		int default_frequency_ = DEFAULT_FD_FREQUENCY
 		);

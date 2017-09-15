@@ -12,13 +12,13 @@ Trajectory::Trajectory(std::vector<HebiTrajectoryPtr> trajectories, int number_o
 {
 }
 
-std::unique_ptr<Trajectory> Trajectory::createUnconstrainedQp(
+std::shared_ptr<Trajectory> Trajectory::createUnconstrainedQp(
   const VectorXd& time_vector,
   const MatrixXd& positions,
   const MatrixXd* velocities,
   const MatrixXd* accelerations)
 {
-  std::unique_ptr<Trajectory> res;
+  std::shared_ptr<Trajectory> res;
 
   // Check argument validity
   int num_joints = positions.rows();
@@ -90,8 +90,7 @@ std::unique_ptr<Trajectory> Trajectory::createUnconstrainedQp(
     delete[] accelerations_c;
 
   // Create C++ wrapper
-  res.reset(new Trajectory(trajectories, num_waypoints, time_vector[0], time_vector[time_vector.size() - 1]));
-  return res;
+  return std::shared_ptr<Trajectory>(new Trajectory(trajectories, num_waypoints, time_vector[0], time_vector[time_vector.size() - 1]));
 }
 
 Trajectory::~Trajectory() noexcept

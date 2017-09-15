@@ -1,11 +1,13 @@
-#ifndef LOOKUP_HPP
-#define LOOKUP_HPP
+#pragma once
 
-#include "hebi_lookup.h"
+#include <cstddef>
+#include <iterator>
+
+#include "hebi.h"
 #include "mac_address.hpp"
 #include "group.hpp"
 
-#include <memory> // For unique_ptr
+#include <memory> // For shared_ptr
 #include <vector>
 
 namespace hebi {
@@ -57,15 +59,6 @@ class Lookup final
     virtual ~Lookup() noexcept; /* annotating specified destructor as noexcept is best-practice */
 
     /**
-     * \brief Displays the current contents of the module registry on stdout -- i.e.,
-     * which modules have been found by the lookup.
-     *
-     * \unstable{This function is not yet part of the stable API, and is subject
-     * to change in future versions.}
-     */
-    void printTable();
-
-    /**
      * \brief Get a group from modules with the given names and families.
      *
      * If one of the input vectors is of length one, then that element is
@@ -74,19 +67,19 @@ class Lookup final
      * Blocking call which returns a reference to a Group object with the given
      * parameters. Times out after timeout_msec milliseconds.
      *
-     * @param names A list of names of desired group modules, as viewable in the
-     * HEBI GUI.  If of length one, this name is paired with each given family
      * @param families A list of families of desired group modules, as viewable
      * in the HEBI GUI.  If of length one, this family is paried with each given
      * name.
+     * @param names A list of names of desired group modules, as viewable in the
+     * HEBI GUI.  If of length one, this name is paired with each given family
      * @param timeout_ms Timeout in milliseconds.  A value of -1 blocks until
      * a group is found, and a value of 0 returns immediately if no group with
      * that address is currently known by the Lookup class.
-     * @returns A unique_ptr with no reference if no group found in allotted
+     * @returns A shared_ptr with no reference if no group found in allotted
      * time, or reference to a newly allocated group object corresponding to
      * the given parameters otherwise.
      */
-    std::unique_ptr<Group> getGroupFromNames(const std::vector<std::string>& names, const std::vector<std::string>& families, long timeout_ms=DEFAULT_TIMEOUT);
+    std::shared_ptr<Group> getGroupFromNames(const std::vector<std::string>& families, const std::vector<std::string>& names, long timeout_ms=DEFAULT_TIMEOUT);
 
     /**
      * \brief Get a group from modules with the given mac addresses.
@@ -98,11 +91,11 @@ class Lookup final
      * @param timeout_ms Timeout in milliseconds.  A value of -1 blocks until
      * a group is found, and a value of 0 returns immediately if no group with
      * that address is currently known by the Lookup class.
-     * @returns A unique_ptr with no reference if no group found in allotted
+     * @returns A shared_ptr with no reference if no group found in allotted
      * time, or reference to a newly allocated group object corresponding to
      * the given parameters otherwise.
      */
-    std::unique_ptr<Group> getGroupFromMacs(const std::vector<MacAddress>& addresses, long timeout_ms=DEFAULT_TIMEOUT);
+    std::shared_ptr<Group> getGroupFromMacs(const std::vector<MacAddress>& addresses, long timeout_ms=DEFAULT_TIMEOUT);
 
     /**
      * \brief Get a group from all known modules with the given family.
@@ -114,11 +107,11 @@ class Lookup final
      * @param timeout_ms Timeout in milliseconds.  A value of -1 blocks until
      * a group is found, and a value of 0 returns immediately if no group with
      * that address is currently known by the Lookup class.
-     * @returns A unique_ptr with no reference if no group found in allotted
+     * @returns A shared_ptr with no reference if no group found in allotted
      * time, or reference to a newly allocated group object corresponding to
      * the given parameters otherwise.
      */
-    std::unique_ptr<Group> getGroupFromFamily(const std::string& family, long timeout_ms=DEFAULT_TIMEOUT);
+    std::shared_ptr<Group> getGroupFromFamily(const std::string& family, long timeout_ms=DEFAULT_TIMEOUT);
 
     /**
      * \brief Get a group from all modules known to connect to a module with the
@@ -127,18 +120,18 @@ class Lookup final
      * Blocking call which returns a reference to a Group object with the given
      * parameters. Times out after timeout_msec milliseconds.
      *
-     * @param name The given name of the module, as viewable in the HEBI GUI, to
-     * form the group from.
      * @param family The given family of the module, as viewable in the HEBI
      * GUI, to form the group from.
+     * @param name The given name of the module, as viewable in the HEBI GUI, to
+     * form the group from.
      * @param timeout_ms Timeout in milliseconds.  A value of -1 blocks until
      * a group is found, and a value of 0 returns immediately if no group with
      * that address is currently known by the Lookup class.
-     * @returns A unique_ptr with no reference if no group found in allotted
+     * @returns A shared_ptr with no reference if no group found in allotted
      * time, or reference to a newly allocated group object corresponding to
      * the given parameters otherwise.
      */
-    std::unique_ptr<Group> getConnectedGroupFromName(const std::string& name, const std::string& family, long timeout_ms=DEFAULT_TIMEOUT);
+    std::shared_ptr<Group> getConnectedGroupFromName(const std::string& family, const std::string& name, long timeout_ms=DEFAULT_TIMEOUT);
 
     /**
      * \brief Get a group from all modules known to connect to a module with the
@@ -151,11 +144,11 @@ class Lookup final
      * @param timeout_ms Timeout in milliseconds.  A value of -1 blocks until
      * a group is found, and a value of 0 returns immediately if no group with
      * that address is currently known by the Lookup class.
-     * @returns A unique_ptr with no reference if no group found in allotted
+     * @returns A shared_ptr with no reference if no group found in allotted
      * time, or reference to a newly allocated group object corresponding to
      * the given parameters otherwise.
      */
-    std::unique_ptr<Group> getConnectedGroupFromMac(const MacAddress& address, long timeout_ms=DEFAULT_TIMEOUT);
+    std::shared_ptr<Group> getConnectedGroupFromMac(const MacAddress& address, long timeout_ms=DEFAULT_TIMEOUT);
   
     class EntryList final
     {
@@ -171,7 +164,45 @@ class Lookup final
          * \internal C-style lookup entry list object
          */
         HebiLookupEntryListPtr lookup_list_;
+
+        /**
+         * \internal Entry list iterator implementation
+         * (see http://anderberg.me/2016/07/04/c-custom-iterators/)
+         */
+        class Iterator final
+        {
+          public:
+            // Iterator traits (not from std::iterator to be C++17 compliant)
+            using value_type = Entry;
+            using difference_type = int;
+            using pointer = Entry*;
+            using reference = Entry;
+            using iterator_category = std::bidirectional_iterator_tag;
+
+            // Default constructable
+            Iterator() = default;
+            explicit Iterator(const EntryList* list, size_t current);
+
+            // Dereferencable
+            reference operator*() const;
+
+            // Pre- and post-incrementable/decrementable
+            Iterator& operator++();
+            Iterator operator++(int);
+            Iterator& operator--();
+            Iterator operator--(int);
+
+            // Equality / inequality
+            bool operator==(const Iterator& rhs);
+            bool operator!=(const Iterator& rhs);
+
+          private:
+            const EntryList* list_;
+            size_t current_ { 0 };
+        };
+
       public:
+
         /**
          * \internal Creates entry list from internal C-style object.
          */
@@ -179,9 +210,12 @@ class Lookup final
 
         virtual ~EntryList() noexcept;
 
-        Entry getEntry(int index);
+        Entry getEntry(int index) const;
 
-        int size();
+        int size() const;
+
+        Iterator begin() const;
+        Iterator end() const;
 
       private:
         /**
@@ -190,7 +224,7 @@ class Lookup final
         HEBI_DISABLE_COPY_MOVE(EntryList)
     };
 
-    std::unique_ptr<EntryList> getEntryList();
+    std::shared_ptr<EntryList> getEntryList();
  
   private:
     /**
@@ -200,5 +234,3 @@ class Lookup final
 };
 
 } // namespace hebi
-
-#endif // LOOKUP_HPP

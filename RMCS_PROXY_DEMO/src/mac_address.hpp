@@ -1,7 +1,6 @@
-#ifndef MAC_ADDRESS_HPP
-#define MAC_ADDRESS_HPP
+#pragma once
 
-#include "hebi_mac_address.h"
+#include "hebi.h"
 #include <iostream>
 
 namespace hebi {
@@ -78,5 +77,3 @@ class MacAddress final
 };
 
 } // namespace hebi
-
-#endif // MAC_ADDRESS_HPP

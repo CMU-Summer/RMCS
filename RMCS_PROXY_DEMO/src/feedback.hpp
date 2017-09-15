@@ -1,7 +1,6 @@
-#ifndef FEEDBACK_HPP
-#define FEEDBACK_HPP
+#pragma once
 
-#include "hebi_feedback.h"
+#include "hebi.h"
 #include "color.hpp"
 #include "vector_3_f.hpp"
 #include "util.hpp"
@@ -36,7 +35,7 @@ class Feedback final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        FloatField(HebiFeedbackPtr internal, FeedbackFloatField field);
+        FloatField(HebiFeedbackPtr internal, HebiFeedbackFloatField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the field has a value
         /// without directly calling @c has().
@@ -59,7 +58,7 @@ class Feedback final
 
       private:
         HebiFeedbackPtr const internal_;
-        FeedbackFloatField const field_;
+        HebiFeedbackFloatField const field_;
 
         HEBI_DISABLE_COPY_MOVE(FloatField)
     };
@@ -72,7 +71,7 @@ class Feedback final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        HighResAngleField(HebiFeedbackPtr internal, FeedbackHighResAngleField field);
+        HighResAngleField(HebiFeedbackPtr internal, HebiFeedbackHighResAngleField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the field has a value
         /// without directly calling @c has().
@@ -110,7 +109,7 @@ class Feedback final
 
       private:
         HebiFeedbackPtr const internal_;
-        FeedbackHighResAngleField const field_;
+        HebiFeedbackHighResAngleField const field_;
 
         HEBI_DISABLE_COPY_MOVE(HighResAngleField)
     };
@@ -121,7 +120,7 @@ class Feedback final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        NumberedFloatField(HebiFeedbackPtr internal, FeedbackNumberedFloatField field);
+        NumberedFloatField(HebiFeedbackPtr internal, HebiFeedbackNumberedFloatField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief True if (and only if) the particular numbered subvalue of
         /// this field has a value.
@@ -138,18 +137,50 @@ class Feedback final
 
       private:
         HebiFeedbackPtr const internal_;
-        FeedbackNumberedFloatField const field_;
+        HebiFeedbackNumberedFloatField const field_;
 
         HEBI_DISABLE_COPY_MOVE(NumberedFloatField)
     };
 
+    /// \brief A message field representable by an unsigned 64 bit integer value.
+    class UInt64Field final
+    {
+      public:
+        #ifndef DOXYGEN_OMIT_INTERNAL
+        UInt64Field(HebiFeedbackPtr internal, HebiFeedbackUInt64Field field);
+        #endif // DOXYGEN_OMIT_INTERNAL
+        /// \brief Allows casting to a bool to check if the field has a value
+        /// without directly calling @c has().
+        ///
+        /// This can be used as in the following (assuming 'parent' is a parent message,
+        /// and this field is called 'myField')
+        /// \code{.cpp}
+        /// Feedback::UInt64Field& f = parent.myField();
+        /// if (f)
+        ///   std::cout << "Field has value: " << f.get() << std::endl;
+        /// else
+        ///   std::cout << "Field has no value!" << std::endl;
+        /// \endcode
+        explicit operator bool() const;
+        /// \brief True if (and only if) the field has a value.
+        bool has() const;
+        /// \brief If the field has a value, returns that value; otherwise,
+        /// returns a default.
+        uint64_t get() const;
+
+      private:
+        HebiFeedbackPtr const internal_;
+        HebiFeedbackUInt64Field const field_;
+
+        HEBI_DISABLE_COPY_MOVE(UInt64Field)
+    };
     /// \brief A message field representable by a 3-D vector of single-precision
     /// floating point values.
     class Vector3fField final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        Vector3fField(HebiFeedbackPtr internal, FeedbackVector3fField field);
+        Vector3fField(HebiFeedbackPtr internal, HebiFeedbackVector3fField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the field has a value
         /// without directly calling @c has().
@@ -172,7 +203,7 @@ class Feedback final
 
       private:
         HebiFeedbackPtr const internal_;
-        FeedbackVector3fField const field_;
+        HebiFeedbackVector3fField const field_;
 
         HEBI_DISABLE_COPY_MOVE(Vector3fField)
     };
@@ -182,7 +213,7 @@ class Feedback final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        IoBank(HebiFeedbackPtr internal, FeedbackIoPinBank bank);
+        IoBank(HebiFeedbackPtr internal, HebiFeedbackIoPinBank bank);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief True if (and only if) the particular numbered pin in this
         /// bank has an integer (e.g., digital) value.
@@ -201,7 +232,7 @@ class Feedback final
         ///
         /// \param pinNumber Which pin to get; valid values for pinNumber
         /// depend on the bank.
-        int getInt(int pinNumber) const;
+        int64_t getInt(int pinNumber) const;
         /// \brief If this numbered pin in this bank has an floating point
         /// (e.g., analog or PWM) value, returns that value; otherwise returns a
         /// default.
@@ -212,7 +243,7 @@ class Feedback final
 
       private:
         HebiFeedbackPtr const internal_;
-        FeedbackIoPinBank const bank_;
+        HebiFeedbackIoPinBank const bank_;
 
         HEBI_DISABLE_COPY_MOVE(IoBank);
     };
@@ -221,7 +252,7 @@ class Feedback final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        LedField(HebiFeedbackPtr internal, FeedbackLedField field);
+        LedField(HebiFeedbackPtr internal, HebiFeedbackLedField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the LED color is set
         /// without directly calling @c hasColor().
@@ -243,7 +274,7 @@ class Feedback final
 
       private:
         HebiFeedbackPtr const internal_;
-        FeedbackLedField const field_;
+        HebiFeedbackLedField const field_;
 
         HEBI_DISABLE_COPY_MOVE(LedField)
     };
@@ -255,12 +286,12 @@ class Feedback final
         #ifndef DOXYGEN_OMIT_INTERNAL
         Io(HebiFeedbackPtr internal)
           : internal_(internal),
-            a_(internal, FeedbackIoBankA),
-            b_(internal, FeedbackIoBankB),
-            c_(internal, FeedbackIoBankC),
-            d_(internal, FeedbackIoBankD),
-            e_(internal, FeedbackIoBankE),
-            f_(internal, FeedbackIoBankF)
+            a_(internal, HebiFeedbackIoBankA),
+            b_(internal, HebiFeedbackIoBankB),
+            c_(internal, HebiFeedbackIoBankC),
+            d_(internal, HebiFeedbackIoBankD),
+            e_(internal, HebiFeedbackIoBankE),
+            f_(internal, HebiFeedbackIoBankF)
         {
         }
         #endif // DOXYGEN_OMIT_INTERNAL
@@ -303,20 +334,25 @@ class Feedback final
         #ifndef DOXYGEN_OMIT_INTERNAL
         Actuator(HebiFeedbackPtr internal)
           : internal_(internal),
-            velocity_(internal, FeedbackFloatVelocity),
-            torque_(internal, FeedbackFloatTorque),
-            velocity_command_(internal, FeedbackFloatVelocityCommand),
-            torque_command_(internal, FeedbackFloatTorqueCommand),
-            deflection_(internal, FeedbackFloatDeflection),
-            deflection_velocity_(internal, FeedbackFloatDeflectionVelocity),
-            motor_velocity_(internal, FeedbackFloatMotorVelocity),
-            motor_current_(internal, FeedbackFloatMotorCurrent),
-            motor_sensor_temperature_(internal, FeedbackFloatMotorSensorTemperature),
-            motor_winding_current_(internal, FeedbackFloatMotorWindingCurrent),
-            motor_winding_temperature_(internal, FeedbackFloatMotorWindingTemperature),
-            motor_housing_temperature_(internal, FeedbackFloatMotorHousingTemperature),
-            position_(internal, FeedbackHighResAnglePosition),
-            position_command_(internal, FeedbackHighResAnglePositionCommand)
+            velocity_(internal, HebiFeedbackFloatVelocity),
+            effort_(internal, HebiFeedbackFloatEffort),
+            velocity_command_(internal, HebiFeedbackFloatVelocityCommand),
+            effort_command_(internal, HebiFeedbackFloatEffortCommand),
+            deflection_(internal, HebiFeedbackFloatDeflection),
+            deflection_velocity_(internal, HebiFeedbackFloatDeflectionVelocity),
+            motor_velocity_(internal, HebiFeedbackFloatMotorVelocity),
+            motor_current_(internal, HebiFeedbackFloatMotorCurrent),
+            motor_sensor_temperature_(internal, HebiFeedbackFloatMotorSensorTemperature),
+            motor_winding_current_(internal, HebiFeedbackFloatMotorWindingCurrent),
+            motor_winding_temperature_(internal, HebiFeedbackFloatMotorWindingTemperature),
+            motor_housing_temperature_(internal, HebiFeedbackFloatMotorHousingTemperature),
+            position_(internal, HebiFeedbackHighResAnglePosition),
+            position_command_(internal, HebiFeedbackHighResAnglePositionCommand),
+            sequence_number_(internal, HebiFeedbackUInt64SequenceNumber),
+            receive_time_(internal, HebiFeedbackUInt64ReceiveTime),
+            transmit_time_(internal, HebiFeedbackUInt64TransmitTime),
+            hardware_receive_time_(internal, HebiFeedbackUInt64HardwareReceiveTime),
+            hardware_transmit_time_(internal, HebiFeedbackUInt64HardwareTransmitTime)
         {
         }
         #endif // DOXYGEN_OMIT_INTERNAL
@@ -328,12 +364,12 @@ class Feedback final
     
         /// Velocity of the module output (post-spring), in radians/second.
         const FloatField& velocity() const { return velocity_; }
-        /// Torque at the module output, in N * m.
-        const FloatField& torque() const { return torque_; }
+        /// Effort at the module output; units vary (e.g., N * m for rotational joints and N for linear stages).
+        const FloatField& effort() const { return effort_; }
         /// Commanded velocity of the module output (post-spring), in radians/second.
         const FloatField& velocityCommand() const { return velocity_command_; }
-        /// Commanded torque at the module output, in N * m.
-        const FloatField& torqueCommand() const { return torque_command_; }
+        /// Commanded effort at the module output; units vary (e.g., N * m for rotational joints and N for linear stages).
+        const FloatField& effortCommand() const { return effort_command_; }
         /// Difference (in radians) between the pre-spring and post-spring output position.
         const FloatField& deflection() const { return deflection_; }
         /// Velocity (in radians/second) of the difference between the pre-spring and post-spring output position.
@@ -354,14 +390,24 @@ class Feedback final
         const HighResAngleField& position() const { return position_; }
         /// Commanded position of the module output (post-spring), in radians.
         const HighResAngleField& positionCommand() const { return position_command_; }
+        /// Sequence number going to module (local)
+        const UInt64Field& sequenceNumber() const { return sequence_number_; }
+        /// Timestamp of when message was received from module (local)
+        const UInt64Field& receiveTime() const { return receive_time_; }
+        /// Timestamp of when message was transmitted to module (local)
+        const UInt64Field& transmitTime() const { return transmit_time_; }
+        /// Timestamp of when message was received by module (remote)
+        const UInt64Field& hardwareReceiveTime() const { return hardware_receive_time_; }
+        /// Timestamp of when message was transmitted from module (remote)
+        const UInt64Field& hardwareTransmitTime() const { return hardware_transmit_time_; }
     
       private:
         HebiFeedbackPtr const internal_;
     
         FloatField velocity_;
-        FloatField torque_;
+        FloatField effort_;
         FloatField velocity_command_;
-        FloatField torque_command_;
+        FloatField effort_command_;
         FloatField deflection_;
         FloatField deflection_velocity_;
         FloatField motor_velocity_;
@@ -372,6 +418,11 @@ class Feedback final
         FloatField motor_housing_temperature_;
         HighResAngleField position_;
         HighResAngleField position_command_;
+        UInt64Field sequence_number_;
+        UInt64Field receive_time_;
+        UInt64Field transmit_time_;
+        UInt64Field hardware_receive_time_;
+        UInt64Field hardware_transmit_time_;
     
         HEBI_DISABLE_COPY_MOVE(Actuator)
     };
@@ -383,8 +434,8 @@ class Feedback final
         #ifndef DOXYGEN_OMIT_INTERNAL
         Imu(HebiFeedbackPtr internal)
           : internal_(internal),
-            accelerometer_(internal, FeedbackVector3fAccelerometer),
-            gyro_(internal, FeedbackVector3fGyro)
+            accelerometer_(internal, HebiFeedbackVector3fAccelerometer),
+            gyro_(internal, HebiFeedbackVector3fGyro)
         {
         }
         #endif // DOXYGEN_OMIT_INTERNAL
@@ -480,5 +531,3 @@ class Feedback final
 };
 
 } // namespace hebi
-
-#endif // FEEDBACK_HPP

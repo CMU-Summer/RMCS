@@ -35,8 +35,8 @@ public:
 		queue_safe<GroupfeedbackCustomStruct> gfd_queue;
 		queue_safe<GroupStruct> gs_queue;
 		queue_safe<CommandGroupStruct> cmd_queue;
-		map<string, unique_ptr<hebi::Group>> cacheGroupMap_;
-		map<string, unique_ptr<hebi::Group>> fixedGroupMap_;
+		map<string, shared_ptr<hebi::Group>> cacheGroupMap_;
+		map<string, shared_ptr<hebi::Group>> fixedGroupMap_;
 		printf("--------init hebi lookup--------\n");
 		hebi::Lookup lookup;
 		//º”‘ÿ≈‰÷√

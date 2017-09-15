@@ -7,7 +7,6 @@ GroupCommand::GroupCommand(int number_of_modules)
    manage_pointer_lifetime_(true),
    number_of_modules_(number_of_modules)
 {
-  // TODO: throw exception for NULL internal ptr?
   for (int i = 0; i < number_of_modules_; i++)
     commands_.emplace_back(hebiGroupCommandGetModuleCommand(internal_, i));
 }
@@ -28,6 +27,16 @@ Command& GroupCommand::operator[](int index)
   return commands_[index];
 }
 
+bool GroupCommand::readGains(const std::string& file)
+{
+  return hebiGroupCommandReadGains(internal_, file.c_str()) == HebiStatusSuccess;
+}
+
+bool GroupCommand::writeGains(const std::string& file)
+{
+  return hebiGroupCommandWriteGains(internal_, file.c_str()) == HebiStatusSuccess;
+}
+
 void GroupCommand::setPosition(const Eigen::VectorXd& position)
 {
   if (position.size() != number_of_modules_)
@@ -42,12 +51,20 @@ void GroupCommand::setVelocity(const Eigen::VectorXd& velocity)
   for (int i = 0; i < number_of_modules_; ++i)
     commands_[i].actuator().velocity().set(velocity[i]);
 }
-void GroupCommand::setTorque(const Eigen::VectorXd& torque)
+void GroupCommand::setEffort(const Eigen::VectorXd& effort)
 {
-  if (torque.size() != number_of_modules_)
+  if (effort.size() != number_of_modules_)
     return;
   for (int i = 0; i < number_of_modules_; ++i)
-    commands_[i].actuator().torque().set(torque[i]);
+    commands_[i].actuator().effort().set(effort[i]);
+}
+
+void GroupCommand::setSpringConstant(const Eigen::VectorXd& springConstant)
+{
+  if (springConstant.size() != number_of_modules_)
+    return;
+  for (int i = 0; i < number_of_modules_; ++i)
+    commands_[i].settings().actuator().springConstant().set(springConstant[i]);
 }
 
 Eigen::VectorXd GroupCommand::getPosition() const
@@ -70,15 +87,78 @@ Eigen::VectorXd GroupCommand::getVelocity() const
   }
   return res;
 }
-Eigen::VectorXd GroupCommand::getTorque() const
+Eigen::VectorXd GroupCommand::getEffort() const
 {
   Eigen::VectorXd res(number_of_modules_);
   for (int i = 0; i < number_of_modules_; ++i)
   {
-    const auto& cmd = commands_[i].actuator().torque();
+    const auto& cmd = commands_[i].actuator().effort();
     res[i] = (cmd) ? cmd.get() : std::numeric_limits<float>::quiet_NaN();
   }
   return res;
+}
+Eigen::VectorXd GroupCommand::getSpringConstant() const
+{
+  Eigen::VectorXd res(number_of_modules_);
+  for (int i = 0; i < number_of_modules_; ++i)
+  {
+    const auto& cmd = commands_[i].settings().actuator().springConstant();
+    res[i] = (cmd) ? cmd.get() : std::numeric_limits<float>::quiet_NaN();
+  }
+  return res;
+}
+
+void GroupCommand::getPosition(Eigen::VectorXd& out) const
+{
+  if (out.size() != number_of_modules_)
+  {
+    out.resize(number_of_modules_);
+  }
+
+  for (int i = 0; i < number_of_modules_; ++i)
+  {
+    const auto& cmd = commands_[i].actuator().position();
+    out[i] = (cmd) ? cmd.get() : std::numeric_limits<float>::quiet_NaN();
+  }
+}
+void GroupCommand::getVelocity(Eigen::VectorXd& out) const
+{
+  if (out.size() != number_of_modules_)
+  {
+    out.resize(number_of_modules_);
+  }
+
+  for (int i = 0; i < number_of_modules_; ++i)
+  {
+    const auto& cmd = commands_[i].actuator().velocity();
+    out[i] = (cmd) ? cmd.get() : std::numeric_limits<float>::quiet_NaN();
+  }
+}
+void GroupCommand::getEffort(Eigen::VectorXd& out) const
+{
+  if (out.size() != number_of_modules_)
+  {
+    out.resize(number_of_modules_);
+  }
+
+  for (int i = 0; i < number_of_modules_; ++i)
+  {
+    const auto& cmd = commands_[i].actuator().effort();
+    out[i] = (cmd) ? cmd.get() : std::numeric_limits<float>::quiet_NaN();
+  }
+}
+void GroupCommand::getSpringConstant(Eigen::VectorXd& out) const
+{
+  if (out.size() != number_of_modules_)
+  {
+    out.resize(number_of_modules_);
+  }
+
+  for (int i = 0; i < number_of_modules_; ++i)
+  {
+    const auto& cmd = commands_[i].settings().actuator().springConstant();
+    out[i] = (cmd) ? cmd.get() : std::numeric_limits<float>::quiet_NaN();
+  }
 }
 
 } // namespace hebi

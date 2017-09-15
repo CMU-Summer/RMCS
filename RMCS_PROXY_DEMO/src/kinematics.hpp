@@ -1,7 +1,6 @@
-#ifndef KINEMATICS_HPP
-#define KINEMATICS_HPP
+#pragma once
 
-#include "hebi_kinematics.h"
+#include "hebi.h"
 #include "Eigen/Eigen"
 #include "util.hpp"
 #include <vector>
@@ -14,8 +13,67 @@ namespace kinematics {
 
 typedef std::vector<Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > Matrix4fVector;
 typedef std::vector<MatrixXf, Eigen::aligned_allocator<Eigen::MatrixXf> > MatrixXfVector;
+// The result of an IK operation.  More fields will be added to this structure
+// in future API releases.
+struct IKResult
+{
+  HebiStatusCode result; // Success or failure
+};
 
 class Kinematics;
+
+class Objective
+{
+friend Kinematics;
+protected:
+  virtual HebiStatusCode addObjective(HebiIKPtr ik) const = 0;
+};
+
+class EndEffectorPositionObjective final : public Objective
+{
+public:
+  EndEffectorPositionObjective(const Eigen::Vector3f&);
+  EndEffectorPositionObjective(float weight, const Eigen::Vector3f&);
+private:
+  HebiStatusCode addObjective(HebiIKPtr ik) const override;
+  float _weight, _x, _y, _z;
+};
+
+class EndEffectorSO3Objective final : public Objective
+{
+public:
+  EndEffectorSO3Objective(const Eigen::Matrix3f&);
+  EndEffectorSO3Objective(float weight, const Eigen::Matrix3f&);
+private:
+  HebiStatusCode addObjective(HebiIKPtr ik) const override;
+  float _weight;
+  const float _matrix[9];
+};
+
+class EndEffectorTipAxisObjective final : public Objective
+{
+public:
+  EndEffectorTipAxisObjective(const Eigen::Vector3f&);
+  EndEffectorTipAxisObjective(float weight, const Eigen::Vector3f&);
+private:
+  HebiStatusCode addObjective(HebiIKPtr ik) const override;
+  float _weight, _x, _y, _z;
+};
+
+class JointLimitConstraint final : public Objective
+{
+public:
+  JointLimitConstraint(const Eigen::VectorXd& min_positions, const Eigen::VectorXd& max_positions);
+  JointLimitConstraint(float weight, const Eigen::VectorXd& min_positions, const Eigen::VectorXd& max_positions);
+private:
+  HebiStatusCode addObjective(HebiIKPtr ik) const override;
+  float _weight;
+  Eigen::VectorXd _min_positions;
+  Eigen::VectorXd _max_positions;
+public:
+  // Allow Eigen member variables:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+};
 
 class KinematicBody
 {
@@ -84,6 +142,25 @@ class KinematicBody
     static std::unique_ptr<KinematicBody> createX5Link(float length, float twist);
 
     /**
+     * \brief Creates a body with the kinematics of a light bracket between two
+     * X series actuators.
+     *
+     * \param mounting This can be set to "Left" or "Right"; invalid options
+     * will result in an empty returned unique pointer.
+     */ 
+    static std::unique_ptr<KinematicBody> createX5LightBracket(HebiMountingType mounting);
+
+    /**
+     * \brief Creates a body with the kinematics of a heavy bracket between two
+     * X series actuators.
+     *
+     * \param mounting This can be set to "LeftInside", "LeftOutside",
+     * "RightInside", or "RightOutside"; invalid options will result in an empty
+     * returned unique pointer.
+     */ 
+    static std::unique_ptr<KinematicBody> createX5HeavyBracket(HebiMountingType mounting);
+
+    /**
      * \brief Create a generic kinematic body that acts as a fixed transform
      * between an input and output.
      *
@@ -103,11 +180,43 @@ class KinematicBody
  */
 class Kinematics final
 {
+  friend Objective;
+
   private:
     /**
      * C-style kinematics object
      */
     const HebiKinematicsPtr internal_;
+
+    /**
+     * Internal function for resolving variadic template (stops recursion).
+     */
+    HebiStatusCode addObjectives(HebiIKPtr ik, const Objective& objective) const
+    {
+      return objective.addObjective(ik);
+    }
+    /**
+     * Internal function for resolving variadic template (stops recursion and
+     * detects invalid arguments).
+     */
+    template<typename T>
+    HebiStatusCode addObjectives(HebiIKPtr ik, const T& not_an_objective) const
+    {
+      static_assert(std::is_convertible<T*, Objective*>::value,
+                    "Must pass arguments of base type hebi::kinematics::Objective to the variable args of solveIK!");
+      return HebiStatusInvalidArgument;
+    }
+    /**
+     * Internal function for resolving variadic template.
+     */
+    template<typename ... Args>
+    HebiStatusCode addObjectives(HebiIKPtr ik, const Objective& objective, Args ... args) const
+    {
+      auto res = objective.addObjective(ik);
+      if (res != HebiStatusSuccess)
+        return res;
+      return addObjectives(ik, args ...);
+    }
 
   public:
     /**
@@ -226,29 +335,71 @@ class Kinematics final
     void getEndEffector(HebiFrameType, const Eigen::VectorXd& positions, Eigen::Matrix4f& transform) const;
 
     /**
-     * \brief Solves for an inverse kinematics solution that moves the end
-     * effector to a given point.
+     * \brief Solves for an inverse kinematics solution given a set of
+     * objectives.
      *
      * See solveIK for details.
      */
-    void solveInverseKinematics(const Eigen::Vector3f& target_xyz, const Eigen::VectorXd& positions, Eigen::VectorXd& result) const;
+    template<typename ... Args>
+    IKResult solveInverseKinematics(const Eigen::VectorXd& initial_positions, Eigen::VectorXd& result, Args ... args) const
+    {
+      return solveIK(initial_positions, result, args ...);
+    }
+
     /**
-     * \brief Solves for an inverse kinematics solution that moves the end
-     * effector to a given point.
+     * \brief Solves for an inverse kinematics solution given a set of
+     * objectives.
      *
-     * WARNING: this function interface is not yet stable; future revisions will
-     * likely change the method for adding objectives and returning failure/status
-     * information about the solution.
-     *
-     * \param target_xyz A length 3 vector of the desired end effector location.
      * \param initial_positions The seed positions/angles (in SI units of meters
      * or radians) to start the IK search from; equal in length to the number of
      * DoFs of the kinematic tree.
      * \param result A vector equal in length to the number of DoFs of the
      * kinematic tree; this will be filled in with the IK solution (in SI units
      * of meters or radians), and resized as necessary.
+     * \param objectives A variable number of objectives used to define the IK
+     * search (e.g., target end effector positions, etc). Each argument must
+     * have a base class of Objective.
      */
-    void solveIK(const Eigen::Vector3f& target_xyz, const Eigen::VectorXd& initial_positions, Eigen::VectorXd& result) const;
+    template<typename ... Args>
+    IKResult solveIK(const Eigen::VectorXd& initial_positions,
+                     Eigen::VectorXd& result,
+                     Args ... objectives) const
+    {
+      // Create a HEBI C library IK object
+      auto ik = hebiIKCreate();
+
+      // (Try) to add objectives to the IK object
+      IKResult res;
+      res.result = addObjectives(ik, objectives ...);
+      if (res.result != HebiStatusSuccess)
+      {
+        hebiIKRelease(ik);
+        return res;
+      }
+
+      // Transfer/initialize from Eigen to C arrays
+      auto positions_array = new double[initial_positions.size()];
+      {
+        Map<Eigen::VectorXd> tmp(positions_array, initial_positions.size());
+        tmp = initial_positions;
+      }
+      auto result_array = new double[initial_positions.size()];
+
+      // Call into C library to solve
+      res.result = hebiIKSolve(ik, internal_, positions_array, result_array, nullptr);
+
+      // Transfer/cleanup from C arrays to Eigen
+      delete[] positions_array;
+      {
+        Map<Eigen::VectorXd> tmp(result_array, initial_positions.size());
+        result = tmp;
+      }
+      delete[] result_array;
+
+      hebiIKRelease(ik);
+
+      return res;
+    }
 
     /**
      * \brief Generates the Jacobian for each frame in the given kinematic tree.
@@ -309,5 +460,3 @@ class Kinematics final
 
 } // namespace kinematics
 } // namespace hebi
-
-#endif // KINEMATICS_HPP

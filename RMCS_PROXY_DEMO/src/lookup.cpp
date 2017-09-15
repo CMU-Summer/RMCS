@@ -1,6 +1,5 @@
 #include "lookup.hpp"
 #include <algorithm> // For std::transform
-#include <iterator> // For std::back_inserter on Windows.
 
 namespace hebi {
 
@@ -14,14 +13,9 @@ Lookup::~Lookup() noexcept
   hebiLookupRelease(lookup_);
 }
 
-void Lookup::printTable()
+std::shared_ptr<Group> Lookup::getGroupFromNames(const std::vector<std::string>& families, const std::vector<std::string>& names, long timeout_ms)
 {
-  hebiPrintLookupTable(lookup_);
-}
-
-std::unique_ptr<Group> Lookup::getGroupFromNames(const std::vector<std::string>& names, const std::vector<std::string>& families, long timeout_ms)
-{
-  std::unique_ptr<Group> ptr;
+  std::shared_ptr<Group> ptr;
   std::vector<const char *> names_cstrs;
   std::vector<const char *> families_cstrs;
   names_cstrs.reserve(names.size());
@@ -32,50 +26,95 @@ std::unique_ptr<Group> Lookup::getGroupFromNames(const std::vector<std::string>&
   std::transform(std::begin(families), std::end(families),
     std::back_inserter(families_cstrs), [] (const std::string& family) { return family.c_str(); });
 
-  HebiGroupPtr group = hebiCreateGroupFromNames(lookup_, names_cstrs.data(), names_cstrs.size(), families_cstrs.data(), families_cstrs.size(), timeout_ms);
+  HebiGroupPtr group = hebiGroupCreateFromNames(lookup_, families_cstrs.data(), families_cstrs.size(), names_cstrs.data(), names_cstrs.size(), timeout_ms);
   if (group != nullptr)
-    ptr.reset(new Group(group));
+    return std::make_shared<Group>(group);
   return ptr;
 }
 
-std::unique_ptr<Group> Lookup::getGroupFromMacs(const std::vector<MacAddress>& addresses, long timeout_ms)
+std::shared_ptr<Group> Lookup::getGroupFromMacs(const std::vector<MacAddress>& addresses, long timeout_ms)
 {
-  std::unique_ptr<Group> ptr;
+  std::shared_ptr<Group> ptr;
   std::vector<HebiMacAddress> addresses_c;
   addresses_c.reserve(addresses.size());
   std::transform(std::begin(addresses), std::end(addresses),
     std::back_inserter(addresses_c), [] (const MacAddress& addr) { return addr.internal_; });
-  HebiGroupPtr group = hebiCreateGroupFromMacs(lookup_, addresses_c.data(), addresses.size(), timeout_ms);
+  HebiGroupPtr group = hebiGroupCreateFromMacs(lookup_, addresses_c.data(), addresses.size(), timeout_ms);
   if (group != nullptr)
-    ptr.reset(new Group(group));
+    return std::make_shared<Group>(group);
   return ptr;
 }
 
-std::unique_ptr<Group> Lookup::getGroupFromFamily(const std::string& family, long timeout_ms)
+std::shared_ptr<Group> Lookup::getGroupFromFamily(const std::string& family, long timeout_ms)
 {
-  std::unique_ptr<Group> ptr;
-  HebiGroupPtr group = hebiCreateGroupFromFamily(lookup_, family.c_str(), timeout_ms);
+  std::shared_ptr<Group> ptr;
+  HebiGroupPtr group = hebiGroupCreateFromFamily(lookup_, family.c_str(), timeout_ms);
   if (group != nullptr)
-    ptr.reset(new Group(group));
+    return std::make_shared<Group>(group);
   return ptr;
 }
 
-std::unique_ptr<Group> Lookup::getConnectedGroupFromName(const std::string& name, const std::string& family_name, long timeout_ms)
+std::shared_ptr<Group> Lookup::getConnectedGroupFromName(const std::string& family_name, const std::string& name, long timeout_ms)
 {
-  std::unique_ptr<Group> ptr;
-  HebiGroupPtr group = hebiCreateConnectedGroupFromName(lookup_, name.c_str(), family_name.c_str(), timeout_ms);
+  std::shared_ptr<Group> ptr;
+  HebiGroupPtr group = hebiGroupCreateConnectedFromName(lookup_, family_name.c_str(), name.c_str(), timeout_ms);
   if (group != nullptr)
-    ptr.reset(new Group(group));
+    return std::make_shared<Group>(group);
   return ptr;
 }
 
-std::unique_ptr<Group> Lookup::getConnectedGroupFromMac(const MacAddress& address, long timeout_ms)
+std::shared_ptr<Group> Lookup::getConnectedGroupFromMac(const MacAddress& address, long timeout_ms)
 {
-  std::unique_ptr<Group> ptr;
-  HebiGroupPtr group = hebiCreateConnectedGroupFromMac(lookup_, &(address.internal_), timeout_ms);
+  std::shared_ptr<Group> ptr;
+  HebiGroupPtr group = hebiGroupCreateConnectedFromMac(lookup_, &(address.internal_), timeout_ms);
   if (group != nullptr)
-    ptr.reset(new Group(group));
+    return std::make_shared<Group>(group);
   return ptr;
+}
+
+Lookup::EntryList::Iterator::Iterator(const EntryList* list, size_t current)
+  : list_(list), current_(current)
+{ }
+
+Lookup::EntryList::Iterator::reference Lookup::EntryList::Iterator::operator*() const
+{
+  return list_->getEntry(current_);
+}
+
+Lookup::EntryList::Iterator& Lookup::EntryList::Iterator::operator++()
+{
+  ++current_;
+  return *this;
+}
+
+Lookup::EntryList::Iterator Lookup::EntryList::Iterator::operator++(int)
+{
+  Lookup::EntryList::Iterator tmp = *this;
+  ++current_;
+  return tmp;
+}
+
+Lookup::EntryList::Iterator& Lookup::EntryList::Iterator::operator--()
+{
+  --current_;
+  return *this;
+}
+
+Lookup::EntryList::Iterator Lookup::EntryList::Iterator::operator--(int)
+{
+  Lookup::EntryList::Iterator tmp = *this;
+  --current_;
+  return tmp;
+}
+
+bool Lookup::EntryList::Iterator::operator==(const Lookup::EntryList::Iterator& rhs)
+{
+  return this->current_ == rhs.current_;
+}
+
+bool Lookup::EntryList::Iterator::operator!=(const Lookup::EntryList::Iterator& rhs)
+{
+  return !(*this == rhs);
 }
 
 Lookup::EntryList::~EntryList() noexcept
@@ -84,18 +123,19 @@ Lookup::EntryList::~EntryList() noexcept
   lookup_list_ = nullptr;
 }
 
-Lookup::EntryList::Entry Lookup::EntryList::getEntry(int index)
+Lookup::EntryList::Entry Lookup::EntryList::getEntry(int index) const
 {
-  int required_size = hebiLookupEntryListGetName(lookup_list_, index, nullptr, 0);
-  char* buffer = new char [required_size];
-  hebiLookupEntryListGetName(lookup_list_, index, buffer, required_size);
-  std::string name(buffer);
+  size_t required_size;
+  hebiLookupEntryListGetName(lookup_list_, index, nullptr, &required_size);
+  auto buffer = new char [required_size];
+  hebiLookupEntryListGetName(lookup_list_, index, buffer, &required_size);
+  std::string name(buffer, required_size-1);
   delete[] buffer;
 
-  required_size = hebiLookupEntryListGetFamily(lookup_list_, index, nullptr, 0);
+  hebiLookupEntryListGetFamily(lookup_list_, index, nullptr, &required_size);
   buffer = new char [required_size];
-  hebiLookupEntryListGetFamily(lookup_list_, index, buffer, required_size);
-  std::string family(buffer);
+  hebiLookupEntryListGetFamily(lookup_list_, index, buffer, &required_size);
+  std::string family(buffer, required_size-1);
   delete[] buffer;
 
   HebiMacAddress mac_int = hebiLookupEntryListGetMacAddress(lookup_list_, index);
@@ -106,17 +146,27 @@ Lookup::EntryList::Entry Lookup::EntryList::getEntry(int index)
   return e;
 }
 
-int Lookup::EntryList::size()
+int Lookup::EntryList::size() const
 {
-  return hebiLookupEntryListGetNumberOfEntries(lookup_list_);
+  return hebiLookupEntryListGetSize(lookup_list_);
 }
 
-std::unique_ptr<Lookup::EntryList> Lookup::getEntryList()
+Lookup::EntryList::Iterator Lookup::EntryList::begin() const
 {
-  std::unique_ptr<Lookup::EntryList> ptr;
-  auto entry_list = hebiLookupCreateLookupEntryList(lookup_);
+  return Lookup::EntryList::Iterator(this, 0);
+}
+
+Lookup::EntryList::Iterator Lookup::EntryList::end() const
+{
+  return Lookup::EntryList::Iterator(this, size());
+}
+
+std::shared_ptr<Lookup::EntryList> Lookup::getEntryList()
+{
+  std::shared_ptr<Lookup::EntryList> ptr;
+  auto entry_list = hebiCreateLookupEntryList(lookup_);
   if (entry_list != nullptr)
-    ptr.reset(new Lookup::EntryList(entry_list));
+    return std::make_shared<Lookup::EntryList>(entry_list);
   return ptr;
 }
 

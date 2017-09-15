@@ -93,6 +93,9 @@
     <ClInclude Include="JsonObjectBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\log_file.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CThread.cpp">
@@ -150,6 +153,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\trajectory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log_file.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

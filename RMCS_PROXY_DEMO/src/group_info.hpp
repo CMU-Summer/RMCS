@@ -1,7 +1,7 @@
-#ifndef GROUP_INFO_HPP
-#define GROUP_INFO_HPP
+#pragma once
 
-#include "hebi_group_info.h"
+#include "hebi.h"
+#include "Eigen/Eigen"
 #include "info.hpp"
 #include <vector>
 
@@ -19,7 +19,7 @@ class GroupInfo final
      * C-style group info object.
      * NOTE: this should not be used except by library functions!
      */
-    HebiGroupInfoPtr const internal_;
+    HebiGroupInfoPtr internal_;
     #endif // DOXYGEN_OMIT_INTERNAL
 
   private:
@@ -57,8 +57,23 @@ class GroupInfo final
      * \brief Access the info for an individual module.
      */
     const Info& operator[](int index) const;
+    
+    /**
+     * \brief Export the gains from this GroupInfo object into a file, creating it as necessary.
+     * \param file The filename (or path + filename) to the file to write to.
+     */
+    bool writeGains(const std::string& file);
+
+    /**
+     * \brief Convenience function for returning spring constant values.
+     */
+    Eigen::VectorXd getSpringConstant() const;
+
+    /**
+     * \brief Convenience function for returning spring constant values.
+     */
+    void getSpringConstant(Eigen::VectorXd& out) const;
+
 };
 
 } // namespace hebi
-
-#endif // GROUP_INFO_HPP

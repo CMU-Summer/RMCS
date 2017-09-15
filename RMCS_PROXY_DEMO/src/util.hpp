@@ -1,5 +1,4 @@
-#ifndef UTIL_HPP
-#define UTIL_HPP
+#pragma once
 
 /**
  * This file defines helper macros to make the other files more readable.
@@ -19,6 +18,4 @@ Class& operator= (const Class&& other) = delete;
 /* Disable copy constructor. */ \
 Class(const Class& other) = delete; \
 /* Disable copy assigment operator. */ \
-Class& operator= (const Class& other) = delete; \
-
-#endif // UTIL_HPP
+Class& operator= (const Class& other) = delete;

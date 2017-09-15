@@ -1,7 +1,6 @@
-#ifndef INFO_HPP
-#define INFO_HPP
+#pragma once
 
-#include "hebi_info.h"
+#include "hebi.h"
 #include "color.hpp"
 #include <string>
 #include "util.hpp"
@@ -35,11 +34,11 @@ class Info final
       Off,
       /// A direct PWM value (-1 to 1) can be sent to the motor (subject to onboard safety limiting).
       DirectPWM,
-      /// A combination of the position, velocity, and torque loops with P and V feeding to T; documented on docs.hebi.us under "Control Modes"
+      /// A combination of the position, velocity, and effort loops with P and V feeding to T; documented on docs.hebi.us under "Control Modes"
       Strategy2,
-      /// A combination of the position, velocity, and torque loops with P, V, and T feeding to PWM; documented on docs.hebi.us under "Control Modes"
+      /// A combination of the position, velocity, and effort loops with P, V, and T feeding to PWM; documented on docs.hebi.us under "Control Modes"
       Strategy3,
-      /// A combination of the position, velocity, and torque loops with P feeding to T and V feeding to PWM; documented on docs.hebi.us under "Control Modes"
+      /// A combination of the position, velocity, and effort loops with P feeding to T and V feeding to PWM; documented on docs.hebi.us under "Control Modes"
       Strategy4,
     };
 
@@ -50,7 +49,7 @@ class Info final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        FloatField(HebiInfoPtr internal, InfoFloatField field);
+        FloatField(HebiInfoPtr internal, HebiInfoFloatField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the field has a value
         /// without directly calling @c has().
@@ -73,7 +72,7 @@ class Info final
 
       private:
         HebiInfoPtr const internal_;
-        InfoFloatField const field_;
+        HebiInfoFloatField const field_;
 
         HEBI_DISABLE_COPY_MOVE(FloatField)
     };
@@ -82,7 +81,7 @@ class Info final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        BoolField(HebiInfoPtr internal, InfoBoolField field);
+        BoolField(HebiInfoPtr internal, HebiInfoBoolField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief True if (and only if) the field has a value.
         bool has() const;
@@ -92,7 +91,7 @@ class Info final
 
       private:
         HebiInfoPtr const internal_;
-        InfoBoolField const field_;
+        HebiInfoBoolField const field_;
 
         HEBI_DISABLE_COPY_MOVE(BoolField)
     };
@@ -102,7 +101,7 @@ class Info final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        StringField(HebiInfoPtr internal, InfoStringField field);
+        StringField(HebiInfoPtr internal, HebiInfoStringField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the field has a value
         /// without directly calling @c has().
@@ -125,7 +124,7 @@ class Info final
 
       private:
         HebiInfoPtr const internal_;
-        InfoStringField const field_;
+        HebiInfoStringField const field_;
 
         HEBI_DISABLE_COPY_MOVE(StringField)
     };
@@ -135,7 +134,7 @@ class Info final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        FlagField(HebiInfoPtr internal, InfoFlagField field);
+        FlagField(HebiInfoPtr internal, HebiInfoFlagField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the flag is set without
         /// directly calling @c has().
@@ -155,7 +154,7 @@ class Info final
 
       private:
         HebiInfoPtr const internal_;
-        InfoFlagField const field_;
+        HebiInfoFlagField const field_;
 
         HEBI_DISABLE_COPY_MOVE(FlagField)
     };
@@ -166,7 +165,7 @@ class Info final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        EnumField(HebiInfoPtr internal, InfoEnumField field)
+        EnumField(HebiInfoPtr internal, HebiInfoEnumField field)
           : internal_(internal), field_(field) {}
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the field has a value
@@ -183,14 +182,14 @@ class Info final
         /// \endcode
         explicit operator bool() const { return has(); }
         /// \brief True if (and only if) the field has a value.
-        bool has() const { return (hebiInfoHasEnum(internal_, field_) == 1); }
+        bool has() const { return (hebiInfoGetEnum(internal_, field_, nullptr) == HebiStatusSuccess); }
         /// \brief If the field has a value, returns that value; otherwise,
         /// returns a default.
-        T get() const { return (T)hebiInfoGetEnum(internal_, field_); }
+        T get() const { T ret{}; hebiInfoGetEnum(internal_, field_, reinterpret_cast<int*>(&ret)); return ret; }
 
       private:
         HebiInfoPtr const internal_;
-        InfoEnumField const field_;
+        HebiInfoEnumField const field_;
 
         HEBI_DISABLE_COPY_MOVE(EnumField)
     };
@@ -200,7 +199,7 @@ class Info final
     {
       public:
         #ifndef DOXYGEN_OMIT_INTERNAL
-        LedField(HebiInfoPtr internal, InfoLedField field);
+        LedField(HebiInfoPtr internal, HebiInfoLedField field);
         #endif // DOXYGEN_OMIT_INTERNAL
         /// \brief Allows casting to a bool to check if the LED color is set
         /// without directly calling @c hasColor().
@@ -222,7 +221,7 @@ class Info final
 
       private:
         HebiInfoPtr const internal_;
-        InfoLedField const field_;
+        HebiInfoLedField const field_;
 
         HEBI_DISABLE_COPY_MOVE(LedField)
     };
@@ -244,20 +243,20 @@ class Info final
                 #ifndef DOXYGEN_OMIT_INTERNAL
                 PositionGains(HebiInfoPtr internal)
                   : internal_(internal),
-                    position_kp_(internal, InfoFloatPositionKp),
-                    position_ki_(internal, InfoFloatPositionKi),
-                    position_kd_(internal, InfoFloatPositionKd),
-                    position_feed_forward_(internal, InfoFloatPositionFeedForward),
-                    position_dead_zone_(internal, InfoFloatPositionDeadZone),
-                    position_i_clamp_(internal, InfoFloatPositionIClamp),
-                    position_punch_(internal, InfoFloatPositionPunch),
-                    position_min_target_(internal, InfoFloatPositionMinTarget),
-                    position_max_target_(internal, InfoFloatPositionMaxTarget),
-                    position_target_lowpass_(internal, InfoFloatPositionTargetLowpass),
-                    position_min_output_(internal, InfoFloatPositionMinOutput),
-                    position_max_output_(internal, InfoFloatPositionMaxOutput),
-                    position_output_lowpass_(internal, InfoFloatPositionOutputLowpass),
-                    position_d_on_error_(internal, InfoBoolPositionDOnError)
+                    position_kp_(internal, HebiInfoFloatPositionKp),
+                    position_ki_(internal, HebiInfoFloatPositionKi),
+                    position_kd_(internal, HebiInfoFloatPositionKd),
+                    position_feed_forward_(internal, HebiInfoFloatPositionFeedForward),
+                    position_dead_zone_(internal, HebiInfoFloatPositionDeadZone),
+                    position_i_clamp_(internal, HebiInfoFloatPositionIClamp),
+                    position_punch_(internal, HebiInfoFloatPositionPunch),
+                    position_min_target_(internal, HebiInfoFloatPositionMinTarget),
+                    position_max_target_(internal, HebiInfoFloatPositionMaxTarget),
+                    position_target_lowpass_(internal, HebiInfoFloatPositionTargetLowpass),
+                    position_min_output_(internal, HebiInfoFloatPositionMinOutput),
+                    position_max_output_(internal, HebiInfoFloatPositionMaxOutput),
+                    position_output_lowpass_(internal, HebiInfoFloatPositionOutputLowpass),
+                    position_d_on_error_(internal, HebiInfoBoolPositionDOnError)
                 {
                 }
                 #endif // DOXYGEN_OMIT_INTERNAL
@@ -324,20 +323,20 @@ class Info final
                 #ifndef DOXYGEN_OMIT_INTERNAL
                 VelocityGains(HebiInfoPtr internal)
                   : internal_(internal),
-                    velocity_kp_(internal, InfoFloatVelocityKp),
-                    velocity_ki_(internal, InfoFloatVelocityKi),
-                    velocity_kd_(internal, InfoFloatVelocityKd),
-                    velocity_feed_forward_(internal, InfoFloatVelocityFeedForward),
-                    velocity_dead_zone_(internal, InfoFloatVelocityDeadZone),
-                    velocity_i_clamp_(internal, InfoFloatVelocityIClamp),
-                    velocity_punch_(internal, InfoFloatVelocityPunch),
-                    velocity_min_target_(internal, InfoFloatVelocityMinTarget),
-                    velocity_max_target_(internal, InfoFloatVelocityMaxTarget),
-                    velocity_target_lowpass_(internal, InfoFloatVelocityTargetLowpass),
-                    velocity_min_output_(internal, InfoFloatVelocityMinOutput),
-                    velocity_max_output_(internal, InfoFloatVelocityMaxOutput),
-                    velocity_output_lowpass_(internal, InfoFloatVelocityOutputLowpass),
-                    velocity_d_on_error_(internal, InfoBoolVelocityDOnError)
+                    velocity_kp_(internal, HebiInfoFloatVelocityKp),
+                    velocity_ki_(internal, HebiInfoFloatVelocityKi),
+                    velocity_kd_(internal, HebiInfoFloatVelocityKd),
+                    velocity_feed_forward_(internal, HebiInfoFloatVelocityFeedForward),
+                    velocity_dead_zone_(internal, HebiInfoFloatVelocityDeadZone),
+                    velocity_i_clamp_(internal, HebiInfoFloatVelocityIClamp),
+                    velocity_punch_(internal, HebiInfoFloatVelocityPunch),
+                    velocity_min_target_(internal, HebiInfoFloatVelocityMinTarget),
+                    velocity_max_target_(internal, HebiInfoFloatVelocityMaxTarget),
+                    velocity_target_lowpass_(internal, HebiInfoFloatVelocityTargetLowpass),
+                    velocity_min_output_(internal, HebiInfoFloatVelocityMinOutput),
+                    velocity_max_output_(internal, HebiInfoFloatVelocityMaxOutput),
+                    velocity_output_lowpass_(internal, HebiInfoFloatVelocityOutputLowpass),
+                    velocity_d_on_error_(internal, HebiInfoBoolVelocityDOnError)
                 {
                 }
                 #endif // DOXYGEN_OMIT_INTERNAL
@@ -397,27 +396,27 @@ class Info final
                 HEBI_DISABLE_COPY_MOVE(VelocityGains)
             };
         
-            /// Controller gains for the torque PID loop.
-            class TorqueGains final
+            /// Controller gains for the effort PID loop.
+            class EffortGains final
             {
               public:
                 #ifndef DOXYGEN_OMIT_INTERNAL
-                TorqueGains(HebiInfoPtr internal)
+                EffortGains(HebiInfoPtr internal)
                   : internal_(internal),
-                    torque_kp_(internal, InfoFloatTorqueKp),
-                    torque_ki_(internal, InfoFloatTorqueKi),
-                    torque_kd_(internal, InfoFloatTorqueKd),
-                    torque_feed_forward_(internal, InfoFloatTorqueFeedForward),
-                    torque_dead_zone_(internal, InfoFloatTorqueDeadZone),
-                    torque_i_clamp_(internal, InfoFloatTorqueIClamp),
-                    torque_punch_(internal, InfoFloatTorquePunch),
-                    torque_min_target_(internal, InfoFloatTorqueMinTarget),
-                    torque_max_target_(internal, InfoFloatTorqueMaxTarget),
-                    torque_target_lowpass_(internal, InfoFloatTorqueTargetLowpass),
-                    torque_min_output_(internal, InfoFloatTorqueMinOutput),
-                    torque_max_output_(internal, InfoFloatTorqueMaxOutput),
-                    torque_output_lowpass_(internal, InfoFloatTorqueOutputLowpass),
-                    torque_d_on_error_(internal, InfoBoolTorqueDOnError)
+                    effort_kp_(internal, HebiInfoFloatEffortKp),
+                    effort_ki_(internal, HebiInfoFloatEffortKi),
+                    effort_kd_(internal, HebiInfoFloatEffortKd),
+                    effort_feed_forward_(internal, HebiInfoFloatEffortFeedForward),
+                    effort_dead_zone_(internal, HebiInfoFloatEffortDeadZone),
+                    effort_i_clamp_(internal, HebiInfoFloatEffortIClamp),
+                    effort_punch_(internal, HebiInfoFloatEffortPunch),
+                    effort_min_target_(internal, HebiInfoFloatEffortMinTarget),
+                    effort_max_target_(internal, HebiInfoFloatEffortMaxTarget),
+                    effort_target_lowpass_(internal, HebiInfoFloatEffortTargetLowpass),
+                    effort_min_output_(internal, HebiInfoFloatEffortMinOutput),
+                    effort_max_output_(internal, HebiInfoFloatEffortMaxOutput),
+                    effort_output_lowpass_(internal, HebiInfoFloatEffortOutputLowpass),
+                    effort_d_on_error_(internal, HebiInfoBoolEffortDOnError)
                 {
                 }
                 #endif // DOXYGEN_OMIT_INTERNAL
@@ -427,54 +426,54 @@ class Info final
             
                 // Subfields ----------------
             
-                /// Proportional PID gain for torque
-                const FloatField& torqueKp() const { return torque_kp_; }
-                /// Integral PID gain for torque
-                const FloatField& torqueKi() const { return torque_ki_; }
-                /// Derivative PID gain for torque
-                const FloatField& torqueKd() const { return torque_kd_; }
-                /// Feed forward term for torque (this term is multiplied by the target and added to the output).
-                const FloatField& torqueFeedForward() const { return torque_feed_forward_; }
+                /// Proportional PID gain for effort
+                const FloatField& effortKp() const { return effort_kp_; }
+                /// Integral PID gain for effort
+                const FloatField& effortKi() const { return effort_ki_; }
+                /// Derivative PID gain for effort
+                const FloatField& effortKd() const { return effort_kd_; }
+                /// Feed forward term for effort (this term is multiplied by the target and added to the output).
+                const FloatField& effortFeedForward() const { return effort_feed_forward_; }
                 /// Error values within +/- this value from zero are treated as zero (in terms of computed proportional output, input to numerical derivative, and accumulated integral error).
-                const FloatField& torqueDeadZone() const { return torque_dead_zone_; }
+                const FloatField& effortDeadZone() const { return effort_dead_zone_; }
                 /// Maximum allowed value for the output of the integral component of the PID loop; the integrated error is not allowed to exceed value that will generate this number.
-                const FloatField& torqueIClamp() const { return torque_i_clamp_; }
-                /// Constant offset to the torque PID output outside of the deadzone; it is added when the error is positive and subtracted when it is negative.
-                const FloatField& torquePunch() const { return torque_punch_; }
+                const FloatField& effortIClamp() const { return effort_i_clamp_; }
+                /// Constant offset to the effort PID output outside of the deadzone; it is added when the error is positive and subtracted when it is negative.
+                const FloatField& effortPunch() const { return effort_punch_; }
                 /// Minimum allowed value for input to the PID controller
-                const FloatField& torqueMinTarget() const { return torque_min_target_; }
+                const FloatField& effortMinTarget() const { return effort_min_target_; }
                 /// Maximum allowed value for input to the PID controller
-                const FloatField& torqueMaxTarget() const { return torque_max_target_; }
+                const FloatField& effortMaxTarget() const { return effort_max_target_; }
                 /// A simple lowpass filter applied to the target set point; needs to be between 0 and 1.  At each timestep: x_t = x_t * a + x_{t-1} * (1 - a).
-                const FloatField& torqueTargetLowpass() const { return torque_target_lowpass_; }
+                const FloatField& effortTargetLowpass() const { return effort_target_lowpass_; }
                 /// Output from the PID controller is limited to a minimum of this value.
-                const FloatField& torqueMinOutput() const { return torque_min_output_; }
+                const FloatField& effortMinOutput() const { return effort_min_output_; }
                 /// Output from the PID controller is limited to a maximum of this value.
-                const FloatField& torqueMaxOutput() const { return torque_max_output_; }
+                const FloatField& effortMaxOutput() const { return effort_max_output_; }
                 /// A simple lowpass filter applied to the controller output; needs to be between 0 and 1.  At each timestep: x_t = x_t * a + x_{t-1} * (1 - a).
-                const FloatField& torqueOutputLowpass() const { return torque_output_lowpass_; }
+                const FloatField& effortOutputLowpass() const { return effort_output_lowpass_; }
                 /// Controls whether the Kd term uses the "derivative of error" or "derivative of measurement."  When the setpoints have step inputs or are noisy, setting this to @c false can eliminate corresponding spikes or noise in the output.
-                const BoolField& torqueDOnError() const { return torque_d_on_error_; }
+                const BoolField& effortDOnError() const { return effort_d_on_error_; }
             
               private:
                 HebiInfoPtr const internal_;
             
-                FloatField torque_kp_;
-                FloatField torque_ki_;
-                FloatField torque_kd_;
-                FloatField torque_feed_forward_;
-                FloatField torque_dead_zone_;
-                FloatField torque_i_clamp_;
-                FloatField torque_punch_;
-                FloatField torque_min_target_;
-                FloatField torque_max_target_;
-                FloatField torque_target_lowpass_;
-                FloatField torque_min_output_;
-                FloatField torque_max_output_;
-                FloatField torque_output_lowpass_;
-                BoolField torque_d_on_error_;
+                FloatField effort_kp_;
+                FloatField effort_ki_;
+                FloatField effort_kd_;
+                FloatField effort_feed_forward_;
+                FloatField effort_dead_zone_;
+                FloatField effort_i_clamp_;
+                FloatField effort_punch_;
+                FloatField effort_min_target_;
+                FloatField effort_max_target_;
+                FloatField effort_target_lowpass_;
+                FloatField effort_min_output_;
+                FloatField effort_max_output_;
+                FloatField effort_output_lowpass_;
+                BoolField effort_d_on_error_;
             
-                HEBI_DISABLE_COPY_MOVE(TorqueGains)
+                HEBI_DISABLE_COPY_MOVE(EffortGains)
             };
         
           public:
@@ -483,9 +482,9 @@ class Info final
               : internal_(internal),
                 position_gains_(internal),
                 velocity_gains_(internal),
-                torque_gains_(internal),
-                spring_constant_(internal, InfoFloatSpringConstant),
-                control_strategy_(internal, InfoEnumControlStrategy)
+                effort_gains_(internal),
+                spring_constant_(internal, HebiInfoFloatSpringConstant),
+                control_strategy_(internal, HebiInfoEnumControlStrategy)
             {
             }
             #endif // DOXYGEN_OMIT_INTERNAL
@@ -499,14 +498,14 @@ class Info final
             const PositionGains& positionGains() const { return position_gains_; }
             /// Controller gains for the velocity PID loop.
             const VelocityGains& velocityGains() const { return velocity_gains_; }
-            /// Controller gains for the torque PID loop.
-            const TorqueGains& torqueGains() const { return torque_gains_; }
+            /// Controller gains for the effort PID loop.
+            const EffortGains& effortGains() const { return effort_gains_; }
         
             // Subfields ----------------
         
             /// The spring constant of the module.
             const FloatField& springConstant() const { return spring_constant_; }
-            /// How the position, velocity, and torque PID loops are connected in order to control motor PWM.
+            /// How the position, velocity, and effort PID loops are connected in order to control motor PWM.
             const EnumField<ControlStrategy>& controlStrategy() const { return control_strategy_; }
         
           private:
@@ -514,7 +513,7 @@ class Info final
         
             PositionGains position_gains_;
             VelocityGains velocity_gains_;
-            TorqueGains torque_gains_;
+            EffortGains effort_gains_;
         
             FloatField spring_constant_;
             EnumField<ControlStrategy> control_strategy_;
@@ -527,9 +526,9 @@ class Info final
         Settings(HebiInfoPtr internal)
           : internal_(internal),
             actuator_(internal),
-            name_(internal, InfoStringName),
-            family_(internal, InfoStringFamily),
-            save_current_settings_(internal, InfoFlagSaveCurrentSettings)
+            name_(internal, HebiInfoStringName),
+            family_(internal, HebiInfoStringFamily),
+            save_current_settings_(internal, HebiInfoFlagSaveCurrentSettings)
         {
         }
         #endif // DOXYGEN_OMIT_INTERNAL
@@ -615,5 +614,3 @@ class Info final
 };
 
 } // namespace hebi
-
-#endif // INFO_HPP

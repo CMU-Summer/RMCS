@@ -19,7 +19,7 @@ GroupfeedbackCustomStruct FeedBackManager::toGroupFbCustomStruct(const GroupFeed
 	
    // positionVec,velVec,torqueVec 无意义
    Eigen::VectorXd vxd= group_fdb->getPosition();//列向量，1列多行
-   Eigen::VectorXd vxd1= group_fdb->getTorque();//列向量，1列多行
+   Eigen::VectorXd vxd1= group_fdb->getEffort();//列向量，1列多行
    Eigen::VectorXd vxd2= group_fdb->getVelocity();//列向量，1列多行
  
    vector<double> positionVec,torqueVec,velVec;
@@ -62,7 +62,7 @@ GroupfeedbackCustomStruct FeedBackManager::toGroupFbCustomStruct(const GroupFeed
 
 FeedbackCustomStruct FeedBackManager::toFeedBackCustomStruct(const Feedback& fdb){
 	printf("change fd to custom_fd\n");
-	Actuator_field a(fdb.actuator().position().get(),fdb.actuator().velocity().get(),fdb.actuator().torque().get(),fdb.voltage().get(),fdb.actuator().motorCurrent().get());
+	Actuator_field a(fdb.actuator().position().get(),fdb.actuator().velocity().get(),fdb.actuator().effort().get(),fdb.voltage().get(),fdb.actuator().motorCurrent().get());
 	Led_field l(fdb.led().getColor().getRed(),fdb.led().getColor().getGreen(),fdb.led().getColor().getBlue());
 	FeedbackCustomStruct fdb_custom(l,a);
 	return fdb_custom;

@@ -1,7 +1,6 @@
-#ifndef TRAJECTORY_HPP
-#define TRAJECTORY_HPP
+#pragma once
 
-#include "hebi_trajectory.h"
+#include "hebi.h"
 #include "Eigen/Eigen"
 #include "util.hpp"
 #include <vector>
@@ -75,10 +74,10 @@ class Trajectory final
      * +/-infinity are not allowed.
      *
      * \returns A HebiTrajectory object if there were no errors, and the
-     * trajectory has been created. A empty unique_ptr indicates that there was
+     * trajectory has been created. An empty shared_ptr indicates that there was
      * an error in creating the trajectory.
      */
-    static std::unique_ptr<Trajectory> createUnconstrainedQp(
+    static std::shared_ptr<Trajectory> createUnconstrainedQp(
       const VectorXd& time_vector,
       const MatrixXd& positions,
       const MatrixXd* velocities = nullptr,
@@ -140,5 +139,3 @@ class Trajectory final
 
 } // namespace trajectory
 } // namespace hebi
-
-#endif // TRAJECTORY_HPP

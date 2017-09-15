@@ -12,8 +12,8 @@ LookUpManager::LookUpManager(CacheManager& cacheManager_,
 							 queue_safe<GroupfeedbackCustomStruct>& groupFeedbackQueue_,
 							 Lookup& lookup_,
 							 ConfigManager& configManager_,
-							 map<string, unique_ptr<hebi::Group>>& cacheGroupMap_,
-							 map<string, unique_ptr<hebi::Group>>& fixedGroupMap_,
+							 map<string, shared_ptr<hebi::Group>>& cacheGroupMap_,
+							 map<string, shared_ptr<hebi::Group>>& fixedGroupMap_,
 							 int sleep_time_,
 							 int default_frequency_
 )
@@ -143,7 +143,7 @@ void LookUpManager::updateFamilyAndNamesMap(map<string,vector<string>> newFandNM
 map<string,vector<string>> LookUpManager::getNewestMapFromHibi(){
 	//从hebi里面获取
 	map<string,vector<string>> fMap;
-	unique_ptr<hebi::Lookup::EntryList> entrylist = this->lookup.getEntryList();
+	shared_ptr<hebi::Lookup::EntryList> entrylist = this->lookup.getEntryList();
 	if (!entrylist) {
 		printf("LOOKUPMANAGER_THREAD: entrylist is null !!\n");
 		return fMap;
@@ -212,7 +212,7 @@ void LookUpManager::updateModuleLoad(vector<FamilyStruct> fst_vec) {
 		for (int j = 0;j < family_st.nameList.size();j++) {
 			name = family_st.nameList.at(j)->name;
 			// =.=
-			unique_ptr<Group> grp = this->lookup.getGroupFromNames({ name }, {familyName}, DEAULT_SLEEP_TIME);
+			shared_ptr<Group> grp = this->lookup.getGroupFromNames({ familyName } ,{ name }, DEAULT_SLEEP_TIME);
 			//unique_ptr<Group> grp = this->lookup.getConnectedGroupFromName(name, familyName);
 			ModuleInfo mod = this->cacheManager.getLastModuleInfo(familyName, name);
 			if (grp) {
@@ -267,7 +267,7 @@ vector<GroupStruct> LookUpManager::getGroupsStateFromHeibi(vector<GroupStruct> g
 			vector<NameStruct*>::iterator it;
 			for(it=nameListMap.begin();it!=nameListMap.end();it++){
 				// =.= 
-				unique_ptr<Group> grp = this->lookup.getGroupFromNames({ (*it)->name }, { familyName }, DEAULT_SLEEP_TIME);
+				shared_ptr<Group> grp = this->lookup.getGroupFromNames({ familyName }, { (*it)->name }, DEAULT_SLEEP_TIME);
 				//unique_ptr<Group> grp=this->lookup.getConnectedGroupFromName((*it)->name,familyName);
 				if(grp){
 					(*it)->connected=true;//更新状态为true
@@ -328,7 +328,7 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 	
 	
 	FeedBackManager* fdbManager=new FeedBackManager(this->groupFeedbackQueue); 
-	unique_ptr<Group> grp= this->lookup.getGroupFromNames(*nameVec,*familyVec,DEAULT_SLEEP_TIME);
+	shared_ptr<Group> grp= this->lookup.getGroupFromNames(*familyVec, *nameVec,DEAULT_SLEEP_TIME);
 	if (!grp){
 		printf("LOOKUPMANAGER_THREAD: group from hebi is null!s\n");
 		return;//null不用加
@@ -336,21 +336,19 @@ void LookUpManager::addHandlerForOneGroup(vector<string>* &familyVec,vector<stri
 	LookUpManager* this_ = this;
 	string* groupName_ = new string(groupName);
 	grp->setFeedbackFrequencyHz(this->default_frequency);
-
-	grp->addFeedbackHandler([fdbManager, groupName_, &this_](const GroupFeedback* group_fbk)->void {
-		//用fdbManager里面的函数
-		this_->showGroupFeedBackInfo(group_fbk);
-		GroupfeedbackCustomStruct gfb_custom = fdbManager->toGroupFbCustomStruct(group_fbk, groupName_->data());
+	grp->addFeedbackHandler(
+		[fdbManager, groupName_, &this_](const hebi::GroupFeedback& group_fbk)->void
+	{
+		this_->showGroupFeedBackInfo(&group_fbk);
+		GroupfeedbackCustomStruct gfb_custom = fdbManager->toGroupFbCustomStruct(&group_fbk, groupName_->data());
 
 		fdbManager->putToQueue(gfb_custom);
-
 	});
-	
 	if (type == FIXED_TYPE) {
-		this->fixedGroupMap.insert(map<string, unique_ptr<Group>>::value_type(groupName, std::move(grp))); //保留内存
+		this->fixedGroupMap.insert(map<string, shared_ptr<Group>>::value_type(groupName, std::move(grp))); //保留内存
 	}
 	else {
-		this->cacheGroupMap.insert(map<string, unique_ptr<Group>>::value_type(groupName, std::move(grp)));//保留内存
+		this->cacheGroupMap.insert(map<string, shared_ptr<Group>>::value_type(groupName, std::move(grp)));//保留内存
 		this->feedbackManagerVec.push_back(*fdbManager); //放进vec里面管理
 	}
 	
@@ -374,7 +372,7 @@ void LookUpManager::showGroupFeedBackInfo(const GroupFeedback* group_fbk) {
 		printf("Motor current %f", (*group_fbk)[i].actuator().motorCurrent().get());
 		printf("position %f", (*group_fbk)[i].actuator().position().get());
 		printf("velocity %f", (*group_fbk)[i].actuator().velocity().get());
-		printf("torque %f\n", (*group_fbk)[i].actuator().torque().get());
+		printf("torque %f\n", (*group_fbk)[i].actuator().effort().get());
 	}
 	printf("LOOKUPMANAGER_THREAD: [-------END------]\n");
 
@@ -391,7 +389,7 @@ void LookUpManager::changecacheGroupMap(vector<GroupStruct> groupStruts) {
 		cMap[a] = a;
 	}
 	//遍历保存的老的cacheMap
-	map<string, unique_ptr<Group>>::iterator it;
+	map<string, shared_ptr<Group>>::iterator it;
 	vector<string> groupsNeedtoDelete;
 	for (it = this->cacheGroupMap.begin(); it != this->cacheGroupMap.end();it++) {
 		if (cMap.count(it->first)<=0) {
@@ -403,8 +401,7 @@ void LookUpManager::changecacheGroupMap(vector<GroupStruct> groupStruts) {
 	
 	}
 	for (int i = 0; i < groupsNeedtoDelete.size();i++) {
-		this->cacheGroupMap[groupsNeedtoDelete.at(i)].release();//释放
-		this->cacheGroupMap[groupsNeedtoDelete.at(i)].reset(nullptr);//然后删除
+		
 		this->cacheGroupMap.erase(groupsNeedtoDelete.at(i));//删除掉
 	}
 

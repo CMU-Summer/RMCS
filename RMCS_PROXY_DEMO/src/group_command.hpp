@@ -1,7 +1,6 @@
-#ifndef GROUP_COMMAND_HPP
-#define GROUP_COMMAND_HPP
+#pragma once
 
-#include "hebi_group_command.h"
+#include "hebi.h"
 #include "Eigen/Eigen"
 #include "command.hpp"
 #include <vector>
@@ -20,7 +19,7 @@ class GroupCommand final
      * C-style group command object.
      * NOTE: this should not be used except by library functions!
      */
-    HebiGroupCommandPtr const internal_;
+    HebiGroupCommandPtr internal_;
     #endif // DOXYGEN_OMIT_INTERNAL
 
   private:
@@ -60,6 +59,18 @@ class GroupCommand final
     Command& operator[](int index);
 
     /**
+     * \brief Import the gains from a file into this GroupCommand object.
+     * \param file The filename (or path + filename) to the file to read from.
+     */
+    bool readGains(const std::string& file);
+
+    /**
+     * \brief Export the gains from this GroupCommand object into a file, creating it as necessary.
+     * \param file The filename (or path + filename) to the file to write to.
+     */
+    bool writeGains(const std::string& file);
+
+    /**
      * \brief Convenience function for setting position commands from Eigen
      * vectors.
      *
@@ -74,12 +85,19 @@ class GroupCommand final
      */
     void setVelocity(const Eigen::VectorXd& velocity);
     /**
-     * \brief Convenience function for setting torque commands from Eigen
+     * \brief Convenience function for setting effort commands from Eigen
      * vectors.
      *
      * Note that if the vector is not the correct link, no action is taken.
      */
-    void setTorque(const Eigen::VectorXd& torque);
+    void setEffort(const Eigen::VectorXd& effort);
+    /**
+     * \brief Convenience function for setting spring constant commands from Eigen
+     * vectors.
+     *
+     * Note that if the vector is not the correct link, no action is taken.
+    */
+    void setSpringConstant(const Eigen::VectorXd& springConstant);
 
     /**
      * \brief Convenience function for returning commanded position values.
@@ -90,11 +108,31 @@ class GroupCommand final
      */
     Eigen::VectorXd getVelocity() const;
     /**
-     * \brief Convenience function for returning commanded torque values.
+     * \brief Convenience function for returning commanded effort values.
      */
-    Eigen::VectorXd getTorque() const;
+    Eigen::VectorXd getEffort() const;
+    /**
+     * \brief Convenience function for returning commanded spring constant values.
+     */
+    Eigen::VectorXd getSpringConstant() const;
+
+    /**
+     * \brief Convenience function for returning commanded position values.
+     */
+    void getPosition(Eigen::VectorXd& out) const;
+    /**
+     * \brief Convenience function for returning commanded velocity values.
+     */
+    void getVelocity(Eigen::VectorXd& out) const;
+    /**
+     * \brief Convenience function for returning commanded effort values.
+     */
+    void getEffort(Eigen::VectorXd& out) const;
+    /**
+     * \brief Convenience function for returning commanded spring constant values.
+     */
+    void getSpringConstant(Eigen::VectorXd& out) const;
+
 };
 
 } // namespace hebi
-
-#endif // GROUP_COMMAND_HPP

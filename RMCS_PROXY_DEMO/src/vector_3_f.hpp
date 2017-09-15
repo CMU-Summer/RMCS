@@ -1,7 +1,6 @@
-#ifndef VECTOR_3_F
-#define VECTOR_3_F
+#pragma once
 
-#include "hebi_vector_3_f.h"
+#include "hebi.h"
 
 namespace hebi {
 
@@ -37,5 +36,3 @@ typedef Vector3f Vector3f;
 #endif // DOXYGEN_OMIT_INTERNAL
 
 } // namespace hebi
-
-#endif // VECTOR_3_F

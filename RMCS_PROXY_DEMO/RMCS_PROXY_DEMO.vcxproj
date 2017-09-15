@@ -40,6 +40,7 @@
     <ClInclude Include="src\group_info.hpp" />
     <ClInclude Include="src\info.hpp" />
     <ClInclude Include="src\kinematics.hpp" />
+    <ClInclude Include="src\log_file.hpp" />
     <ClInclude Include="src\lookup.hpp" />
     <ClInclude Include="src\mac_address.hpp" />
     <ClInclude Include="src\trajectory.hpp" />
@@ -63,6 +64,7 @@
     <ClCompile Include="src\group_info.cpp" />
     <ClCompile Include="src\info.cpp" />
     <ClCompile Include="src\kinematics.cpp" />
+    <ClCompile Include="src\log_file.cpp" />
     <ClCompile Include="src\lookup.cpp" />
     <ClCompile Include="src\mac_address.cpp" />
     <ClCompile Include="src\trajectory.cpp" />
@@ -70,7 +72,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A406C413-D7CC-4251-A1D9-40B6FF857EA4}</ProjectGuid>
     <RootNamespace>RMCS_PROXY_DEMO</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -83,7 +85,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -148,7 +150,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\tools\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>

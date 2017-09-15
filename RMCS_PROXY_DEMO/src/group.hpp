@@ -1,13 +1,13 @@
-#ifndef GROUP_HPP
-#define GROUP_HPP
+#pragma once
 
-#include "hebi_group.h"
+#include "hebi.h"
 #include "group_command.hpp"
 #include "group_feedback.hpp"
 #include "group_info.hpp"
 #include "util.hpp"
 
 #include <functional>
+#include <memory>
 #include <mutex>
 
 namespace hebi {
@@ -37,7 +37,9 @@ namespace hebi {
  * \brief Definition of a callback function for GroupFeedback returned from a 
  * Group of modules.
  */
-typedef std::function<void (const GroupFeedback*)> GroupFeedbackHandler;
+typedef std::function<void (const GroupFeedback&)> GroupFeedbackHandler;
+
+class LogFile;
 
 /**
  * \brief Represents a group of physical HEBI modules, and allows Command,
@@ -153,15 +155,40 @@ class Group final
      */
     bool sendCommandWithAcknowledgement(const GroupCommand& group_command, int timeout_ms=DEFAULT_TIMEOUT_MS);
 
-    /** 
-     * \brief Request feedback from the group, and store it in the passed-in
-     * feedback object.
+    /**
+     * \brief Requests feedback from the group.
      *
-     * \returns true if the request was successful within the specified timeout;
-     * in this case 'feedback' has been updated. Otherwise, returns false and
-     * does not update 'feedback'.
+     * Sends a background request to the modules in the group; if/when all modules
+     * return feedback, any associated handler functions are called. This returned
+     * feedback is also stored to be returned by the next call to
+     * getNextFeedback (any previously returned data is discarded).
+     *
+     * \returns @c true if feedback was request was successfully sent, otherwise @c false on failure
+     * (i.e., connection error).
      */
-    bool requestFeedback(GroupFeedback* feedback, int timeout_ms=DEFAULT_TIMEOUT_MS);
+    bool sendFeedbackRequest();
+
+    /**
+     * \brief Returns the most recently stored feedback from a sent feedback
+     * request, or returns the next one received (up to the requested timeout).
+     *
+     * Note that a feedback request can be sent either with the
+     * sendFeedbackRequest function, or by setting a background feedback
+     * frequency with setFeedbackFrequencyHz.
+     *
+     * Warning: other data in the provided 'Feedback' object is erased!
+     *
+     * \param feedback On success, the group feedback read from the group are written
+     * into this structure.
+     * \param timeout_ms Indicates how many milliseconds to wait for feedback.
+     * For typical networks, '15' ms is a value that can be reasonably expected to
+     * allow for a round trip transmission after the last 'send feedback request'
+     * call.
+     *
+     * \returns @c true if feedback was returned, otherwise @c false on failure (i.e., connection
+     * error or timeout waiting for response).
+     */
+    bool getNextFeedback(GroupFeedback* feedback, int timeout_ms=DEFAULT_TIMEOUT_MS);
 
     /** 
      * \brief Request info from the group, and store it in the passed-in info
@@ -175,27 +202,34 @@ class Group final
 
     #ifndef DOXYGEN_OMIT_INTERNAL
     /**
-     * \brief Starts log (stopping any active log). WARNING: interface not yet
-     * stable!
+     * \brief Starts log (stopping any active log).
      *
      * \param dir The relative or absolute path to the directory to log in. To
      * use the current directory, just use an empty string.
      *
-     * NOTE: EXPERIMENTAL USE ONLY - FUNCTION INTERFACE SUBJECT TO CHANGE.
+     * \returns true on success.
+     */
+    bool startLog(std::string dir);
+
+    /**
+     * \brief Starts log (stopping any active log).
+     *
+     * \param dir The relative or absolute path to the directory to log in. To
+     * use the current directory, just use an empty string.
+     *
+     * \param file The name of the file within the directory
      *
      * \returns true on success.
      */
-    bool startLog(std::string path);
+    bool startLog(std::string dir, std::string file);
 
     /**
-     * \brief Stops any active log. WARNING: interface not yet stable!
+     * \brief Stops any active log.
      *
-     * NOTE: EXPERIMENTAL USE ONLY - FUNCTION INTERFACE SUBJECT TO CHANGE.
-     *
-     * \returns true if a log was running and was successfully stopped, false
-     * otherwise.
+     * \returns shared pointer to the created log file.
+     * If the file was not successfully created, this will return null.
      */
-    bool stopLog();
+    std::shared_ptr<LogFile> stopLog();
     #endif // DOXYGEN_OMIT_INTERNAL
 
     /**
@@ -222,6 +256,15 @@ class Group final
      */
     void clearFeedbackHandlers();
 
+    /**
+     * \brief Creates an imitation group of provided size
+     * 
+     * \param size the number of modules in the group
+     * 
+     * \returns A shared pointer to the created imitation group
+     */
+    static std::shared_ptr<Group> createImitation(unsigned int size);
+
   private:
     /**
      * Disable copy and move constructors and assignment operators
@@ -230,5 +273,3 @@ class Group final
 };
 
 } // namespace hebi
-
-#endif // GROUP_HPP

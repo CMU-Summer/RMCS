@@ -1,12 +1,12 @@
 #include "group.hpp"
-#include "hebi_lookup.h" // For hebiGroupRelease
+#include "log_file.hpp"
 
 namespace hebi {
 
 #ifndef DOXYGEN_OMIT_INTERNAL
 void callbackWrapper(HebiGroupFeedbackPtr group_feedback, void* user_data)
 {
-  ((Group*)user_data)->callAttachedHandlers(group_feedback);
+  reinterpret_cast<Group*>(user_data)->callAttachedHandlers(group_feedback);
 }
 #endif // DOXYGEN_OMIT_INTERNAL
 
@@ -19,21 +19,25 @@ void Group::callAttachedHandlers(HebiGroupFeedbackPtr group_feedback)
   for (unsigned int i = 0; i < handlers_.size(); i++)
   {
     GroupFeedbackHandler handler = handlers_[i];
-    // TODO: be sure to catch exceptions!
     try
     {
-      handler(&wrapped_fbk);
+      handler(wrapped_fbk);
     }
     catch (...)
     {
-      // TODO: print error or something?
+
     }
   }
 }
 
 Group::Group(HebiGroupPtr group)
-  : internal_(group), number_of_modules_(hebiGroupGetNumberOfModules(internal_))
+  : internal_(group), number_of_modules_(hebiGroupGetSize(internal_))
 {
+}
+
+std::shared_ptr<Group> Group::createImitation(unsigned int size)
+{
+  return std::make_shared<Group>(hebiGroupCreateImitation(size));
 }
 
 Group::~Group() noexcept
@@ -50,42 +54,59 @@ int Group::size()
 
 bool Group::setCommandLifetimeMs(int ms)
 {
-  return (hebiGroupSetCommandLifetime(internal_, ms) == 0);
+  return (hebiGroupSetCommandLifetime(internal_, ms) == HebiStatusSuccess);
 }
 
 bool Group::sendCommand(const GroupCommand& group_command)
 {
-  return (hebiGroupSendCommand(internal_, group_command.internal_) == 0);
+  return (hebiGroupSendCommand(internal_, group_command.internal_) == HebiStatusSuccess);
 }
 
 bool Group::sendCommandWithAcknowledgement(const GroupCommand& group_command, int timeout_ms)
 {
-  return (hebiGroupSendCommandWithAcknowledgement(internal_, group_command.internal_, timeout_ms) == 0);
+  return (hebiGroupSendCommandWithAcknowledgement(internal_, group_command.internal_, timeout_ms) == HebiStatusSuccess);
 }
-    
-bool Group::requestFeedback(GroupFeedback* feedback, int timeout_ms)
+
+bool Group::sendFeedbackRequest()
 {
-  return (hebiGroupRequestFeedback(internal_, feedback->internal_, timeout_ms) == 0);
+  return (hebiGroupSendFeedbackRequest(internal_) == HebiStatusSuccess);
+}
+
+bool Group::getNextFeedback(GroupFeedback* feedback, int timeout_ms)
+{
+  return (hebiGroupGetNextFeedback(internal_, feedback->internal_, timeout_ms) == HebiStatusSuccess);
 }
 
 bool Group::requestInfo(GroupInfo* info, int timeout_ms)
 {
-  return (hebiGroupRequestInfo(internal_, info->internal_, timeout_ms) == 0);
+  return (hebiGroupRequestInfo(internal_, info->internal_, timeout_ms) == HebiStatusSuccess);
 }
 
-bool Group::startLog(std::string path)
+bool Group::startLog(std::string dir)
 {
-  return (hebiGroupStartLog(internal_, path.c_str()) == 0);
+  return (hebiGroupStartLog(internal_, dir.c_str(), nullptr) == HebiStatusSuccess);
 }
 
-bool Group::stopLog()
+bool Group::startLog(std::string dir, std::string file)
 {
-  return (hebiGroupStopLog(internal_) == 0);
+  return (hebiGroupStartLog(internal_, dir.c_str(), file.c_str()) == HebiStatusSuccess);
+}
+
+std::shared_ptr<LogFile> Group::stopLog()
+{
+  auto internal = hebiGroupStopLog(internal_);
+  if (internal == nullptr) {
+    return std::shared_ptr<LogFile>();
+  }
+
+  return std::shared_ptr<LogFile>(
+    new LogFile(internal, hebiLogFileGetNumberOfModules(internal))
+  );
 }
 
 bool Group::setFeedbackFrequencyHz(float frequency)
 {
-  return (hebiGroupSetFeedbackFrequencyHz(internal_, frequency) == 0);
+  return (hebiGroupSetFeedbackFrequencyHz(internal_, frequency) == HebiStatusSuccess);
 }
 
 float Group::getFeedbackFrequencyHz()
@@ -98,7 +119,7 @@ void Group::addFeedbackHandler(GroupFeedbackHandler handler)
   std::lock_guard<std::mutex> lock_guard(handler_lock_);
   handlers_.push_back(handler);
   if (handlers_.size() == 1) // (i.e., this was the first one)
-    hebiGroupRegisterFeedbackHandler(internal_, callbackWrapper, (void*)this);
+    hebiGroupRegisterFeedbackHandler(internal_, callbackWrapper, reinterpret_cast<void*>(this));
 }
 
 void Group::clearFeedbackHandlers()

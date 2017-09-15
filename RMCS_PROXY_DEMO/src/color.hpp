@@ -1,5 +1,4 @@
-#ifndef COLOR
-#define COLOR
+#pragma once
 
 #include <cstdint>
 
@@ -33,5 +32,3 @@ typedef Color Color;
 #endif // DOXYGEN_OMIT_INTERNAL
 
 } // namespace hebi
-
-#endif // COLOR
